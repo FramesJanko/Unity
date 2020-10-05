@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraMovement.cs" />
     <Compile Include="Assets\CodeMonkey\Assets.cs" />
     <Compile Include="Assets\CodeMonkey\CMDebug.cs" />
     <Compile Include="Assets\CodeMonkey\MonoBehaviours\CameraFollow.cs" />
@@ -82,8 +83,10 @@
     <Compile Include="Assets\CodeMonkey\Utils\World_Bar.cs" />
     <Compile Include="Assets\CodeMonkey\Utils\World_Mesh.cs" />
     <Compile Include="Assets\CodeMonkey\Utils\World_Sprite.cs" />
+    <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\PlayerMovement.cs" />
     <Compile Include="Assets\Rock.cs" />
+    <Compile Include="Assets\RockLauncher.cs" />
     <None Include="Assets\CodeMonkey\README.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.11f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
