@@ -41,6 +41,15 @@ namespace CodeMonkey {
             UtilsClass.CreateWorldTextPopup(text, UtilsClass.GetMouseWorldPosition());
         }
 
+<<<<<<< HEAD
+=======
+        //Overload with font size
+        public static void TextPopupMouse(string text, int fontSize)
+        {
+            UtilsClass.CreateWorldTextPopup(text, UtilsClass.GetMouseWorldPosition(), fontSize);
+        }
+
+>>>>>>> 484d3c20a2a2d2fb77716128d3e23acece4a8a28
         // Creates a Text pop up at the world position
         public static void TextPopup(string text, Vector3 position) {
             UtilsClass.CreateWorldTextPopup(text, position);

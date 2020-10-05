@@ -108,6 +108,10 @@ namespace CodeMonkey.Utils {
             transform.localPosition = localPosition;
             TextMesh textMesh = gameObject.GetComponent<TextMesh>();
             textMesh.anchor = textAnchor;
+<<<<<<< HEAD
+=======
+            textMesh.characterSize = .03F;
+>>>>>>> 484d3c20a2a2d2fb77716128d3e23acece4a8a28
             textMesh.alignment = textAlignment;
             textMesh.text = text;
             textMesh.fontSize = fontSize;
@@ -119,9 +123,21 @@ namespace CodeMonkey.Utils {
 
         // Create a Text Popup in the World, no parent
         public static void CreateWorldTextPopup(string text, Vector3 localPosition) {
+<<<<<<< HEAD
             CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + new Vector3(0, 20), 1f);
         }
         
+=======
+            CreateWorldTextPopup(null, text, localPosition, 12, Color.white, localPosition + new Vector3(0, 20), 1f);
+        }
+
+        //Overload with fontsize variable
+        public static void CreateWorldTextPopup(string text, Vector3 localPosition, int fontSize)
+        {
+            CreateWorldTextPopup(null, text, localPosition, fontSize, Color.white, localPosition + new Vector3(0, 1), .5f);
+        }
+
+>>>>>>> 484d3c20a2a2d2fb77716128d3e23acece4a8a28
         // Create a Text Popup in the World
         public static void CreateWorldTextPopup(Transform parent, string text, Vector3 localPosition, int fontSize, Color color, Vector3 finalPopupPosition, float popupTime) {
             TextMesh textMesh = CreateWorldText(parent, text, localPosition, fontSize, color, TextAnchor.LowerLeft, TextAlignment.Left, sortingOrderDefault);
