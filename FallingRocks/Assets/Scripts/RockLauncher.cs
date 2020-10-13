@@ -6,14 +6,19 @@ public class RockLauncher : MonoBehaviour
 {
     public GameObject rockPrefab;
     public float respawnTime = 1f;
-    public float speed = -30;
+    public float speed;
     private Vector2 screenBounds;
     private Rigidbody2D rb;
     private Grid grid;
+
+    [SerializeField]
+    private Rock rock;
+
+    private Dictionary<int, GameObject> rocks = new Dictionary<int, GameObject>();
+
     // Start is called before the first frame update
     private void Start() {
-        respawnTime = 1f;
-        
+        respawnTime = 1.5f;
     }
     public void Launcher(float[] launchCoordinates)
     {
@@ -22,13 +27,24 @@ public class RockLauncher : MonoBehaviour
     private void SpawnRock(float[] launchCoordinates)
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-
+        int random = Random.Range(0, Mathf.FloorToInt(launchCoordinates[2]));
+        if (rocks.Count == 4)
+        {
+            return;
+        }
+        while (rocks.ContainsKey(random)){
+            
+            random =  Random.Range(0, Mathf.FloorToInt(launchCoordinates[2]));
+        }
         GameObject a = Instantiate(rockPrefab) as GameObject;
-        a.transform.position = new Vector2(launchCoordinates[0] + launchCoordinates[1] * Random.Range(0, Mathf.FloorToInt(launchCoordinates[2])), screenBounds.y * 1.1f);
+        a.name = "Rock " + random.ToString();
+        a.transform.position = new Vector2(launchCoordinates[0] + launchCoordinates[1] * random, screenBounds.y *1.15f);
         Rigidbody2D rb = a.GetComponent<Rigidbody2D>();
         rb.velocity = new Vector3(0, speed, 0);
         Debug.Log(launchCoordinates[0] + " " + launchCoordinates[1] + " " + launchCoordinates[2]);
+        rocks.Add(random, a);
     }
+    
     IEnumerator RockSlideWave(float[] launchCoordinates)
     {
         while (true)
@@ -38,5 +54,17 @@ public class RockLauncher : MonoBehaviour
 
         }
     }
-    
+    public void DestroyAllRocks()
+    {
+        GameObject[] rocks = GameObject.FindGameObjectsWithTag("rock");
+        for (int i = 0; i < rocks.Length; i++)
+        {
+            Debug.Log(rocks[i].name);
+            Destroy(rocks[i]);
+        }
+    }
+    public void PopRocks(int rockID)
+    {
+        rocks.Remove(rockID);
+    }
 }

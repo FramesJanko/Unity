@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Default
+  - rock
+  - Death
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Tumbling Rocks
+  - Platforms
   - 
   - 
   - 
@@ -39,6 +41,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Death
+    uniqueID: 3696670815
+    locked: 0
   - name: Background
     uniqueID: 811204797
     locked: 0

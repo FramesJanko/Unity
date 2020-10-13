@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
+    Transform tf;
+    
     void Start()
     {
+        Debug.Log("y = " + Screen.height);
+        Debug.Log("-y = " + Screen.height * -1);
+        tf = GetComponentInParent<Transform>();
+        
+
     }
 
     void Update()
