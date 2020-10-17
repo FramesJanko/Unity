@@ -6,8 +6,11 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private Rock rock;
-    private Rigidbody2D rb;
 
+    [SerializeField]
+    private LayerMask platformsLayerMask;
+    private Rigidbody2D rb;
+    
     private Transform transform;
     public float jumpForce = 7;
 
@@ -39,6 +42,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
         {
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
@@ -51,10 +55,12 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
         }
-        if (Input.GetButtonDown("Jump") && isGrounded == true)
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.velocity = Vector2.up * jumpForce;
+            isGrounded = false;
         }
+        
     }
     private void FixedUpdate()
     {
@@ -69,14 +75,43 @@ public class Player : MonoBehaviour
             Destroy(rocks[i]);
         }
     }
+    private bool IsGrounded()
+    {
+        RaycastHit2D rayCastHit2D = Physics2D.BoxCast(/*origin*/col.bounds.center, /*size*/col.bounds.size, /*angle*/0f, /*direction*/Vector2.down, .1f, platformsLayerMask.value);
+        Debug.Log(rayCastHit2D.collider);
+        isGrounded = rayCastHit2D.collider.tag == "Platform";
+        return isGrounded;
+
+    }
     private void OnCollisionEnter2D(Collision2D hitObject)
     {   //Player death upon hitting rock
-        if (hitObject.gameObject.tag == "rock")
+        switch(hitObject.gameObject.tag) //what is hit
         {
             //Not sure if I can put the sprite renderer back, so i'm not using this.
             //Destroy(this.gameObject.GetComponent<SpriteRenderer>());
-            StartCoroutine(Death());
-
+            case "rock":
+                StartCoroutine(Death());
+                break;
+            
+        }
+    }
+    private void OnCollisionStay2D(Collision2D hitObject)
+    {
+        switch(hitObject.gameObject.tag)// what is being hit
+        {
+            case "Platform":
+                IsGrounded();
+                break;
+        }
+            
+    }
+    private void OnCollisionExit2D(Collision2D hitObject)
+    {
+        switch(hitObject.gameObject.tag)
+        {
+            case "Platform":
+                isGrounded = false;
+                break;
         }
     }
     IEnumerator Death()
