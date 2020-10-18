@@ -26,7 +26,7 @@ public class Rock : MonoBehaviour
     void Update()
     {
         //rb.velocity = new Vector3(0, speed, 0);
-        if (transform.position.y < (screenBounds.y*-1))
+        if (transform.position.y < -30)
         {
             rl.PopRocks(int.Parse(name.Substring(5, 1)));
             Destroy(gameObject);
@@ -35,13 +35,13 @@ public class Rock : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        var currentVelocity = rb.velocity;
+        //var currentVelocity = rb.velocity;
 
-        if (currentVelocity.y <= 0f)
-            return;
+        //if (currentVelocity.y <= 0f)
+        //    return;
 
-        currentVelocity.y = 0f;
+        //currentVelocity.y = 0f;
 
-        rb.velocity = currentVelocity;
+        //rb.velocity = currentVelocity;
     }
 }

@@ -8,6 +8,7 @@ TagManager:
   - rock
   - Death
   - Platform
+  - quas
   layers:
   - Default
   - TransparentFX

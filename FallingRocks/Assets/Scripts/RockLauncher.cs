@@ -18,7 +18,7 @@ public class RockLauncher : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start() {
-        respawnTime = 1.5f;
+        
     }
     public void Launcher(float[] launchCoordinates)
     {
@@ -30,18 +30,23 @@ public class RockLauncher : MonoBehaviour
         int random = Random.Range(0, Mathf.FloorToInt(launchCoordinates[2]));
         if (rocks.Count == 4)
         {
+            Debug.Log("All rock columns full");
+
             return;
         }
         while (rocks.ContainsKey(random)){
+
             
+
             random =  Random.Range(0, Mathf.FloorToInt(launchCoordinates[2]));
         }
         GameObject a = Instantiate(rockPrefab) as GameObject;
         a.name = "Rock " + random.ToString();
-        a.transform.position = new Vector2(launchCoordinates[0] + launchCoordinates[1] * random, screenBounds.y *1.15f);
+        a.transform.position = new Vector2(launchCoordinates[0] + launchCoordinates[1] * random, 250f);
         Rigidbody2D rb = a.GetComponent<Rigidbody2D>();
         rb.velocity = new Vector3(0, speed, 0);
-        Debug.Log(launchCoordinates[0] + " " + launchCoordinates[1] + " " + launchCoordinates[2]);
+        Debug.Log(a.transform.position.x + " " + a.transform.position.y);
+        
         rocks.Add(random, a);
     }
     
@@ -49,19 +54,25 @@ public class RockLauncher : MonoBehaviour
     {
         while (true)
         {
+            
+
             yield return new WaitForSeconds(respawnTime);
+            
+
             SpawnRock(launchCoordinates);
 
         }
     }
     public void DestroyAllRocks()
     {
-        GameObject[] rocks = GameObject.FindGameObjectsWithTag("rock");
-        for (int i = 0; i < rocks.Length; i++)
+        GameObject[] rocksArray = GameObject.FindGameObjectsWithTag("rock");
+        for (int i = 0; i < rocksArray.Length; i++)
         {
-            Debug.Log(rocks[i].name);
-            Destroy(rocks[i]);
+            Debug.Log("Destroying " + rocksArray[i].name);
+            
+            Destroy(rocksArray[i]);
         }
+        rocks.Clear();
     }
     public void PopRocks(int rockID)
     {
