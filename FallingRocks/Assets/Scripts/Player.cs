@@ -33,6 +33,12 @@ public class Player : MonoBehaviour
     private int wexCount = 0;
     private int exortCount = 0;
 
+    GameObject orb1;
+    GameObject orb2;
+    GameObject orb3;
+
+    [SerializeField]
+    private GameObject[] orbPrefabs;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +47,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
         
+
     }
 
     // Update is called once per frame
@@ -84,9 +91,17 @@ public class Player : MonoBehaviour
     {
         RaycastHit2D rayCastHit2D = Physics2D.BoxCast(/*origin*/col.bounds.center, /*size*/col.bounds.size * .93f, /*angle*/0f, /*direction*/Vector2.down, .18f, platformsLayerMask.value);
         
-        isGrounded = rayCastHit2D.collider.tag == "Platform";
-        //Debug.Log(rayCastHit2D.collider.tag + " " + isGrounded);
-        return isGrounded;
+        if (rayCastHit2D.collider == null)
+        {
+            return false;
+        }
+        else
+        {
+            isGrounded = rayCastHit2D.collider.tag == "Platform";
+            //Debug.Log(rayCastHit2D.collider.tag + " " + isGrounded);
+            return isGrounded;
+        }
+        
 
     }
     private void OnCollisionEnter2D(Collision2D hitObject)
@@ -156,6 +171,25 @@ public class Player : MonoBehaviour
         Debug.Log("You collected a " + orb.tag + " orb!");
         if (orb.tag == "quas")
         {
+            if (orb1 == null)
+            {
+                orb1 = Instantiate(orbPrefabs[0], transform.GetChild(2)) as GameObject;
+
+            }
+            else if (orb2 == null)
+            {
+                orb2 = Instantiate(orbPrefabs[1], transform.GetChild(2)) as GameObject;
+
+            }
+            else if (orb3 == null)
+            {
+                orb3 = Instantiate(orbPrefabs[2], transform.GetChild(2)) as GameObject;
+
+            }
+            else
+            {
+                return;
+            }
             quasCount++;
         }
         else if (orb.tag == "wex")
