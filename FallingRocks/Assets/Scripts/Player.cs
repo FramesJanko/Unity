@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Rock rock;
 
+    private SelectObjectOnClick select;
+    private float timePassed;
+    private float delay;
     [SerializeField]
     private LayerMask platformsLayerMask;
     private Rigidbody2D rb;
@@ -39,6 +42,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject[] orbPrefabs;
+
+    Vector3 worldPosition;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,14 +51,18 @@ public class Player : MonoBehaviour
         isGrounded = true;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
+        select = new SelectObjectOnClick();
         
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        timePassed += Time.deltaTime;
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = Camera.main.nearClipPlane;
+        worldPosition = Camera.main.ScreenToWorldPoint(mousePos);
+
         if (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0)
         {
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
@@ -72,11 +81,35 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.up * jumpForce;
             isGrounded = false;
         }
-        
+        if (Input.GetMouseButtonDown(0) && quasCount == 3)
+        {
+            StartCoroutine(ColdSnap());
+        }
+
+
+
+
     }
     private void FixedUpdate()
     {
         
+    }
+    private IEnumerator ColdSnap()
+    {
+        
+        delay = timePassed + 6f;
+        GameObject a = select.SelectObject();
+        Rigidbody2D selectedRb = a.GetComponent<Rigidbody2D>();
+        Vector2 placeholderVelocity = selectedRb.velocity;
+        selectedRb.velocity = new Vector2(0, 0);
+        selectedRb.isKinematic = true;
+        while (timePassed < delay)
+        {
+            yield return new WaitForSeconds(6f);
+            selectedRb.velocity = placeholderVelocity;
+            selectedRb.isKinematic = false;
+        }
+       
     }
     public void DestroyAllRocks()
     {
