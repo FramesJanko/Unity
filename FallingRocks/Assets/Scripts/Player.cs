@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Rock rock;
 
+    [SerializeField]
     private SelectObjectOnClick select;
     private float timePassed;
     private float delay;
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour
     private LayerMask platformsLayerMask;
     private Rigidbody2D rb;
     
-    private Transform transform;
+    //private Transform transform;
     public float jumpForce = 7;
 
     public BoxCollider2D col;
@@ -47,11 +48,11 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transform = GetComponent<Transform>();
+        //transform = GetComponent<Transform>();
         isGrounded = true;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<BoxCollider2D>();
-        select = new SelectObjectOnClick();
+        //select = new SelectObjectOnClick();
         
     }
 
@@ -97,19 +98,31 @@ public class Player : MonoBehaviour
     private IEnumerator ColdSnap()
     {
         
-        delay = timePassed + 6f;
-        GameObject a = select.SelectObject();
-        Rigidbody2D selectedRb = a.GetComponent<Rigidbody2D>();
-        Vector2 placeholderVelocity = selectedRb.velocity;
-        selectedRb.velocity = new Vector2(0, 0);
-        selectedRb.isKinematic = true;
-        while (timePassed < delay)
+        //delay = timePassed + 6f;
+        if (select.SelectObject() != null && select.SelectObject().GetComponent<Rigidbody2D>() != null)
         {
-            yield return new WaitForSeconds(6f);
-            selectedRb.velocity = placeholderVelocity;
-            selectedRb.isKinematic = false;
+            
+            GameObject a = select.SelectObject();
+            Rigidbody2D selectedRb = a.GetComponent<Rigidbody2D>();
+            
+            if (!a.GetComponent<Rock>().IsColdsnapped)
+            {
+                a.GetComponent<Rock>().IsColdsnapped = true;
+                Vector2 placeholderVelocity = selectedRb.velocity;
+                selectedRb.velocity = new Vector2(0, 0);
+                selectedRb.isKinematic = true;
+                //while (timePassed < delay)
+                //{
+                yield return new WaitForSeconds(6f);
+                selectedRb.velocity = placeholderVelocity;
+                selectedRb.isKinematic = false;
+                a.GetComponent<Rock>().IsColdsnapped = false;
+            }
+            
+            //}
         }
-       
+
+
     }
     public void DestroyAllRocks()
     {
@@ -139,12 +152,22 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D hitObject)
     {   //Player death upon hitting rock
+        Collider2D myCollider = hitObject.GetContact(0).collider;
+        Debug.Log("You struck " + myCollider);
         switch(hitObject.gameObject.tag) //what is hit
         {
             //Not sure if I can put the sprite renderer back, so i'm not using this.
             //Destroy(this.gameObject.GetComponent<SpriteRenderer>());
             case "rock":
-                StartCoroutine(Death());
+                if (myCollider.name == "RockBottomPrefab")
+                {
+                    if (hitObject.gameObject.GetComponentInParent<Rigidbody2D>().velocity.y != 0)
+                    StartCoroutine(Death());
+                }
+                else if(myCollider.name == "RockTopPrefab")
+                {
+                    IsGrounded();
+                }
                 break;
             case "Platform":
                 IsGrounded();
@@ -194,7 +217,7 @@ public class Player : MonoBehaviour
         rb.freezeRotation = true;
         transform.position = new Vector3(0, -3, 0);
         Time.timeScale = 1;
-        
+        StopAllCoroutines();
         //play sound
         //reset location to start and play respawn animation
 

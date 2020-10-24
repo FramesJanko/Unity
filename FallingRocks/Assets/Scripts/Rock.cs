@@ -7,6 +7,7 @@ public class Rock : MonoBehaviour
     public float speed = -30f;
     private Rigidbody2D rb;
     private Vector2 screenBounds;
+    public bool IsColdsnapped = false;
 
     [SerializeField]
     private RockLauncher rl;
