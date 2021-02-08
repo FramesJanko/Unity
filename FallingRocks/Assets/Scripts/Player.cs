@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     //private Transform transform;
     public float jumpForce = 7;
 
-    public BoxCollider2D col;
+    public CapsuleCollider2D col;
 
     public float moveSpeed = 3f;
 
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         //transform = GetComponent<Transform>();
         isGrounded = true;
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<BoxCollider2D>();
+        col = GetComponent < CapsuleCollider2D>();
         //select = new SelectObjectOnClick();
         
     }
@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
     }
     private bool IsGrounded()
     {
-        RaycastHit2D rayCastHit2D = Physics2D.BoxCast(/*origin*/col.bounds.center, /*size*/col.bounds.size * .93f, /*angle*/0f, /*direction*/Vector2.down, .18f, platformsLayerMask.value);
+        RaycastHit2D rayCastHit2D = Physics2D.BoxCast(/*origin*/col.bounds.center, /*size*/col.bounds.size * .98f, /*angle*/0f, /*direction*/Vector2.down, .18f, platformsLayerMask.value);
         
         if (rayCastHit2D.collider == null)
         {
@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
         else
         {
             isGrounded = rayCastHit2D.collider.tag == "Platform";
-            //Debug.Log(rayCastHit2D.collider.tag + " " + isGrounded);
+            Debug.Log(rayCastHit2D.collider.tag + " " + isGrounded);
             return isGrounded;
         }
         
