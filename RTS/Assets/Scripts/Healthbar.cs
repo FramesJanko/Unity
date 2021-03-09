@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class Healthbar : MonoBehaviour
+public class Healthbar : NetworkBehaviour
 {
     [SerializeField]
     private float healthChangeTimer;
@@ -11,16 +12,17 @@ public class Healthbar : MonoBehaviour
     [SerializeField]
     private Image healthbarImage;
 
-    private void Awake()
+    private void OnEnable()
     {
-        GetComponentInParent<Health>().OnHealthPercentChanged += ChangeHealthbar;
+        GetComponentInParent<Health>().EventHealthChanged += ChangeHealthbar;
     }
 
+    [ClientCallback]
     private void ChangeHealthbar(float percent)
     {
         StartCoroutine(HealOrDamage(percent));
     }
-
+    [ClientCallback]
     private IEnumerator HealOrDamage(float percent)
     {
         float preChangePercent = healthbarImage.fillAmount;

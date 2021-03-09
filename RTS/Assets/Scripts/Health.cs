@@ -2,15 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Health : MonoBehaviour
+public class Health : NetworkBehaviour
 {
-    [SerializeField]
+    [SerializeField] [SyncVar]
     private float maxHealth = 100;
 
+    [SerializeField] [SyncVar]
     private float currentHealth;
 
-    public event Action<float> OnHealthPercentChanged = delegate { };
+    public delegate void OnHealthPercentChanged(float currentHealthPercent);
+
+    public event OnHealthPercentChanged EventHealthChanged;
+
 
     
 
@@ -19,14 +24,21 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
     }
 
+    
     public void ModifyHealth(float healthChange)
     {
+        if (!isServer)
+            return;
+
         currentHealth += healthChange;
 
         float currentHealthPercent = (float)currentHealth / (float)maxHealth;
-        OnHealthPercentChanged(currentHealthPercent);
+        EventHealthChanged?.Invoke(currentHealthPercent);
         CheckForDeath();
     }
+
+    [Command]
+    public void CmdModifyHealth(float damage) => ModifyHealth(damage);
 
     private void Awake()
     {
@@ -39,11 +51,13 @@ public class Health : MonoBehaviour
     }
 
     // Update is called once per frame
+    [ClientCallback]
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ModifyHealth(-10);
+            if(!hasAuthority) { return; }
+            CmdModifyHealth(-10);
         }
         
     }

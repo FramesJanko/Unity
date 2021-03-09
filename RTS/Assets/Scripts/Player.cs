@@ -14,6 +14,7 @@ public class Player : NetworkBehaviour
 
     [SerializeField]
     private float movespeed;
+    [SyncVar]
     public GameObject target;
 
     public bool walking;
@@ -64,7 +65,7 @@ public class Player : NetworkBehaviour
                     if (hit.collider.tag == "Enemy")
                     {
                         target = hit.collider.gameObject;
-                        Debug.Log("Targeting " + target.name);
+                        Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
                         Debug.Log(target.name + " is located at " + target.transform.position);
                         movementLocation = hit.collider.gameObject.transform.position;
                     }

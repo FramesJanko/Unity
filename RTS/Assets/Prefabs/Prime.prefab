@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96497cfbe586a194a9176a30e7c16f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthChangeTimer: 0
+  healthChangeTimer: 0.1
   healthbarImage: {fileID: 7516935159839608267}
 --- !u!1 &7516935160782990345
 GameObject:
@@ -526,7 +526,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e622107206ee240ae14fe12b5968d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   maxHealth: 30
+  currentHealth: 0
 --- !u!114 &5465910463463995958
 MonoBehaviour:
   m_ObjectHideFlags: 0

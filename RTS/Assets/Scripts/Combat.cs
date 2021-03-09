@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Combat : MonoBehaviour
+public class Combat : NetworkBehaviour
 {
     private Player player;
     private GameObject target;
@@ -26,15 +27,20 @@ public class Combat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         target = player.target;
         if (CheckValidTarget(target))
         {
-            StartCoroutine(Attack(damage));
-            Debug.Log("Count is " + coroutineCount);
+            CmdAttack();
         }
-        
-    }
 
+    }
+    [Command]
+    private void CmdAttack()
+    {
+        StartCoroutine(Attack(damage));
+        Debug.Log("Count is " + coroutineCount);
+    }
     private bool CheckValidTarget(GameObject target)
     {
         if (target != null && player.distanceFromTarget < 7 && !isAttacking)
@@ -49,6 +55,8 @@ public class Combat : MonoBehaviour
             return false;
         }
     }
+    
+    //[ClientCallback]
     private IEnumerator Attack(float damage)
     {
         isAttacking = true;
