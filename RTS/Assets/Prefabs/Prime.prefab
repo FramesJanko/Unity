@@ -263,6 +263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96497cfbe586a194a9176a30e7c16f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   healthChangeTimer: 0.1
   healthbarImage: {fileID: 7516935159839608267}
 --- !u!1 &7516935160782990345

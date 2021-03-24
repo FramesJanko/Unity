@@ -12,8 +12,8 @@ public class SpawnEnemy : NetworkBehaviour
     [Server]
     public void SpawnEnemyOnStart()
     {
-        Debug.Log("Spawning enemy...");
-        enemyToSpawn = Instantiate(enemyToSpawn, this.transform.position, Quaternion.identity);
+        enemyToSpawn = Instantiate(enemyToSpawn, this.transform.position, enemyToSpawn.transform.rotation);
         NetworkServer.Spawn(enemyToSpawn, noConnection);
+        Debug.Log($"Spawning enemy..., rotation is {enemyToSpawn.transform.rotation}");
     }
 }
