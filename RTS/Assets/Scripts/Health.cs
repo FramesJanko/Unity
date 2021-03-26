@@ -7,10 +7,10 @@ using Mirror;
 public class Health : NetworkBehaviour
 {
     [SerializeField] [SyncVar]
-    private float maxHealth = 100;
+    public float maxHealth = 100;
 
-    [SerializeField] [SyncVar]
-    private float currentHealth;
+    [SyncVar]
+    public float currentHealth;
 
     public delegate void OnHealthPercentChanged(float currentHealthPercent);
 
@@ -24,26 +24,27 @@ public class Health : NetworkBehaviour
         currentHealth = maxHealth;
     }
 
-    
-    public void ModifyHealth(float healthChange)
+    //public void ModifyHealth(float healthChange)
+    //{
+    //    CmdModifyHealth(healthChange);
+    //}
+    //[Command]
+    public void CmdModifyHealth(float healthChange)
     {
         if (!isServer)
             return;
 
         currentHealth += healthChange;
 
-        float currentHealthPercent = (float)currentHealth / (float)maxHealth;
-        EventHealthChanged?.Invoke(currentHealthPercent);
-        CheckForDeath();
+        float currentHealthPercent = currentHealth / maxHealth;
+        GetComponentInChildren<Healthbar>().UpdateCurrentHealthPercent(currentHealthPercent);
+        
     }
 
-    [Command]
-    public void CmdModifyHealth(float damage) => ModifyHealth(damage);
+    //[Command]
+    //public void CmdModifyHealth(float damage) => ModifyHealth(damage);
 
-    private void Awake()
-    {
-        CheckForDeath += Remove;
-    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -54,31 +55,10 @@ public class Health : NetworkBehaviour
     [ClientCallback]
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if(!hasAuthority) { return; }
-            CmdModifyHealth(-10);
-        }
+        
         
     }
 
-    public event Action CheckForDeath = delegate { };
     
-    public void Remove()
-    {
-        
-        if (currentHealth <= 0f)
-        {
-            Player[] playerList = GetComponents<Player>();
-            foreach(Player p in playerList)
-            {
-                if (p.target == gameObject)
-                {
-                    p.target = null;
-                }
-            }
-            Destroy(gameObject);
-        }
-    }
 
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class Combat : NetworkBehaviour
 {
@@ -27,23 +28,25 @@ public class Combat : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!isLocalPlayer)
+            return;
         target = player.target;
         if (CheckValidTarget(target))
         {
-            CmdAttack();
+            StartAttack();
         }
 
     }
-    [Command]
-    private void CmdAttack()
+    
+    private void StartAttack()
     {
         StartCoroutine(Attack(damage));
         Debug.Log("Count is " + coroutineCount);
+
     }
-    private bool CheckValidTarget(GameObject target)
+    private bool CheckValidTarget(GameObject currentTarget)
     {
-        if (target != null && player.distanceFromTarget < 7 && !isAttacking)
+        if (currentTarget != null && player.distanceFromTarget < 7 && !isAttacking)
         {
 
             return true;
@@ -55,27 +58,59 @@ public class Combat : NetworkBehaviour
             return false;
         }
     }
-    
-    //[ClientCallback]
+    [Command]
+    public void CmdModifyHealth(GameObject currentTarget, float healthChange)
+    {
+        //if (!isServer)
+        //    return;
+
+        
+        currentTarget.GetComponent<Health>().currentHealth += healthChange;
+
+        //float newHealthPercent = currentTarget.GetComponent<Health>().currentHealth / currentTarget.GetComponent<Health>().maxHealth;
+        
+        //currentTarget.GetComponentInChildren<Healthbar>().currentHealthPercent = newHealthPercent;
+        Remove(currentTarget);
+    }
+
     private IEnumerator Attack(float damage)
     {
         isAttacking = true;
         coroutineCount++;
-        Debug.Log("Attacking...");
+        
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
 
 
         if (player.distanceFromTarget < 7 && !player.walking && currentTarget == target)
         {
-            target.GetComponent<Health>().ModifyHealth(damage);
+            Debug.Log("Attacking...");
+            CmdModifyHealth(currentTarget, damage);
             
         }
 
         isAttacking = false;
 
     }
-        
+    
+
+    public void Remove(GameObject currentTarget)
+    {
+
+        if (currentTarget.GetComponent<Health>().currentHealth <= 0f)
+        {
+            Player[] playerList = GetComponents<Player>();
+            foreach (Player p in playerList)
+            {
+                if (p.target == gameObject)
+                {
+                    p.target = null;
+                }
+            }
+            Destroy(gameObject);
+        }
+    }
+
 }
 
     

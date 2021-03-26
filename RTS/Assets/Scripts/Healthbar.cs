@@ -12,17 +12,39 @@ public class Healthbar : NetworkBehaviour
     [SerializeField]
     private Image healthbarImage;
 
+    [SyncVar]
+    public float currentHealthPercent;
+
     private void OnEnable()
     {
-        GetComponentInParent<Health>().EventHealthChanged += ChangeHealthbar;
+        GetComponentInParent<Health>().EventHealthChanged += CmdChangeHealthbar;
+        currentHealthPercent = healthbarImage.fillAmount;
     }
 
-    [ClientCallback]
-    private void ChangeHealthbar(float percent)
+    
+    private void CmdChangeHealthbar(float percent)
     {
         StartCoroutine(HealOrDamage(percent));
     }
-    [ClientCallback]
+    
+    public void HealOrDamageWithoutEnumerator()
+    {
+        float preChangePercent = healthbarImage.fillAmount;
+        float timeElapsed = healthChangeTimer;
+        
+        if (timeElapsed < 0)
+        {
+            timeElapsed = 0;
+        }
+
+        if (preChangePercent != currentHealthPercent && timeElapsed >= 0)
+        {
+            timeElapsed -= Time.deltaTime;
+            healthbarImage.fillAmount = currentHealthPercent + (preChangePercent - currentHealthPercent) * (timeElapsed / healthChangeTimer);
+            //Mathf.Lerp(preChangePercent, percent, timeElapsed / healthChangeTimer);
+        }
+    }
+
     private IEnumerator HealOrDamage(float percent)
     {
         float preChangePercent = healthbarImage.fillAmount;
@@ -38,7 +60,11 @@ public class Healthbar : NetworkBehaviour
         healthbarImage.fillAmount = percent;
 
     }
-
+    
+    public void UpdateCurrentHealthPercent(float percent)
+    {
+        currentHealthPercent = percent;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +72,11 @@ public class Healthbar : NetworkBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        healthbarImage.fillAmount = GetComponentInParent<Health>().currentHealth / GetComponentInParent<Health>().maxHealth;
+        //HealOrDamageWithoutEnumerator();
+    }
     void LateUpdate()
     {
         //transform.LookAt(Camera.main.transform);

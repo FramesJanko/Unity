@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,7 @@ public class Player : NetworkBehaviour
 
     [SerializeField]
     private float movespeed;
-    [SyncVar]
+    
     public GameObject target;
 
     public bool walking;
@@ -62,17 +63,9 @@ public class Player : NetworkBehaviour
                     Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, 0.5f);
                     Debug.Log("Clicked at " + hit.point);
 
-                    if (hit.collider.tag == "Enemy")
-                    {
-                        target = hit.collider.gameObject;
-                        Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
-                        Debug.Log(target.name + " is located at " + target.transform.position);
-                        movementLocation = hit.collider.gameObject.transform.position;
-                    }
-                    else
-                    {
-                        movementLocation = hit.point + new Vector3(0f, GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
-                    }
+                    CheckForTarget();
+
+                    
 
                     Debug.Log("Going to " + movementLocation);
                 }
@@ -132,6 +125,23 @@ public class Player : NetworkBehaviour
             transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
         }
     }
+
+    private void CheckForTarget()
+    {
+        if (hit.collider.tag == "Enemy")
+        {
+            target = hit.collider.gameObject;
+            Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
+            Debug.Log(target.name + " is located at " + target.transform.position);
+            movementLocation = hit.collider.gameObject.transform.position;
+        }
+        else
+        {
+            movementLocation = hit.point + new Vector3(0f, GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
+
+        }
+    }
+
     public void CheckIfWalking()
     {
         if (movementLocation != transform.position)

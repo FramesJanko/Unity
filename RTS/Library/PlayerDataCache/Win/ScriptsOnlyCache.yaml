@@ -8,6 +8,7 @@ ScriptsOnlyBuild:
     - MyNetworkManager
     - Player
     - SpawnEnemy
+    - TextScript
     Mirror.Components.dll:
     - Mirror.NetworkTransform
     Mirror.dll:
@@ -86,22 +87,22 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12160}
     - Class: 114
-      Script: {instanceID: 13038}
+      Script: {instanceID: 12302}
     - Class: 114
-      Script: {instanceID: 13094}
+      Script: {instanceID: 13040}
     - Class: 114
-      Script: {instanceID: 13156}
+      Script: {instanceID: 13096}
     - Class: 114
-      Script: {instanceID: 13334}
+      Script: {instanceID: 13158}
     - Class: 114
-      Script: {instanceID: 13568}
+      Script: {instanceID: 13336}
     - Class: 114
-      Script: {instanceID: 13654}
+      Script: {instanceID: 13570}
+    - Class: 114
+      Script: {instanceID: 13656}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
-      Script: {instanceID: 0}
-    - Class: 134
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -574,6 +575,12 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
+      Hash: 01e3bbe64249f4f4f3df81e351148b86
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TextScript
+  - hash:
+      serializedVersion: 2
       Hash: f84b810c764d5a270da7c7591f2be2f1
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.MultipleMatch
@@ -838,7 +845,7 @@ ScriptsOnlyBuild:
     className: TextMeshProUGUI
   - hash:
       serializedVersion: 2
-      Hash: b10611b9f024d3510f58717213eefe15
+      Hash: 10506fce567cb377a237322ee95dfbde
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Healthbar

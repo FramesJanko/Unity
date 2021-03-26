@@ -297,6 +297,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 7516935161623750712, guid: 75a6585bc59445543b2a1f50bdbaf324, type: 3}
+  - {fileID: 4387887797786954993, guid: 499390db8a31d2048a1289ebeff10e5b, type: 3}
   se: {fileID: 1811269120}
 --- !u!4 &529621385
 Transform:
@@ -815,6 +816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1811269119}
   - component: {fileID: 1811269120}
+  - component: {fileID: 1811269121}
   m_Layer: 0
   m_Name: SpawnPoint1
   m_TagString: Untagged
@@ -852,6 +854,22 @@ MonoBehaviour:
   syncInterval: 0.1
   enemyToSpawn: {fileID: 4387887797786954993, guid: 499390db8a31d2048a1289ebeff10e5b,
     type: 3}
+--- !u!114 &1811269121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811269118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 4245564397
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &1943475470
 GameObject:
   m_ObjectHideFlags: 0
