@@ -24,6 +24,8 @@ public class Player : NetworkBehaviour
 
     public float distanceFromTarget;
 
+    public Collider destinationCollider;
+
     private void Awake()
     {
         
@@ -45,14 +47,38 @@ public class Player : NetworkBehaviour
 
         HandleMovement();
 
-        CheckIfWalking();
+
+        if (walking)
+        {
+            Debug.DrawLine(transform.position, movementLocation, Color.blue, .1f);
+
+            CalculateRoute();
+        }
+    }
+
+    private void CalculateRoute()
+    {
+        if (Physics.Raycast(transform.position, movementLocation, out hit, 200f))
+        {
+            Debug.Log(hit.collider);
+
+            Debug.Log(destinationCollider);
+            Debug.DrawLine(transform.position, movementLocation, Color.yellow, 1f);
+
+            //if (hit.collider != destinationCollider)
+            //{
+            //    Debug.DrawLine(transform.position, movementLocation, Color.yellow, 1f);
+
+            //}
+
+        }
     }
 
     private void HandleMovement()
     {
         if (isLocalPlayer)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Input.GetMouseButtonDown(1))
             {
                 Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
@@ -65,8 +91,7 @@ public class Player : NetworkBehaviour
 
                     CheckForTarget();
 
-                    
-
+                    destinationCollider = hit.collider;
                     Debug.Log("Going to " + movementLocation);
                 }
                 else
@@ -78,8 +103,8 @@ public class Player : NetworkBehaviour
 
                 if (target != null)
                 {
-                    float destinationDistanceFromTargetX = System.Math.Abs(movementLocation.x - target.transform.position.x);
-                    float destinationDistanceFromTargetZ = System.Math.Abs(movementLocation.z - target.transform.position.z);
+                    float destinationDistanceFromTargetX = Math.Abs(movementLocation.x - target.transform.position.x);
+                    float destinationDistanceFromTargetZ = Math.Abs(movementLocation.z - target.transform.position.z);
                     destinationDistanceFromTarget = destinationDistanceFromTargetX * destinationDistanceFromTargetX;
                     destinationDistanceFromTarget += (destinationDistanceFromTargetZ * destinationDistanceFromTargetZ);
                 }
@@ -87,7 +112,7 @@ public class Player : NetworkBehaviour
 
 
 
-                Debug.Log("Destination's distance from target: " + System.Math.Sqrt(destinationDistanceFromTarget));
+                Debug.Log("Destination's distance from target: " + Math.Sqrt(destinationDistanceFromTarget));
                 //Debug.Log("Distance from target: " + System.Math.Sqrt(distanceFromTarget));
 
 
