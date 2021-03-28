@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\MyNetworkManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\SpawnEnemy.cs" />
+    <Compile Include="Assets\ShowPlayer.cs" />
     <Compile Include="Assets\TextScript.cs" />
     <None Include="Assets\Mirror\Version.txt" />
     <None Include="Assets\Mirror\Readme.txt" />

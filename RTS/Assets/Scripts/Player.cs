@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : NetworkBehaviour
 {
@@ -26,15 +27,27 @@ public class Player : NetworkBehaviour
 
     public Collider destinationCollider;
 
+    //This is for determining where the player can move to
+    [SerializeField]
+    LayerMask walkableTerrain;
+
+    //This is for turning objects in front of the player transparent or opaque
+    MeshRenderer lastHitMeshRenderer;
+
+    NavMeshAgent _navMeshAgent;
+
+    Camera cam;
+
     private void Awake()
     {
-        
+        _navMeshAgent = GetComponent<NavMeshAgent>();
     }
     // Start is called before the first frame update
     void Start()
     {
         movementLocation = transform.position;
         walking = false;
+        cam = Camera.main;
 
     }
 
@@ -47,6 +60,7 @@ public class Player : NetworkBehaviour
 
         HandleMovement();
 
+        ShowBehindWalls();
 
         if (walking)
         {
@@ -56,6 +70,45 @@ public class Player : NetworkBehaviour
         }
     }
 
+    private void ShowBehindWalls()
+    {
+        if (isLocalPlayer)
+        {
+            Ray ray = new Ray(cam.transform.position, transform.position - cam.transform.position);
+            Debug.DrawRay(cam.transform.position, (transform.position - cam.transform.position), Color.cyan, .1f);
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(ray, out hit, Vector3.Distance(cam.transform.position, transform.position)))
+            {
+                Debug.Log("Hit layer = " + hit.collider.gameObject.layer);
+
+                if (hit.collider.gameObject.layer == 8)
+                {
+                    lastHitMeshRenderer = hit.collider.gameObject.GetComponent<MeshRenderer>();
+                    hit.collider.gameObject.GetComponent<ShowPlayer>().SetTransparentMaterial();
+
+                }
+                else
+                {
+                    if (lastHitMeshRenderer != null)
+                    {
+                        lastHitMeshRenderer.gameObject.GetComponent<ShowPlayer>().SetOpaqueMaterial();
+                    }
+                }
+
+
+            }
+            else
+            {
+                if (lastHitMeshRenderer != null)
+                {
+                    lastHitMeshRenderer.gameObject.GetComponent<ShowPlayer>().SetOpaqueMaterial();
+                }
+            }
+        }
+            
+    }
     private void CalculateRoute()
     {
         if (Physics.Raycast(transform.position, movementLocation, out hit, 200f))
@@ -81,12 +134,12 @@ public class Player : NetworkBehaviour
             //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Input.GetMouseButtonDown(1))
             {
-                Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
-                Vector3 direction = worldMousePosition - Camera.main.transform.position;
+                Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+                Vector3 direction = worldMousePosition - cam.transform.position;
 
-                if (Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f))
+                if (Physics.Raycast(cam.transform.position, direction, out hit, 200f, walkableTerrain))
                 {
-                    Debug.DrawLine(Camera.main.transform.position, hit.point, Color.green, 0.5f);
+                    Debug.DrawLine(cam.transform.position, hit.point, Color.green, 0.5f);
                     Debug.Log("Clicked at " + hit.point);
 
                     CheckForTarget();
@@ -96,7 +149,7 @@ public class Player : NetworkBehaviour
                 }
                 else
                 {
-                    Debug.DrawLine(Camera.main.transform.position, worldMousePosition, Color.red, 0.5f);
+                    Debug.DrawLine(cam.transform.position, worldMousePosition, Color.red, 0.5f);
                 }
 
                 destinationDistanceFromTarget = 0f;
@@ -147,7 +200,8 @@ public class Player : NetworkBehaviour
                     movementLocation = transform.position;
                 }
             }
-            transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
+            _navMeshAgent.SetDestination(movementLocation);
+            //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
         }
     }
 

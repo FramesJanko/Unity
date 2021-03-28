@@ -70,7 +70,8 @@ public class Combat : NetworkBehaviour
         //float newHealthPercent = currentTarget.GetComponent<Health>().currentHealth / currentTarget.GetComponent<Health>().maxHealth;
         
         //currentTarget.GetComponentInChildren<Healthbar>().currentHealthPercent = newHealthPercent;
-        Remove(currentTarget);
+        
+        //Remove(currentTarget);
     }
 
     private IEnumerator Attack(float damage)
@@ -93,23 +94,23 @@ public class Combat : NetworkBehaviour
 
     }
     
+    
+    //public void Remove(GameObject currentTarget)
+    //{
 
-    public void Remove(GameObject currentTarget)
-    {
-
-        if (currentTarget.GetComponent<Health>().currentHealth <= 0f)
-        {
-            Player[] playerList = GetComponents<Player>();
-            foreach (Player p in playerList)
-            {
-                if (p.target == gameObject)
-                {
-                    p.target = null;
-                }
-            }
-            Destroy(gameObject);
-        }
-    }
+    //    if (currentTarget.GetComponent<Health>().currentHealth <= 0f)
+    //    {
+    //        Player[] playerList = GetComponents<Player>();
+    //        foreach (Player p in playerList)
+    //        {
+    //            if (p.target == gameObject)
+    //            {
+    //                p.target = null;
+    //            }
+    //        }
+    //        Destroy(currentTarget);
+    //    }
+    //}
 
 }
 

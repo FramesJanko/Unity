@@ -8,14 +8,14 @@ public class SpawnEnemy : NetworkBehaviour
     //private NetworkConnection noConnection = null;
 
     [SerializeField]
-    private GameObject enemyToSpawn;
+    private GameObject enemyPrefab;
     
     public void SpawnEnemyOnStart()
     {
         if (!isServer)
             return;
-        enemyToSpawn = Instantiate(enemyToSpawn, this.transform.position, enemyToSpawn.transform.rotation);
-        NetworkServer.Spawn(enemyToSpawn);
-        Debug.Log($"Spawning enemy..., rotation is {enemyToSpawn.transform.rotation}");
+        GameObject enemy = Instantiate(enemyPrefab, transform.position, enemyPrefab.transform.rotation);
+        NetworkServer.Spawn(enemy);
+        Debug.Log($"Spawning enemy..., rotation is {enemyPrefab.transform.rotation}");
     }
 }

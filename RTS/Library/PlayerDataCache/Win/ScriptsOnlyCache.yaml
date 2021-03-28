@@ -7,6 +7,7 @@ ScriptsOnlyBuild:
     - Healthbar
     - MyNetworkManager
     - Player
+    - ShowPlayer
     - SpawnEnemy
     - TextScript
     Mirror.Components.dll:
@@ -102,6 +103,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 13570}
     - Class: 114
       Script: {instanceID: 13656}
+    - Class: 114
+      Script: {instanceID: 15418}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -109,6 +112,8 @@ ScriptsOnlyBuild:
     - Class: 136
       Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 195
       Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
@@ -119,6 +124,8 @@ ScriptsOnlyBuild:
     - Class: 223
       Script: {instanceID: 0}
     - Class: 224
+      Script: {instanceID: 0}
+    - Class: 238
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -267,7 +274,7 @@ ScriptsOnlyBuild:
     className: Scrollbar
   - hash:
       serializedVersion: 2
-      Hash: 2b90a195a2f86a87af61878f0054c629
+      Hash: 9ca4078e023b258d95b4840ec4b9524d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpawnEnemy
@@ -543,7 +550,7 @@ ScriptsOnlyBuild:
     className: Tank
   - hash:
       serializedVersion: 2
-      Hash: b46160b04f33c65a470437ba5b2229c0
+      Hash: 70415da26dfc195572f35ca09f01cb92
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -1117,7 +1124,13 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
+  - hash:
+      serializedVersion: 2
+      Hash: c7672b7b590095228af2e8a1472d0e77
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ShowPlayer
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/Robby/Documents/GitHub/Unity/RTS/Builds/RTS.exe
+  playerPath: C:/Users/Robby/Documents/GitHub/Unity/RTS/Build/RTS.exe

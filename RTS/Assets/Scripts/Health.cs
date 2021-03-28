@@ -52,13 +52,30 @@ public class Health : NetworkBehaviour
     }
 
     // Update is called once per frame
-    [ClientCallback]
     void Update()
     {
-        
-        
+        CheckForDeath();
+
     }
 
+    private void CheckForDeath()
+    {
+        if(currentHealth <= 0)
+        {
+            Death();
+        }
+    }
     
-
+    private void Death()
+    {
+        Player[] playerList = GetComponents<Player>();
+        foreach (Player p in playerList)
+        {
+            if (p.target == gameObject)
+            {
+                p.target = null;
+            }
+        }
+        gameObject.SetActive(false);
+    }
 }
