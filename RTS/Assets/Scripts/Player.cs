@@ -36,11 +36,19 @@ public class Player : NetworkBehaviour
 
     NavMeshAgent _navMeshAgent;
 
+    [SerializeField]
+    TextScript textScript;
+
     Camera cam;
+
+    private Combat _combat;
 
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        textScript = GameObject.Find("Text").GetComponent<TextScript>();
+        _combat = GetComponent<Combat>();
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -55,48 +63,48 @@ public class Player : NetworkBehaviour
     void Update()
     {
 
-
-        CheckIfWalking();
-
-        HandleMovement();
-
-        ShowBehindWalls();
-
-        if (walking)
+        if (isLocalPlayer)
         {
-            Debug.DrawLine(transform.position, movementLocation, Color.blue, .1f);
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                StartTimer();
+            }
+            CheckIfWalking();
 
-            CalculateRoute();
+            HandleMovement();
+
+            
+
+            ShowBehindWalls();
+
+            if (walking)
+            {
+                Debug.DrawLine(transform.position, movementLocation, Color.blue, .1f);
+
+                //CalculateRoute();
+            }
         }
+
+        
     }
 
     private void ShowBehindWalls()
     {
-        if (isLocalPlayer)
+        
+        
+        Ray ray = new Ray(cam.transform.position, transform.position - cam.transform.position);
+        Debug.DrawRay(cam.transform.position, (transform.position - cam.transform.position), Color.cyan, .1f);
+        RaycastHit hit;
+
+
+        if (Physics.Raycast(ray, out hit, Vector3.Distance(cam.transform.position, transform.position)))
         {
-            Ray ray = new Ray(cam.transform.position, transform.position - cam.transform.position);
-            Debug.DrawRay(cam.transform.position, (transform.position - cam.transform.position), Color.cyan, .1f);
-            RaycastHit hit;
+            
 
-
-            if (Physics.Raycast(ray, out hit, Vector3.Distance(cam.transform.position, transform.position)))
+            if (hit.collider.gameObject.layer == 8)
             {
-                Debug.Log("Hit layer = " + hit.collider.gameObject.layer);
-
-                if (hit.collider.gameObject.layer == 8)
-                {
-                    lastHitMeshRenderer = hit.collider.gameObject.GetComponent<MeshRenderer>();
-                    hit.collider.gameObject.GetComponent<ShowPlayer>().SetTransparentMaterial();
-
-                }
-                else
-                {
-                    if (lastHitMeshRenderer != null)
-                    {
-                        lastHitMeshRenderer.gameObject.GetComponent<ShowPlayer>().SetOpaqueMaterial();
-                    }
-                }
-
+                lastHitMeshRenderer = hit.collider.gameObject.GetComponent<MeshRenderer>();
+                hit.collider.gameObject.GetComponent<ShowPlayer>().SetTransparentMaterial();
 
             }
             else
@@ -106,7 +114,17 @@ public class Player : NetworkBehaviour
                     lastHitMeshRenderer.gameObject.GetComponent<ShowPlayer>().SetOpaqueMaterial();
                 }
             }
+
+
         }
+        else
+        {
+            if (lastHitMeshRenderer != null)
+            {
+                lastHitMeshRenderer.gameObject.GetComponent<ShowPlayer>().SetOpaqueMaterial();
+            }
+        }
+        
             
     }
     private void CalculateRoute()
@@ -129,80 +147,77 @@ public class Player : NetworkBehaviour
 
     private void HandleMovement()
     {
-        if (isLocalPlayer)
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Input.GetMouseButtonDown(1))
         {
-            //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Input.GetMouseButtonDown(1))
+            Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+            Vector3 direction = worldMousePosition - cam.transform.position;
+
+            if (Physics.Raycast(cam.transform.position, direction, out hit, 200f, walkableTerrain))
             {
-                Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
-                Vector3 direction = worldMousePosition - cam.transform.position;
+                Debug.DrawLine(cam.transform.position, hit.point, Color.green, 0.5f);
+                
 
-                if (Physics.Raycast(cam.transform.position, direction, out hit, 200f, walkableTerrain))
-                {
-                    Debug.DrawLine(cam.transform.position, hit.point, Color.green, 0.5f);
-                    Debug.Log("Clicked at " + hit.point);
+                CheckForTarget();
 
-                    CheckForTarget();
-
-                    destinationCollider = hit.collider;
-                    Debug.Log("Going to " + movementLocation);
-                }
-                else
-                {
-                    Debug.DrawLine(cam.transform.position, worldMousePosition, Color.red, 0.5f);
-                }
-
-                destinationDistanceFromTarget = 0f;
-
-                if (target != null)
-                {
-                    float destinationDistanceFromTargetX = Math.Abs(movementLocation.x - target.transform.position.x);
-                    float destinationDistanceFromTargetZ = Math.Abs(movementLocation.z - target.transform.position.z);
-                    destinationDistanceFromTarget = destinationDistanceFromTargetX * destinationDistanceFromTargetX;
-                    destinationDistanceFromTarget += (destinationDistanceFromTargetZ * destinationDistanceFromTargetZ);
-                }
-
-
-
-
-                Debug.Log("Destination's distance from target: " + Math.Sqrt(destinationDistanceFromTarget));
-                //Debug.Log("Distance from target: " + System.Math.Sqrt(distanceFromTarget));
-
-
-
+                destinationCollider = hit.collider;
+                
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else
             {
-                movementLocation = transform.position;
+                Debug.DrawLine(cam.transform.position, worldMousePosition, Color.red, 0.5f);
             }
 
-
+            destinationDistanceFromTarget = 0f;
 
             if (target != null)
             {
-                float distanceFromTargetX = System.Math.Abs(transform.position.x - target.transform.position.x);
-                float distanceFromTargetZ = System.Math.Abs(transform.position.z - target.transform.position.z);
-                distanceFromTarget = distanceFromTargetX * distanceFromTargetX;
-                distanceFromTarget += (distanceFromTargetZ * distanceFromTargetZ);
-
-
-                if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 5)
-                {
-                    //if (System.Math.Abs(movementLocation.x - target.transform.position.x) > 1.5 && System.Math.Abs(movementLocation.z - target.transform.position.z) > 1.5)
-                    //{
-                    //    movementLocation = hit.point + new Vector3(0f, player.GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
-                    //}
-                    //else
-                    //{
-
-                    //    movementLocation = transform.position;
-                    //}
-                    movementLocation = transform.position;
-                }
+                float destinationDistanceFromTargetX = Math.Abs(movementLocation.x - target.transform.position.x);
+                float destinationDistanceFromTargetZ = Math.Abs(movementLocation.z - target.transform.position.z);
+                destinationDistanceFromTarget = destinationDistanceFromTargetX * destinationDistanceFromTargetX;
+                destinationDistanceFromTarget += (destinationDistanceFromTargetZ * destinationDistanceFromTargetZ);
             }
-            _navMeshAgent.SetDestination(movementLocation);
-            //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
+
+
+
+
+            
+            //Debug.Log("Distance from target: " + System.Math.Sqrt(distanceFromTarget));
+
+
+
         }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            movementLocation = transform.position;
+        }
+
+
+
+        if (target != null)
+        {
+            float distanceFromTargetX = System.Math.Abs(transform.position.x - target.transform.position.x);
+            float distanceFromTargetZ = System.Math.Abs(transform.position.z - target.transform.position.z);
+            distanceFromTarget = distanceFromTargetX * distanceFromTargetX;
+            distanceFromTarget += (distanceFromTargetZ * distanceFromTargetZ);
+
+
+            if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 5)
+            {
+                //if (System.Math.Abs(movementLocation.x - target.transform.position.x) > 1.5 && System.Math.Abs(movementLocation.z - target.transform.position.z) > 1.5)
+                //{
+                //    movementLocation = hit.point + new Vector3(0f, player.GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
+                //}
+                //else
+                //{
+
+                //    movementLocation = transform.position;
+                //}
+                movementLocation = transform.position;
+            }
+        }
+        _navMeshAgent.SetDestination(movementLocation);
+        //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
     }
 
     private void CheckForTarget()
@@ -210,8 +225,9 @@ public class Player : NetworkBehaviour
         if (hit.collider.tag == "Enemy")
         {
             target = hit.collider.gameObject;
+            CmdSetTarget();
             Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
-            Debug.Log(target.name + " is located at " + target.transform.position);
+            
             movementLocation = hit.collider.gameObject.transform.position;
         }
         else
@@ -223,6 +239,7 @@ public class Player : NetworkBehaviour
 
     public void CheckIfWalking()
     {
+        
         if (movementLocation != transform.position)
         {
             walking = true;
@@ -231,9 +248,23 @@ public class Player : NetworkBehaviour
         {
             walking = false;
         }
+        
+        
     }
     public void Deselect()
     {
         target = null;
     }
+    [Command]
+    public void StartTimer()
+    {
+        textScript.needToSetFirstTime = true;
+        textScript.readyToShowTime = true;
+    }
+    
+    public void CmdSetTarget()
+    {
+        GetComponent<Combat>().target = target;
+    }
 }
+

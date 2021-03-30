@@ -74,37 +74,37 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11274}
     - Class: 114
-      Script: {instanceID: 11348}
+      Script: {instanceID: 11290}
     - Class: 114
-      Script: {instanceID: 11414}
+      Script: {instanceID: 11350}
     - Class: 114
-      Script: {instanceID: 11508}
+      Script: {instanceID: 11416}
     - Class: 114
-      Script: {instanceID: 11534}
+      Script: {instanceID: 11510}
     - Class: 114
-      Script: {instanceID: 11678}
+      Script: {instanceID: 11536}
     - Class: 114
-      Script: {instanceID: 11764}
+      Script: {instanceID: 11680}
     - Class: 114
-      Script: {instanceID: 12014}
+      Script: {instanceID: 11766}
     - Class: 114
-      Script: {instanceID: 12160}
+      Script: {instanceID: 12016}
     - Class: 114
-      Script: {instanceID: 12302}
+      Script: {instanceID: 12162}
     - Class: 114
-      Script: {instanceID: 13040}
+      Script: {instanceID: 12304}
     - Class: 114
-      Script: {instanceID: 13096}
+      Script: {instanceID: 13042}
     - Class: 114
-      Script: {instanceID: 13158}
+      Script: {instanceID: 13098}
     - Class: 114
-      Script: {instanceID: 13336}
+      Script: {instanceID: 13160}
     - Class: 114
-      Script: {instanceID: 13570}
+      Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13656}
+      Script: {instanceID: 13572}
     - Class: 114
-      Script: {instanceID: 15418}
+      Script: {instanceID: 13658}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -172,6 +172,12 @@ ScriptsOnlyBuild:
     className: CanvasScaler
   - hash:
       serializedVersion: 2
+      Hash: c7672b7b590095228af2e8a1472d0e77
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ShowPlayer
+  - hash:
+      serializedVersion: 2
       Hash: c42672c997f8be6b1aa86a927ebea785
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -220,7 +226,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: fcf5653f6b653e83f478ff57654ee60f
+      Hash: ee9dd6c616dd0e50419e5771244f1f67
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -550,7 +556,7 @@ ScriptsOnlyBuild:
     className: Tank
   - hash:
       serializedVersion: 2
-      Hash: 70415da26dfc195572f35ca09f01cb92
+      Hash: 83908a8e2f98ebd3ad6509726ced9cc8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -586,7 +592,7 @@ ScriptsOnlyBuild:
     className: SignalTrack
   - hash:
       serializedVersion: 2
-      Hash: 01e3bbe64249f4f4f3df81e351148b86
+      Hash: 3d03ea2b406291cf2d5cc48494c73f22
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TextScript
@@ -1124,12 +1130,6 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
-  - hash:
-      serializedVersion: 2
-      Hash: c7672b7b590095228af2e8a1472d0e77
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ShowPlayer
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

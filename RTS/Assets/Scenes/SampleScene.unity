@@ -274,7 +274,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 529621383}
-  networkAddress: localhost
+  networkAddress: 72.196.97.202
   maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
@@ -873,6 +873,7 @@ GameObject:
   - component: {fileID: 1943475474}
   - component: {fileID: 1943475473}
   - component: {fileID: 1943475472}
+  - component: {fileID: 1943475475}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -888,7 +889,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943475470}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.29, y: 0.29, z: 1}
   m_Children: []
   m_Father: {fileID: 1399897756}
@@ -911,7 +912,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a087227171393d4b9b12cff2c220ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: 0
+  syncMode: 0
+  syncInterval: 0.1
+  time: 0
 --- !u!114 &1943475473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -953,6 +956,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943475470}
   m_CullTransparentMesh: 0
+--- !u!114 &1943475475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943475470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 166248496
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1001 &5946323188865783648
 PrefabInstance:
   m_ObjectHideFlags: 0

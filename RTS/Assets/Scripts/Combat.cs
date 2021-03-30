@@ -7,7 +7,9 @@ using System;
 public class Combat : NetworkBehaviour
 {
     private Player player;
-    private GameObject target;
+
+    [SyncVar]
+    public GameObject target;
 
     [SerializeField]
     private float baseAttackTime;
@@ -30,7 +32,6 @@ public class Combat : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        target = player.target;
         if (CheckValidTarget(target))
         {
             StartAttack();
