@@ -20,6 +20,7 @@ public class MyNetworkManager : NetworkManager
     {
         Debug.Log($"Connected to server: {conn}");
         se.SpawnEnemyOnStart();
+        
     }
     public override void OnClientDisconnect(NetworkConnection conn)
     {
