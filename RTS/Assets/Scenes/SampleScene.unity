@@ -285,7 +285,7 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 7516935161623750712, guid: 75a6585bc59445543b2a1f50bdbaf324, type: 3}
-  - {fileID: 2663860027295473650, guid: eb59edfb3cd2b6240924689845e2fbeb, type: 3}
+  - {fileID: 2082169404777929421, guid: eb59edfb3cd2b6240924689845e2fbeb, type: 3}
   se: {fileID: 1811269120}
 --- !u!4 &529621385
 Transform:
@@ -1279,7 +1279,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811269118}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.4, y: 0, z: -3.62}
+  m_LocalPosition: {x: 12.4, y: -1, z: -3.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1299,7 +1299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  enemyPrefab: {fileID: 2663860027295473650, guid: eb59edfb3cd2b6240924689845e2fbeb,
+  enemyPrefab: {fileID: 2082169404777929421, guid: eb59edfb3cd2b6240924689845e2fbeb,
     type: 3}
 --- !u!114 &1811269121
 MonoBehaviour:
