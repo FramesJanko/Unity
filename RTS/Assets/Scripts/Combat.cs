@@ -7,6 +7,7 @@ using System;
 public class Combat : NetworkBehaviour
 {
     private Player player;
+    private NpcController npcController;
 
     [SyncVar]
     public GameObject target;
@@ -18,20 +19,34 @@ public class Combat : NetworkBehaviour
     private float damage;
 
     public bool isAttacking;
-
+    
+    private bool isPlayer;
     private int coroutineCount = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Player>();
+        if (GetComponent<Player>())
+        {
+            player = GetComponent<Player>();
+            isPlayer = true;
+        }
+        if (GetComponent<NpcController>())
+        {
+            npcController = GetComponent<NpcController>();
+            isPlayer = false;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isLocalPlayer)
-            return;
+        //if (!isLocalPlayer)
+        //    return;
+        if (isPlayer)
+        {
+
+        }
         if (CheckValidTarget(target))
         {
             StartAttack();

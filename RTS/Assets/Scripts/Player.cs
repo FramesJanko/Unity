@@ -46,7 +46,7 @@ public class Player : NetworkBehaviour
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        textScript = GameObject.Find("Text").GetComponent<TextScript>();
+        textScript = GameObject.Find("Time").GetComponent<TextScript>();
         _combat = GetComponent<Combat>();
         
     }

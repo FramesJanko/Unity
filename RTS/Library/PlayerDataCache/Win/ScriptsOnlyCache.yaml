@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraMovement
     - Combat
+    - Enemy
     - Health
     - Healthbar
     - MyNetworkManager
@@ -15,6 +16,7 @@ ScriptsOnlyBuild:
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManagerHUD
+    - Mirror.NetworkStartPosition
     - kcp2k.KcpTransport
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -80,6 +82,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11416}
     - Class: 114
+      Script: {instanceID: 11476}
+    - Class: 114
       Script: {instanceID: 11510}
     - Class: 114
       Script: {instanceID: 11536}
@@ -102,9 +106,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13572}
+      Script: {instanceID: 13450}
     - Class: 114
-      Script: {instanceID: 13658}
+      Script: {instanceID: 13574}
+    - Class: 114
+      Script: {instanceID: 13660}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -998,6 +1004,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror.Discovery
     className: NetworkDiscovery
+  - hash:
+      serializedVersion: 2
+      Hash: c2f4f3dc2cde561130efc7a72835b79d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Enemy
   - hash:
       serializedVersion: 2
       Hash: 08e8ba46307eb9483334054305a7d2c6
