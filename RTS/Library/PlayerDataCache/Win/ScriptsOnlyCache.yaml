@@ -3,10 +3,10 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraMovement
     - Combat
-    - Enemy
     - Health
     - Healthbar
     - MyNetworkManager
+    - NpcController
     - Player
     - ShowPlayer
     - SpawnEnemy
@@ -56,8 +56,6 @@ ScriptsOnlyBuild:
     - Class: 43
       Script: {instanceID: 0}
     - Class: 48
-      Script: {instanceID: 0}
-    - Class: 54
       Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
@@ -122,6 +120,8 @@ ScriptsOnlyBuild:
     - Class: 195
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 208
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -232,7 +232,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: ee9dd6c616dd0e50419e5771244f1f67
+      Hash: f05eb7c062859888324faeda3da69d8c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -1006,10 +1006,10 @@ ScriptsOnlyBuild:
     className: NetworkDiscovery
   - hash:
       serializedVersion: 2
-      Hash: c2f4f3dc2cde561130efc7a72835b79d
+      Hash: f5c8402675eed194bcc08693c0c4bc9a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: Enemy
+    className: NpcController
   - hash:
       serializedVersion: 2
       Hash: 08e8ba46307eb9483334054305a7d2c6

@@ -17,7 +17,11 @@ public class Combat : NetworkBehaviour
 
     [SerializeField]
     private float damage;
-
+    [SyncVar]
+    public float distanceFromTarget;
+    [SyncVar]
+    public bool walking;
+    [SyncVar]
     public bool isAttacking;
     
     private bool isPlayer;
@@ -45,26 +49,33 @@ public class Combat : NetworkBehaviour
         //    return;
         if (isPlayer)
         {
-
+            distanceFromTarget = player.distanceFromTarget;
+            walking = player.walking;
+        }
+        
+        if (!isPlayer)
+        {
+            distanceFromTarget = npcController.distanceFromTarget;
+            walking = npcController.walking;
         }
         if (CheckValidTarget(target))
         {
             StartAttack();
         }
-
     }
-    
+
     private void StartAttack()
     {
         StartCoroutine(Attack(damage));
-        Debug.Log("Count is " + coroutineCount);
+        Debug.Log(name + ": Count is " + coroutineCount);
 
     }
     private bool CheckValidTarget(GameObject currentTarget)
     {
-        if (currentTarget != null && player.distanceFromTarget < 7 && !isAttacking)
+        if (currentTarget != null && distanceFromTarget < 7 && !isAttacking)
         {
 
+            Debug.Log(name + ": target is valid.");
             return true;
             
 
@@ -99,11 +110,19 @@ public class Combat : NetworkBehaviour
         yield return new WaitForSeconds(baseAttackTime);
 
 
-        if (player.distanceFromTarget < 7 && !player.walking && currentTarget == target)
+        if (distanceFromTarget < 7 && !walking && currentTarget == target && gameObject.activeSelf)
         {
-            Debug.Log("Attacking...");
-            CmdModifyHealth(currentTarget, damage);
-            
+            Debug.Log(name + " is attacking...");
+            if (isPlayer)
+            {
+                CmdModifyHealth(currentTarget, damage);
+
+            }
+            if (!isPlayer && isServer)
+            {
+                currentTarget.GetComponent<Health>().currentHealth += damage;
+            }
+
         }
 
         isAttacking = false;

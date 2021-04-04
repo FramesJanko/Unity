@@ -128,6 +128,8 @@ MonoBehaviour:
   target: {fileID: 0}
   baseAttackTime: 2
   damage: -10
+  distanceFromTarget: 0
+  walking: 0
   isAttacking: 0
 --- !u!114 &5580570684498292222
 MonoBehaviour:
@@ -186,7 +188,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 1358083074854956908}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.38
   m_Speed: 8
   m_Acceleration: 20
   avoidancePriority: 50
@@ -198,7 +200,7 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 2
 --- !u!114 &8158760952194589658
 MonoBehaviour:
   m_ObjectHideFlags: 0
