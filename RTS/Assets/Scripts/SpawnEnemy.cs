@@ -16,6 +16,7 @@ public class SpawnEnemy : NetworkBehaviour
             return;
         GameObject enemy = Instantiate(enemyPrefab, transform.position, enemyPrefab.transform.rotation);
         NetworkServer.Spawn(enemy);
+        enemy.GetComponent<NpcController>().origin = transform.position;
         Debug.Log($"Spawning enemy..., rotation is {enemyPrefab.transform.rotation}");
     }
 }

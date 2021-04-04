@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - Health
     - Healthbar
     - MyNetworkManager
+    - NpcController
     - Player
     - ShowPlayer
     - SpawnEnemy
@@ -15,6 +16,7 @@ ScriptsOnlyBuild:
     Mirror.dll:
     - Mirror.NetworkIdentity
     - Mirror.NetworkManagerHUD
+    - Mirror.NetworkStartPosition
     - kcp2k.KcpTransport
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -55,8 +57,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
-    - Class: 54
-      Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
     - Class: 65
@@ -80,6 +80,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11416}
     - Class: 114
+      Script: {instanceID: 11476}
+    - Class: 114
       Script: {instanceID: 11510}
     - Class: 114
       Script: {instanceID: 11536}
@@ -102,9 +104,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 13338}
     - Class: 114
-      Script: {instanceID: 13572}
+      Script: {instanceID: 13450}
     - Class: 114
-      Script: {instanceID: 13658}
+      Script: {instanceID: 13574}
+    - Class: 114
+      Script: {instanceID: 13660}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -116,6 +120,8 @@ ScriptsOnlyBuild:
     - Class: 195
       Script: {instanceID: 0}
     - Class: 196
+      Script: {instanceID: 0}
+    - Class: 208
       Script: {instanceID: 0}
     - Class: 213
       Script: {instanceID: 0}
@@ -226,7 +232,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: ee9dd6c616dd0e50419e5771244f1f67
+      Hash: f05eb7c062859888324faeda3da69d8c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -998,6 +1004,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror.Discovery
     className: NetworkDiscovery
+  - hash:
+      serializedVersion: 2
+      Hash: f5c8402675eed194bcc08693c0c4bc9a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NpcController
   - hash:
       serializedVersion: 2
       Hash: 08e8ba46307eb9483334054305a7d2c6
