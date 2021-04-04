@@ -10,17 +10,26 @@ public class NpcController : NetworkBehaviour
 {
     [SyncVar]
     public GameObject target;
+
     public Player[] players;
     public List<float> playerDistances;
     public List<Player> playerList;
+
+    [SyncVar]
     public float distanceFromTarget;
     float previousDistanceFromPlayer = 0f;
     private bool gameStarted;
     public Vector3 origin;
     public NavMeshAgent agent;
     public Vector3 movementLocation;
+
+    [SyncVar]
     public bool walking;
+
+    [SyncVar]
     public bool returningToOrigin;
+
+    [SyncVar]
     public float distanceFromOrigin;
 
     // Start is called before the first frame update
@@ -48,6 +57,10 @@ public class NpcController : NetworkBehaviour
             }
             HandleMovement();
         }
+            
+        
+        
+        
         
         
         
@@ -56,7 +69,7 @@ public class NpcController : NetworkBehaviour
         
 
     }
-
+    [ClientRpc]
     private void CheckIfWalking()
     {
         if (movementLocation != transform.position)
@@ -68,7 +81,7 @@ public class NpcController : NetworkBehaviour
             walking = false;
         }
     }
-
+    
     private void HandleMovement()
     {
         distanceFromOrigin = Vector3.Distance(transform.position, origin);
@@ -76,7 +89,7 @@ public class NpcController : NetworkBehaviour
         {
             returningToOrigin = true;
             target = null;
-            ClearTarget();
+            RpcClearTarget();
             Debug.Log("Clearing target: " + target);
 
             movementLocation = origin;
@@ -108,8 +121,8 @@ public class NpcController : NetworkBehaviour
         
         agent.SetDestination(movementLocation);
     }
-
-    public GameObject FindTarget()
+    
+    public void FindTarget()
     {
         if (!returningToOrigin)
         {
@@ -136,19 +149,23 @@ public class NpcController : NetworkBehaviour
 
                     previousDistanceFromPlayer = distanceFromPlayer;
                     target = playerList[0].gameObject;
-                    CmdSetTarget();
+                    RpcSetTarget(target);
                 }
             }
         }
         
-        return target;
+        
     }
-    public void CmdSetTarget()
+    [ClientRpc]
+    public void RpcSetTarget(GameObject tempTarget)
     {
+        target = tempTarget;
         GetComponent<Combat>().target = target;
     }
-    public void ClearTarget()
+    [ClientRpc]
+    public void RpcClearTarget()
     {
+        target = null;
         GetComponent<Combat>().target = null;
 
     }
