@@ -122,6 +122,7 @@ MonoBehaviour:
   syncInterval: 0.1
   maxHealth: 30
   currentHealth: 0
+  playersInExpRange: []
 --- !u!114 &1163111620834273182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,6 +145,8 @@ MonoBehaviour:
   origin: {x: 0, y: 0, z: 0}
   agent: {fileID: 0}
   movementLocation: {x: 0, y: 0, z: 0}
+  experiencePool: 20
+  experianceRange: 20
   walking: 0
   returningToOrigin: 0
   distanceFromOrigin: 0

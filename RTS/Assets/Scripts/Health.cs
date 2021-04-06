@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System.Linq;
 
 public class Health : NetworkBehaviour
 {
@@ -13,22 +14,14 @@ public class Health : NetworkBehaviour
     public float currentHealth;
 
     public delegate void OnHealthPercentChanged(float currentHealthPercent);
-
+    public List<Player> playersInExpRange;
     public event OnHealthPercentChanged EventHealthChanged;
-
-
-    
 
     private void OnEnable()
     {
         currentHealth = maxHealth;
     }
-
-    //public void ModifyHealth(float healthChange)
-    //{
-    //    CmdModifyHealth(healthChange);
-    //}
-    //[Command]
+    
     public void CmdModifyHealth(float healthChange)
     {
         if (!isServer)
@@ -41,17 +34,6 @@ public class Health : NetworkBehaviour
         
     }
 
-    //[Command]
-    //public void CmdModifyHealth(float damage) => ModifyHealth(damage);
-
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         CheckForDeath();
@@ -76,6 +58,34 @@ public class Health : NetworkBehaviour
                 p.target = null;
             }
         }
+        GetListofPlayersInRange();
+        AwardExperience();
         gameObject.SetActive(false);
+    }
+    public void GetListofPlayersInRange()
+    {
+        playersInExpRange = FindObjectsOfType<Player>().ToList();
+        foreach (Player p in playersInExpRange)
+        {
+            if (Vector3.Distance(transform.position, p.transform.position) > GetComponent<NpcController>().experianceRange)
+            {
+                playersInExpRange.Remove(p);
+            }
+        }
+    }
+
+    public void AwardExperience()
+    {
+        foreach (Player p in playersInExpRange)
+        {
+            if(playersInExpRange.Count() == 1)
+            {
+                p.totalExperience += GetComponent<NpcController>().experiencePool;
+            }
+            else if (playersInExpRange.Count() > 1)
+            {
+                p.totalExperience += ((GetComponent<NpcController>().experiencePool / playersInExpRange.Count() + 10));
+            }
+        }
     }
 }

@@ -11,17 +11,23 @@ public class NpcController : NetworkBehaviour
     [SyncVar]
     public GameObject target;
 
-    public Player[] players;
+    public List<Player> players;
     public List<float> playerDistances;
     public List<Player> playerList;
 
     [SyncVar]
     public float distanceFromTarget;
+
     float previousDistanceFromPlayer = 0f;
     private bool gameStarted;
     public Vector3 origin;
     public NavMeshAgent agent;
     public Vector3 movementLocation;
+
+    public int experiencePool;
+
+    [SerializeField]
+    public float experianceRange;
 
     [SyncVar]
     public bool walking;
@@ -32,17 +38,9 @@ public class NpcController : NetworkBehaviour
     [SyncVar]
     public float distanceFromOrigin;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     private void OnEnable()
     {
         agent = GetComponent<NavMeshAgent>();
-        
-
     }
     // Update is called once per frame
     void Update()
@@ -57,18 +55,8 @@ public class NpcController : NetworkBehaviour
             }
             HandleMovement();
         }
-            
-        
-        
-        
-        
-        
-        
-        
-        //playerDistances.ToArray();
-        
-
     }
+
     [ClientRpc]
     private void CheckIfWalking()
     {
@@ -90,15 +78,12 @@ public class NpcController : NetworkBehaviour
             returningToOrigin = true;
             target = null;
             RpcClearTarget();
-            Debug.Log("Clearing target: " + target);
-
             movementLocation = origin;
         }
         if (Vector3.Distance(transform.position, origin) < 1)
         {
             returningToOrigin = false;
         }
-        
         
         if (!returningToOrigin)
         {
@@ -117,57 +102,47 @@ public class NpcController : NetworkBehaviour
                 }
             }
         }
-        
-        
         agent.SetDestination(movementLocation);
     }
     
     public void FindTarget()
     {
-        if (!returningToOrigin)
+        if (!returningToOrigin && target == null)
         {
-            Debug.Log("test if returning to Origin");
-
-            players = FindObjectsOfType<Player>();
-
-
+            players = FindObjectsOfType<Player>().ToList();
             foreach (Player p in players)
             {
-
-
                 float distanceFromPlayer = Vector3.Distance(p.transform.position, transform.position);
                 if (distanceFromPlayer < 7f)
                 {
-                    playerDistances.Add(distanceFromPlayer);
-
-                    if (distanceFromPlayer < previousDistanceFromPlayer)
+                    if (previousDistanceFromPlayer == 0)
                     {
-                        playerList.Clear();
-
+                        target = p.gameObject;
+                        previousDistanceFromPlayer = distanceFromPlayer;
                     }
-                    playerList.Add(p);
-
-                    previousDistanceFromPlayer = distanceFromPlayer;
-                    target = playerList[0].gameObject;
+                    else if (distanceFromPlayer < previousDistanceFromPlayer)
+                    {
+                        target = p.gameObject;
+                        previousDistanceFromPlayer = distanceFromPlayer;
+                    }
                     RpcSetTarget(target);
                 }
             }
         }
-        
-        
     }
+
     [ClientRpc]
     public void RpcSetTarget(GameObject tempTarget)
     {
         target = tempTarget;
         GetComponent<Combat>().target = target;
     }
+
     [ClientRpc]
     public void RpcClearTarget()
     {
         target = null;
         GetComponent<Combat>().target = null;
-
     }
     public float CalculateDistanceFromTarget()
     {

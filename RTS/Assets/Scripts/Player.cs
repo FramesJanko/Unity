@@ -12,6 +12,9 @@ public class Player : NetworkBehaviour
     Vector3 movementLocation;
     Vector3 detourLocation;
 
+    [SyncVar]
+    public int totalExperience;
+
     RaycastHit hit;
 
     [SerializeField]
@@ -48,7 +51,7 @@ public class Player : NetworkBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         textScript = GameObject.Find("Time").GetComponent<TextScript>();
         _combat = GetComponent<Combat>();
-        
+        totalExperience = 0;
     }
     // Start is called before the first frame update
     void Start()

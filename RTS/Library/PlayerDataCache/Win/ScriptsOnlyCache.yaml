@@ -160,7 +160,7 @@ ScriptsOnlyBuild:
     className: Text
   - hash:
       serializedVersion: 2
-      Hash: 4d708dbb6801f35c6a17b4e99d34de3f
+      Hash: aded2ade7c91de6d073ab2dd97cade8e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Health
@@ -562,7 +562,7 @@ ScriptsOnlyBuild:
     className: Tank
   - hash:
       serializedVersion: 2
-      Hash: 83908a8e2f98ebd3ad6509726ced9cc8
+      Hash: c8535effb2cf703c49666c8244e67130
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -1006,7 +1006,7 @@ ScriptsOnlyBuild:
     className: NetworkDiscovery
   - hash:
       serializedVersion: 2
-      Hash: f5c8402675eed194bcc08693c0c4bc9a
+      Hash: d55701ba734b0e774f4aab4c5fda2bb8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: NpcController
