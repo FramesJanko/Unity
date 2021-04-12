@@ -267,6 +267,7 @@ MonoBehaviour:
   syncInterval: 0.1
   healthChangeTimer: 0.1
   healthbarImage: {fileID: 7516935159839608267}
+  currentHealthPercent: 0
 --- !u!1 &7516935160782990345
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +533,9 @@ MonoBehaviour:
   syncInterval: 0.1
   maxHealth: 30
   currentHealth: 0
+  playersInExpRange: []
+  experianceRange: 10
+  experiencePool: 20
 --- !u!114 &5465910463463995958
 MonoBehaviour:
   m_ObjectHideFlags: 0

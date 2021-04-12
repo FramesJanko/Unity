@@ -44,7 +44,10 @@ public class Player : NetworkBehaviour
 
     Camera cam;
 
+    Animator animator;
+
     private Combat _combat;
+    private bool hasAnimator;
 
     private void Awake()
     {
@@ -52,6 +55,13 @@ public class Player : NetworkBehaviour
         textScript = GameObject.Find("Time").GetComponent<TextScript>();
         _combat = GetComponent<Combat>();
         totalExperience = 0;
+        if (GetComponent<Animator>())
+        {
+            hasAnimator = true;
+            animator = GetComponent<Animator>();
+
+        }
+
     }
     // Start is called before the first frame update
     void Start()
@@ -193,6 +203,8 @@ public class Player : NetworkBehaviour
         else if (Input.GetKeyDown(KeyCode.S))
         {
             movementLocation = transform.position;
+            
+            
         }
 
 
@@ -223,6 +235,8 @@ public class Player : NetworkBehaviour
         //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
     }
 
+    
+    
     private void CheckForTarget()
     {
         if (hit.collider.tag == "Enemy")
@@ -235,7 +249,7 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            movementLocation = hit.point + new Vector3(0f, GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
+            movementLocation = hit.point;
 
         }
     }

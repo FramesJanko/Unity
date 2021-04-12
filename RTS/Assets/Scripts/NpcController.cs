@@ -24,10 +24,9 @@ public class NpcController : NetworkBehaviour
     public NavMeshAgent agent;
     public Vector3 movementLocation;
 
-    public int experiencePool;
+    
 
-    [SerializeField]
-    public float experianceRange;
+    
 
     [SyncVar]
     public bool walking;

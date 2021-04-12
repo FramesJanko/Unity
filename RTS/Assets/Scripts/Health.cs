@@ -14,12 +14,23 @@ public class Health : NetworkBehaviour
     public float currentHealth;
 
     public delegate void OnHealthPercentChanged(float currentHealthPercent);
-    public List<Player> playersInExpRange;
+    public Player[] playersList;
+    public int playersInExpRange;
+
     public event OnHealthPercentChanged EventHealthChanged;
 
+    [SerializeField]
+    public float experianceRange;
+
+    public int experiencePool;
+    bool isPlayer;
     private void OnEnable()
     {
         currentHealth = maxHealth;
+        if (GetComponent<Player>())
+        {
+            isPlayer = true;
+        }
     }
     
     public void CmdModifyHealth(float healthChange)
@@ -50,7 +61,7 @@ public class Health : NetworkBehaviour
     
     private void Death()
     {
-        Player[] playerList = GetComponents<Player>();
+        Player[] playerList = FindObjectsOfType<Player>();
         foreach (Player p in playerList)
         {
             if (p.target == gameObject)
@@ -59,33 +70,53 @@ public class Health : NetworkBehaviour
             }
         }
         GetListofPlayersInRange();
-        AwardExperience();
+        //AwardExperience();
         gameObject.SetActive(false);
     }
+    [Server]
     public void GetListofPlayersInRange()
     {
-        playersInExpRange = FindObjectsOfType<Player>().ToList();
-        foreach (Player p in playersInExpRange)
+        playersList = FindObjectsOfType<Player>();
+        
+        if (playersList.Length > 0)
         {
-            if (Vector3.Distance(transform.position, p.transform.position) > GetComponent<NpcController>().experianceRange)
+            
+            foreach (Player p in playersList)
             {
-                playersInExpRange.Remove(p);
-            }
-        }
-    }
+                
+                if (Vector3.Distance(transform.position, p.transform.position) <= experianceRange)
+                {
+                    playersInExpRange++;
+                    
+                }
+                
 
-    public void AwardExperience()
-    {
-        foreach (Player p in playersInExpRange)
-        {
-            if(playersInExpRange.Count() == 1)
-            {
-                p.totalExperience += GetComponent<NpcController>().experiencePool;
             }
-            else if (playersInExpRange.Count() > 1)
+            foreach (Player p in playersList)
             {
-                p.totalExperience += ((GetComponent<NpcController>().experiencePool / playersInExpRange.Count() + 10));
+
+                if (Vector3.Distance(transform.position, p.transform.position) <= experianceRange)
+                {
+                    
+                    AwardExperience(p);
+                }
+
+
             }
+            Debug.Log("Players in experience range: " + playersInExpRange);
+            playersInExpRange = 0;
         }
+        
+    }
+    
+    public void AwardExperience(Player p)
+    {
+        if (playersInExpRange == 1)
+            p.totalExperience += experiencePool;
+        
+        if (playersInExpRange > 1)
+            p.totalExperience += ((experiencePool / playersInExpRange) + 5);
+        
+        
     }
 }

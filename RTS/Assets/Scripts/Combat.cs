@@ -23,9 +23,16 @@ public class Combat : NetworkBehaviour
     public bool walking;
     [SyncVar]
     public bool isAttacking;
-    
+    private bool hasAnimator;
+    [SyncVar]
+    public bool attackIsCanceled;
     private bool isPlayer;
     private int coroutineCount = 0;
+    public Animator animator;
+
+    IEnumerator AttackCoroutine;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +47,12 @@ public class Combat : NetworkBehaviour
             npcController = GetComponent<NpcController>();
             isPlayer = false;
         }
+
+        if (GetComponent<Animator>())
+        {
+            hasAnimator = true;
+            animator = GetComponent<Animator>();
+        }
     }
 
     // Update is called once per frame
@@ -47,10 +60,12 @@ public class Combat : NetworkBehaviour
     {
         //if (!isLocalPlayer)
         //    return;
+        
         if (isPlayer)
         {
             distanceFromTarget = player.distanceFromTarget;
             walking = player.walking;
+            target = player.target;
         }
         
         if (!isPlayer)
@@ -62,28 +77,83 @@ public class Combat : NetworkBehaviour
         {
             StartAttack();
         }
+        if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
+        {
+            if (hasAnimator)
+            {
+                animator.SetBool("IsAttacking", false);
+            }
+            CancelAttack();
+        }
+        if(isLocalPlayer && hasAnimator)
+            Debug.Log(animator.GetBool("IsAttacking"));
     }
 
     private void StartAttack()
     {
-        StartCoroutine(Attack(damage));
-        Debug.Log(name + ": Count is " + coroutineCount);
+        
+        if(AttackCoroutine != null)
+            StopCoroutine(AttackCoroutine);
 
+        
+        AttackCoroutine = Attack();
+        StartCoroutine(AttackCoroutine);
+        
+
+    }
+
+    public void CancelAttack()
+    {
+        attackIsCanceled = true;
+        isAttacking = false;
     }
     private bool CheckValidTarget(GameObject currentTarget)
     {
-        if (currentTarget != null && distanceFromTarget < 7 && !isAttacking)
+        bool TargetValid;
+        if (currentTarget != null && distanceFromTarget < 5 && !isAttacking)
         {
 
-            Debug.Log(name + ": target is valid.");
-            return true;
+            
+            TargetValid = true;
             
 
         }
+        else if(currentTarget != null && distanceFromTarget > 7)
+        {
+            if (hasAnimator)
+            {
+                animator.SetBool("IsAttacking", false);
+            }
+            isAttacking = false;
+            attackIsCanceled = true;
+            TargetValid = false;
+        }
+        else if(target == null)
+        {
+            if (hasAnimator)
+            {
+                animator.SetBool("IsAttacking", false);
+            }
+            attackIsCanceled = true;
+
+            TargetValid = false;
+        }
         else
         {
-            return false;
+            TargetValid = false;
         }
+        if (walking)
+        {
+            if (hasAnimator)
+            {
+                animator.SetBool("IsAttacking", false);
+            }
+            attackIsCanceled = true;
+            
+            TargetValid = false;
+            
+        }
+        return TargetValid;
     }
     [Command]
     public void CmdModifyHealth(GameObject currentTarget, float healthChange)
@@ -100,22 +170,29 @@ public class Combat : NetworkBehaviour
         
         //Remove(currentTarget);
     }
-
-    private IEnumerator Attack(float damage)
+    
+    private IEnumerator Attack()
     {
         isAttacking = true;
+        attackIsCanceled = false;
         coroutineCount++;
-        
+        if (hasAnimator)
+        {
+            animator.SetBool("IsAttacking", true);
+        }
+
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
 
 
-        if (distanceFromTarget < 7 && !walking && currentTarget == target && gameObject.activeSelf)
+
+        if (distanceFromTarget < 7 && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
         {
             Debug.Log(name + " is attacking...");
             if (isPlayer)
             {
                 CmdModifyHealth(currentTarget, damage);
+
 
             }
             if (!isPlayer && isServer)
@@ -128,7 +205,6 @@ public class Combat : NetworkBehaviour
         isAttacking = false;
 
     }
-    
     
     //public void Remove(GameObject currentTarget)
     //{
