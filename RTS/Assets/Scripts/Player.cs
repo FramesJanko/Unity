@@ -96,8 +96,9 @@ public class Player : NetworkBehaviour
 
                 //CalculateRoute();
             }
+            
         }
-
+        
         
     }
 
@@ -217,7 +218,7 @@ public class Player : NetworkBehaviour
             distanceFromTarget += (distanceFromTargetZ * distanceFromTargetZ);
 
 
-            if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 5)
+            if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 1.5)
             {
                 //if (System.Math.Abs(movementLocation.x - target.transform.position.x) > 1.5 && System.Math.Abs(movementLocation.z - target.transform.position.z) > 1.5)
                 //{
@@ -230,6 +231,16 @@ public class Player : NetworkBehaviour
                 //}
                 movementLocation = transform.position;
             }
+        }
+
+
+        if (target != null && distanceFromTarget > _combat.baseAttackRange && !_combat.isAttacking)
+        {
+            movementLocation = target.transform.position;
+        }
+        if (target != null && distanceFromTarget <= _combat.baseAttackRange*.9)
+        {
+            movementLocation = transform.position;
         }
         _navMeshAgent.SetDestination(movementLocation);
         //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
@@ -249,6 +260,7 @@ public class Player : NetworkBehaviour
         }
         else
         {
+            Deselect();
             movementLocation = hit.point;
 
         }
@@ -256,18 +268,11 @@ public class Player : NetworkBehaviour
 
     public void CheckIfWalking()
     {
-        
-        if (movementLocation != transform.position)
-        {
-            walking = true;
-        }
-        else
-        {
-            walking = false;
-        }
-        
+
+        walking = (movementLocation.x != transform.position.x && movementLocation.y != transform.position.z);
         
     }
+    [Command]
     public void Deselect()
     {
         target = null;

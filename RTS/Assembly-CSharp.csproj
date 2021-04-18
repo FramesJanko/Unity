@@ -67,14 +67,15 @@
     <Compile Include="Assets\ParrelSync\Examples\CustomArgumentExample.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Combat.cs" />
+    <Compile Include="Assets\Scripts\EnemySpawner.cs" />
     <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\Healthbar.cs" />
     <Compile Include="Assets\Scripts\MyNetworkManager.cs" />
     <Compile Include="Assets\Scripts\NpcController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\ShowPlayer.cs" />
-    <Compile Include="Assets\Scripts\SpawnEnemy.cs" />
     <Compile Include="Assets\Scripts\TextScript.cs" />
+    <Compile Include="Assets\Spawner.cs" />
     <None Include="Assets\Mirror\Version.txt" />
     <None Include="Assets\Mirror\Readme.txt" />
     <None Include="Assets\ParrelSync\VERSION.txt" />
@@ -634,6 +635,10 @@
       <Project>{73BEB378-CC36-B095-87E1-03A8209B4239}</Project>
       <Name>Unity.VSCode.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.ProBuilder.csproj">
+      <Project>{1E0D1B20-7031-7D89-E2A2-609DFB9F6387}</Project>
+      <Name>Unity.ProBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="Mirror.Authenticators.csproj">
       <Project>{1A84A970-AB9F-7803-0280-BF2E4BDA0C38}</Project>
       <Name>Mirror.Authenticators</Name>
@@ -641,6 +646,14 @@
     <ProjectReference Include="Mirror.Components.csproj">
       <Project>{670660D8-CE79-2A68-8E32-C68576462661}</Project>
       <Name>Mirror.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ProBuilder.Editor.csproj">
+      <Project>{B6580C5B-B964-F96A-7894-C13710F9CBD5}</Project>
+      <Name>Unity.ProBuilder.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.ProBuilder.AssetIdRemapUtility.csproj">
+      <Project>{4F3D477D-019B-3C26-ADDA-654CD74A143E}</Project>
+      <Name>Unity.ProBuilder.AssetIdRemapUtility</Name>
     </ProjectReference>
     <ProjectReference Include="Mirror.Examples.csproj">
       <Project>{72D51589-FD24-3C6F-ACA2-F3F5405C89C0}</Project>
@@ -702,6 +715,10 @@
       <Project>{9BC2D0DC-5EA3-F401-D1E4-1FE0867F8A4A}</Project>
       <Name>Mirror.Examples.Cloud.GUI</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.ProBuilder.AddOns.Editor.csproj">
+      <Project>{B7C3713A-5FC7-630E-B8F1-EA08BEC19BFC}</Project>
+      <Name>Unity.ProBuilder.AddOns.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="SimpleWebTransport.csproj">
       <Project>{567C1BA4-EB68-5DD1-C5B2-DA44C29FBB71}</Project>
       <Name>SimpleWebTransport</Name>
@@ -713,22 +730,6 @@
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{6416A919-A435-8169-5F0F-48098ED9ADD9}</Project>
       <Name>UnityEditor.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ProBuilder.csproj">
-      <Project>{1E0D1B20-7031-7D89-E2A2-609DFB9F6387}</Project>
-      <Name>Unity.ProBuilder</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ProBuilder.Editor.csproj">
-      <Project>{B6580C5B-B964-F96A-7894-C13710F9CBD5}</Project>
-      <Name>Unity.ProBuilder.Editor</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ProBuilder.AssetIdRemapUtility.csproj">
-      <Project>{4F3D477D-019B-3C26-ADDA-654CD74A143E}</Project>
-      <Name>Unity.ProBuilder.AssetIdRemapUtility</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.ProBuilder.AddOns.Editor.csproj">
-      <Project>{B7C3713A-5FC7-630E-B8F1-EA08BEC19BFC}</Project>
-      <Name>Unity.ProBuilder.AddOns.Editor</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

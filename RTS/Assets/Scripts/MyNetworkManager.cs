@@ -6,7 +6,7 @@ using Mirror;
 public class MyNetworkManager : NetworkManager
 {
     [SerializeField]
-    SpawnEnemy se;
+    EnemySpawner es;
     public override void OnStartServer()
     {
         Debug.Log("Server Started!");
@@ -19,7 +19,7 @@ public class MyNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         Debug.Log($"Connected to server: {conn}");
-        se.SpawnEnemyOnStart();
+        es.SpawnEnemy();
         
     }
     public override void OnClientDisconnect(NetworkConnection conn)

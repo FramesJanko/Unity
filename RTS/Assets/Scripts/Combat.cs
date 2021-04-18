@@ -31,8 +31,12 @@ public class Combat : NetworkBehaviour
     public Animator animator;
 
     IEnumerator AttackCoroutine;
+    [SerializeField]
+    public float attackRange;
+    [SerializeField]
+    public float baseAttackRange;
 
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -85,8 +89,7 @@ public class Combat : NetworkBehaviour
             }
             CancelAttack();
         }
-        if(isLocalPlayer && hasAnimator)
-            Debug.Log(animator.GetBool("IsAttacking"));
+        
     }
 
     private void StartAttack()
@@ -110,20 +113,26 @@ public class Combat : NetworkBehaviour
     private bool CheckValidTarget(GameObject currentTarget)
     {
         bool TargetValid;
-        if (currentTarget != null && distanceFromTarget < 5 && !isAttacking)
+        if (currentTarget != null && distanceFromTarget < baseAttackRange && !isAttacking)
         {
+
 
             
             TargetValid = true;
             
 
         }
-        else if(currentTarget != null && distanceFromTarget > 7)
+        else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking)
+        {
+            TargetValid = false;
+        }
+        else if(currentTarget != null && distanceFromTarget > attackRange)
         {
             if (hasAnimator)
             {
                 animator.SetBool("IsAttacking", false);
             }
+            
             isAttacking = false;
             attackIsCanceled = true;
             TargetValid = false;
@@ -180,15 +189,16 @@ public class Combat : NetworkBehaviour
         {
             animator.SetBool("IsAttacking", true);
         }
+        Debug.Log("Attack Coroutine Started: " + coroutineCount);
 
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
 
 
 
-        if (distanceFromTarget < 7 && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
+        if (distanceFromTarget < attackRange && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
         {
-            Debug.Log(name + " is attacking...");
+            Debug.Log(name + " attacked successfully");
             if (isPlayer)
             {
                 CmdModifyHealth(currentTarget, damage);
