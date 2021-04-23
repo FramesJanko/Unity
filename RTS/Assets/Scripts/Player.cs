@@ -204,7 +204,7 @@ public class Player : NetworkBehaviour
         else if (Input.GetKeyDown(KeyCode.S))
         {
             movementLocation = transform.position;
-            
+            target = null;
             
         }
 

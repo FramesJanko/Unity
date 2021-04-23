@@ -88,6 +88,7 @@ public class Combat : NetworkBehaviour
                 animator.SetBool("IsAttacking", false);
             }
             CancelAttack();
+            
         }
         
     }

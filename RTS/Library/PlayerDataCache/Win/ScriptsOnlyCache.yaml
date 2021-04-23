@@ -3,13 +3,14 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraMovement
     - Combat
+    - EnemySpawner
     - Health
     - Healthbar
     - MyNetworkManager
     - NpcController
     - Player
     - ShowPlayer
-    - SpawnEnemy
+    - Spawner
     - TextScript
     Mirror.Components.dll:
     - Mirror.NetworkTransform
@@ -18,15 +19,16 @@ ScriptsOnlyBuild:
     - Mirror.NetworkManagerHUD
     - Mirror.NetworkStartPosition
     - kcp2k.KcpTransport
+    Unity.ProBuilder.Editor.dll:
+    - UnityEditor.ProBuilder.EditorToolbar
+    - UnityEditor.ProBuilder.ProBuilderEditor
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -76,47 +78,49 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11246}
+      Script: {instanceID: 11294}
     - Class: 114
-      Script: {instanceID: 11264}
+      Script: {instanceID: 11316}
     - Class: 114
-      Script: {instanceID: 11274}
+      Script: {instanceID: 11328}
     - Class: 114
-      Script: {instanceID: 11290}
+      Script: {instanceID: 11346}
     - Class: 114
-      Script: {instanceID: 11350}
+      Script: {instanceID: 11420}
     - Class: 114
-      Script: {instanceID: 11416}
+      Script: {instanceID: 11522}
     - Class: 114
-      Script: {instanceID: 11476}
+      Script: {instanceID: 11594}
     - Class: 114
-      Script: {instanceID: 11510}
+      Script: {instanceID: 11632}
     - Class: 114
-      Script: {instanceID: 11536}
+      Script: {instanceID: 11666}
     - Class: 114
-      Script: {instanceID: 11680}
+      Script: {instanceID: 11852}
     - Class: 114
-      Script: {instanceID: 11766}
+      Script: {instanceID: 11970}
     - Class: 114
-      Script: {instanceID: 12016}
+      Script: {instanceID: 12274}
     - Class: 114
-      Script: {instanceID: 12162}
+      Script: {instanceID: 12438}
     - Class: 114
-      Script: {instanceID: 12304}
+      Script: {instanceID: 12454}
     - Class: 114
-      Script: {instanceID: 13042}
+      Script: {instanceID: 12652}
     - Class: 114
-      Script: {instanceID: 13098}
+      Script: {instanceID: 13582}
     - Class: 114
-      Script: {instanceID: 13160}
+      Script: {instanceID: 13648}
     - Class: 114
-      Script: {instanceID: 13338}
+      Script: {instanceID: 13742}
     - Class: 114
-      Script: {instanceID: 13450}
+      Script: {instanceID: 13968}
     - Class: 114
-      Script: {instanceID: 13574}
+      Script: {instanceID: 14114}
     - Class: 114
-      Script: {instanceID: 13660}
+      Script: {instanceID: 14268}
+    - Class: 114
+      Script: {instanceID: 14386}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -218,6 +222,12 @@ ScriptsOnlyBuild:
     className: NetworkManagerHUD
   - hash:
       serializedVersion: 2
+      Hash: 9c7c87712e298256d276eb96e02a57b1
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: PreferenceDictionary
+  - hash:
+      serializedVersion: 2
       Hash: 192ca9716d03752ea1d90a78bc2daac9
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.NetworkRoom
@@ -242,7 +252,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: ace0ba1054025658b7dd874f7d1484b3
+      Hash: eb192160f56ac76e91498b4a21ffc9e8
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -299,7 +309,7 @@ ScriptsOnlyBuild:
       Hash: 9ca4078e023b258d95b4840ec4b9524d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: SpawnEnemy
+    className: EnemySpawner
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -336,6 +346,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_InputField
+  - hash:
+      serializedVersion: 2
+      Hash: f6633ace6e530c0000f2ac6da4269c52
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: PolyShape
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -398,6 +414,12 @@ ScriptsOnlyBuild:
     className: PhysicsRaycaster
   - hash:
       serializedVersion: 2
+      Hash: 05655f7deb066a961c41619ac9e98263
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: ProBuilderMesh
+  - hash:
+      serializedVersion: 2
       Hash: 051c18b41ea168ba34b7f7c41b137e34
     assemblyName: Mirror.dll
     namespaceName: Mirror.Logging
@@ -428,7 +450,7 @@ ScriptsOnlyBuild:
     className: QuitButtonHUD
   - hash:
       serializedVersion: 2
-      Hash: 36d1cfa984daaeed23fa2c9e1b6bdde9
+      Hash: 47b8670e87a0a4ca73a20a753910bf37
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: MyNetworkManager
@@ -462,6 +484,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.Examples.dll
     namespaceName: Mirror.Examples.MultipleMatch
     className: PlayerGUI
+  - hash:
+      serializedVersion: 2
+      Hash: 32f6d1d5a09e5c94c633a32edd3e6836
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: BezierShape
   - hash:
       serializedVersion: 2
       Hash: 192ca9716d03752ea1d90a78bc2daac9
@@ -572,6 +600,12 @@ ScriptsOnlyBuild:
     className: Tank
   - hash:
       serializedVersion: 2
+      Hash: 8312c9bc4e29e4715519a0435a506488
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Spawner
+  - hash:
+      serializedVersion: 2
       Hash: c8535effb2cf703c49666c8244e67130
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -602,10 +636,22 @@ ScriptsOnlyBuild:
     className: CanvasController
   - hash:
       serializedVersion: 2
+      Hash: e9389e944eb81a3a9df56fcdb09ce6a9
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: TriggerBehaviour
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalTrack
+  - hash:
+      serializedVersion: 2
+      Hash: e9389e944eb81a3a9df56fcdb09ce6a9
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: ColliderBehaviour
   - hash:
       serializedVersion: 2
       Hash: 3d03ea2b406291cf2d5cc48494c73f22
@@ -746,6 +792,12 @@ ScriptsOnlyBuild:
     className: NetworkSceneChecker
   - hash:
       serializedVersion: 2
+      Hash: d6a8e9bec3160a152b9b2710593d3caa
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: ColorPalette
+  - hash:
+      serializedVersion: 2
       Hash: f3a8ccc18ad656ac8993b34a1b30984f
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror
@@ -846,6 +898,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: TimelineAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 301f4da7cc3b301c161d089f9d22efed
+    assemblyName: Unity.ProBuilder.dll
+    namespaceName: UnityEngine.ProBuilder
+    className: Entity
   - hash:
       serializedVersion: 2
       Hash: ce58790f4b80db4732075fa2fb5e1bf9
