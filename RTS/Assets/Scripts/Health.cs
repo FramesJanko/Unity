@@ -22,6 +22,8 @@ public class Health : NetworkBehaviour
     [SerializeField]
     public float experianceRange;
 
+    [SerializeField]
+    private Healthbar childHealthbar;
     public int experiencePool;
     bool isPlayer;
     private void OnEnable()
@@ -41,7 +43,7 @@ public class Health : NetworkBehaviour
         currentHealth += healthChange;
 
         float currentHealthPercent = currentHealth / maxHealth;
-        GetComponentInChildren<Healthbar>().UpdateCurrentHealthPercent(currentHealthPercent);
+        childHealthbar.UpdateCurrentHealthPercent(currentHealthPercent);
         
     }
 

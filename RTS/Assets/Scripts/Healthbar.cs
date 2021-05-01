@@ -15,9 +15,14 @@ public class Healthbar : NetworkBehaviour
     [SyncVar]
     public float currentHealthPercent;
 
+    [SerializeField]
+    private Transform rotationBase;
+
+    [SerializeField]
+    private Health parentHealth;
     private void OnEnable()
     {
-        GetComponentInParent<Health>().EventHealthChanged += CmdChangeHealthbar;
+        //GetComponentInParent<Health>().EventHealthChanged += CmdChangeHealthbar;
         currentHealthPercent = healthbarImage.fillAmount;
     }
 
@@ -74,12 +79,16 @@ public class Healthbar : NetworkBehaviour
     // Update is called once per frame
     private void Update()
     {
-        healthbarImage.fillAmount = GetComponentInParent<Health>().currentHealth / GetComponentInParent<Health>().maxHealth;
+        healthbarImage.fillAmount = parentHealth.currentHealth / parentHealth.maxHealth;
         //HealOrDamageWithoutEnumerator();
     }
     void LateUpdate()
     {
-        //transform.LookAt(Camera.main.transform);
-        //transform.Rotate(0, 180, 0);
+        var targetPosition = new Vector3(transform.position.x, Camera.main.transform.position.y, transform.position.z);
+        transform.LookAt(targetPosition);
+        transform.Rotate(90, 0, 0);
+        
+        
+        
     }
 }

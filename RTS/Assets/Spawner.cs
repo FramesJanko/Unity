@@ -13,6 +13,11 @@ public class Spawner : NetworkBehaviour
 
     [SerializeField]
     private LayerMask walkableTerrain;
+    [SerializeField]
+    private GameObject lootSpawnPosition;
+    [SerializeField]
+    private GameObject lootPrefab;
+
     private void Start()
     {
         cam = Camera.main;
@@ -36,6 +41,14 @@ public class Spawner : NetworkBehaviour
                     es.SpawnEnemy(hit.point);
 
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                if (!isServer)
+                    return;
+                GameObject loot = Instantiate(lootPrefab, lootSpawnPosition.transform.position, lootPrefab.transform.rotation);
+                NetworkServer.Spawn(loot);
+                
             }
         }
     }

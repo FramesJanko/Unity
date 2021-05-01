@@ -13,7 +13,7 @@ public class Combat : NetworkBehaviour
     public GameObject target;
 
     [SerializeField]
-    private float baseAttackTime;
+    public float baseAttackTime;
 
     [SerializeField]
     private float damage;
@@ -21,6 +21,7 @@ public class Combat : NetworkBehaviour
     public float distanceFromTarget;
     [SyncVar]
     public bool walking;
+
     [SyncVar]
     public bool isAttacking;
     private bool hasAnimator;
@@ -30,11 +31,17 @@ public class Combat : NetworkBehaviour
     private int coroutineCount = 0;
     public Animator animator;
 
+    
+    public float attackTimer;
+
     IEnumerator AttackCoroutine;
     [SerializeField]
     public float attackRange;
     [SerializeField]
     public float baseAttackRange;
+
+    [SyncVar]
+    public bool shouldAnimateAttack;
 
 
 
@@ -77,20 +84,44 @@ public class Combat : NetworkBehaviour
             distanceFromTarget = npcController.distanceFromTarget;
             walking = npcController.walking;
         }
+        if (!isPlayer)
+        {
+            if (isAttacking)
+            {
+                attackTimer += Time.deltaTime;
+                
+            }
+            else
+            {
+                attackTimer = 0f;
+            }
+        }
         if (CheckValidTarget(target))
         {
             StartAttack();
         }
         if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
         {
+            StopAnimateAttack();
+            CancelAttack();
+            
+        }
+        if (shouldAnimateAttack)
+        {
+            if (hasAnimator)
+            {
+                animator.SetBool("IsAttacking", true);
+            }
+        }
+        else
+        {
             if (hasAnimator)
             {
                 animator.SetBool("IsAttacking", false);
             }
-            CancelAttack();
-            
         }
         
+
     }
 
     private void StartAttack()
@@ -116,11 +147,9 @@ public class Combat : NetworkBehaviour
         bool TargetValid;
         if (currentTarget != null && distanceFromTarget < baseAttackRange && !isAttacking)
         {
-
-
-            
+            AnimateAttack();
             TargetValid = true;
-            
+
 
         }
         else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking)
@@ -129,21 +158,14 @@ public class Combat : NetworkBehaviour
         }
         else if(currentTarget != null && distanceFromTarget > attackRange)
         {
-            if (hasAnimator)
-            {
-                animator.SetBool("IsAttacking", false);
-            }
-            
+            StopAnimateAttack();
             isAttacking = false;
             attackIsCanceled = true;
             TargetValid = false;
         }
         else if(target == null)
         {
-            if (hasAnimator)
-            {
-                animator.SetBool("IsAttacking", false);
-            }
+            StopAnimateAttack();
             attackIsCanceled = true;
 
             TargetValid = false;
@@ -154,16 +176,24 @@ public class Combat : NetworkBehaviour
         }
         if (walking)
         {
-            if (hasAnimator)
-            {
-                animator.SetBool("IsAttacking", false);
-            }
+            StopAnimateAttack();
             attackIsCanceled = true;
             
             TargetValid = false;
             
         }
         return TargetValid;
+    }
+
+    [Command]
+    public void AnimateAttack()
+    {
+        shouldAnimateAttack = true;
+    }
+    [Command]
+    public void StopAnimateAttack()
+    {
+        shouldAnimateAttack = false;
     }
     [Command]
     public void CmdModifyHealth(GameObject currentTarget, float healthChange)
@@ -186,11 +216,8 @@ public class Combat : NetworkBehaviour
         isAttacking = true;
         attackIsCanceled = false;
         coroutineCount++;
-        if (hasAnimator)
-        {
-            animator.SetBool("IsAttacking", true);
-        }
-        Debug.Log("Attack Coroutine Started: " + coroutineCount);
+        AnimateAttack();
+        
 
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
@@ -199,10 +226,11 @@ public class Combat : NetworkBehaviour
 
         if (distanceFromTarget < attackRange && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
         {
-            Debug.Log(name + " attacked successfully");
+            
             if (isPlayer)
             {
                 CmdModifyHealth(currentTarget, damage);
+
 
 
             }

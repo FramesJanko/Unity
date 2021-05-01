@@ -8,6 +8,7 @@ using UnityEngine.AI;
 public class Player : NetworkBehaviour
 {
     public GameObject player;
+    public Loot desiredLoot;
 
     Vector3 movementLocation;
     Vector3 detourLocation;
@@ -20,6 +21,7 @@ public class Player : NetworkBehaviour
     [SerializeField]
     private float movespeed;
     
+    [SyncVar]
     public GameObject target;
 
     public bool walking;
@@ -37,6 +39,7 @@ public class Player : NetworkBehaviour
     //This is for turning objects in front of the player transparent or opaque
     MeshRenderer lastHitMeshRenderer;
 
+    
     NavMeshAgent _navMeshAgent;
 
     [SerializeField]
@@ -75,7 +78,7 @@ public class Player : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
         if (isLocalPlayer)
         {
             if (Input.GetKeyDown(KeyCode.Y))
@@ -101,7 +104,10 @@ public class Player : NetworkBehaviour
         
         
     }
-
+    private void LateUpdate()
+    {
+        transform.position = _navMeshAgent.gameObject.transform.position;
+    }
     private void ShowBehindWalls()
     {
         
@@ -166,10 +172,11 @@ public class Player : NetworkBehaviour
         {
             Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
             Vector3 direction = worldMousePosition - cam.transform.position;
+            Vector3 startPosition = cam.transform.position;
 
-            if (Physics.Raycast(cam.transform.position, direction, out hit, 200f, walkableTerrain))
+            if (Physics.Raycast(startPosition, direction, out hit, 200f, walkableTerrain))
             {
-                Debug.DrawLine(cam.transform.position, hit.point, Color.green, 0.5f);
+                Debug.DrawLine(startPosition, hit.point, Color.green, 0.5f);
                 
 
                 CheckForTarget();
@@ -179,7 +186,7 @@ public class Player : NetworkBehaviour
             }
             else
             {
-                Debug.DrawLine(cam.transform.position, worldMousePosition, Color.red, 0.5f);
+                Debug.DrawLine(startPosition, worldMousePosition, Color.red, 0.5f);
             }
 
             destinationDistanceFromTarget = 0f;
@@ -191,25 +198,14 @@ public class Player : NetworkBehaviour
                 destinationDistanceFromTarget = destinationDistanceFromTargetX * destinationDistanceFromTargetX;
                 destinationDistanceFromTarget += (destinationDistanceFromTargetZ * destinationDistanceFromTargetZ);
             }
-
-
-
-
-            
-            //Debug.Log("Distance from target: " + System.Math.Sqrt(distanceFromTarget));
-
-
-
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             movementLocation = transform.position;
+            Deselect();
             target = null;
             
         }
-
-
-
         if (target != null)
         {
             float distanceFromTargetX = System.Math.Abs(transform.position.x - target.transform.position.x);
@@ -220,20 +216,13 @@ public class Player : NetworkBehaviour
 
             if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 1.5)
             {
-                //if (System.Math.Abs(movementLocation.x - target.transform.position.x) > 1.5 && System.Math.Abs(movementLocation.z - target.transform.position.z) > 1.5)
-                //{
-                //    movementLocation = hit.point + new Vector3(0f, player.GetComponent<MeshRenderer>().bounds.size.y / 2f, 0f);
-                //}
-                //else
-                //{
-
-                //    movementLocation = transform.position;
-                //}
                 movementLocation = transform.position;
             }
         }
-
-
+        if (hit.collider != null && hit.collider.tag == "Loot" && Vector3.Distance(transform.position, hit.transform.position) < 2f)
+        {
+            movementLocation = transform.position;
+        }
         if (target != null && distanceFromTarget > _combat.baseAttackRange && !_combat.isAttacking)
         {
             movementLocation = target.transform.position;
@@ -250,17 +239,24 @@ public class Player : NetworkBehaviour
     
     private void CheckForTarget()
     {
+        Debug.Log(hit.collider.tag);
+
         if (hit.collider.tag == "Enemy")
         {
-            target = hit.collider.gameObject;
-            CmdSetTarget();
-            Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
+            Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+            Vector3 direction = worldMousePosition - cam.transform.position;
+            Vector3 startPosition = cam.transform.position;
+
+            SetTarget(startPosition, direction);
+            //Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
             
-            movementLocation = hit.collider.gameObject.transform.position;
+            //movementLocation = target.transform.position;
         }
         else
         {
+            Debug.Log("Deselecting");
             Deselect();
+            target = null;
             movementLocation = hit.point;
 
         }
@@ -275,6 +271,7 @@ public class Player : NetworkBehaviour
     [Command]
     public void Deselect()
     {
+        Debug.Log("Running Deselect Command");
         target = null;
     }
     [Command]
@@ -283,10 +280,19 @@ public class Player : NetworkBehaviour
         textScript.needToSetFirstTime = true;
         textScript.readyToShowTime = true;
     }
-    
-    public void CmdSetTarget()
+    [Command]
+    public void SetTarget(Vector3 startPosition, Vector3 direction)
     {
-        GetComponent<Combat>().target = target;
+        RaycastHit targetHit;
+
+        if (Physics.Raycast(startPosition, direction, out targetHit, 200f, walkableTerrain))
+        {
+            Debug.Log(targetHit.collider.name);
+            target = targetHit.collider.gameObject;
+        }
+            
+        //GetComponent<Combat>().target = target;
     }
+    
 }
 

@@ -661,6 +661,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Loot.cs" />
+    <Compile Include="Assets\LootCollector.cs" />
+    <Compile Include="Assets\MonitorAttack.cs" />
+    <Compile Include="Assets\OpenLoot.cs" />
     <Compile Include="Assets\ParrelSync\Examples\CustomArgumentExample.cs" />
     <Compile Include="Assets\Scripts\CameraMovement.cs" />
     <Compile Include="Assets\Scripts\Combat.cs" />

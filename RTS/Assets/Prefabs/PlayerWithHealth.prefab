@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 1358083074854956899}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8847028657927200795
 SkinnedMeshRenderer:
@@ -137,9 +137,10 @@ GameObject:
   - component: {fileID: 5580570684498292222}
   - component: {fileID: 8348209349464792139}
   - component: {fileID: 2409588919567852383}
-  - component: {fileID: 6001394099674209583}
   - component: {fileID: 8158760952194589658}
   - component: {fileID: 8977001178141341793}
+  - component: {fileID: 2725444218427168317}
+  - component: {fileID: -117727024248553367}
   m_Layer: 0
   m_Name: PlayerWithHealth
   m_TagString: Untagged
@@ -158,9 +159,9 @@ Transform:
   m_LocalPosition: {x: 0, y: -2.14, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
+  - {fileID: 4977657232484361695}
   - {fileID: 8443369762549469936}
   - {fileID: 4462385329862596875}
-  - {fileID: 4977657232484361695}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -187,7 +188,7 @@ MonoBehaviour:
   destinationCollider: {fileID: 0}
   walkableTerrain:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 567
   textScript: {fileID: 0}
 --- !u!114 &1358083074854956911
 MonoBehaviour:
@@ -211,6 +212,7 @@ MonoBehaviour:
   isAttacking: 0
   attackIsCanceled: 0
   animator: {fileID: 0}
+  attackTimer: 0
   attackRange: 150
   baseAttackRange: 7.5
 --- !u!114 &5580570684498292222
@@ -261,7 +263,47 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!195 &6001394099674209583
+--- !u!114 &8158760952194589658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358083074854956908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e622107206ee240ae14fe12b5968d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  maxHealth: 20
+  currentHealth: 0
+  playersList: []
+  playersInExpRange: 0
+  experianceRange: 10
+  childHealthbar: {fileID: 4977657232484361694}
+  experiencePool: 20
+--- !u!95 &8977001178141341793
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358083074854956908}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c1dc5aff339814343ab0ecf5eb12005f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!195 &2725444218427168317
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,7 +325,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
---- !u!114 &8158760952194589658
+--- !u!114 &-117727024248553367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,36 +334,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1358083074854956908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58e622107206ee240ae14fe12b5968d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 068ac16bc9da8bb4a9fe3eef388e00f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  maxHealth: 20
-  currentHealth: 0
-  playersList: []
-  playersInExpRange: 0
-  experianceRange: 10
-  experiencePool: 20
---- !u!95 &8977001178141341793
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358083074854956908}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c1dc5aff339814343ab0ecf5eb12005f, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  loot:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &1643408074197745119
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,7 +589,7 @@ RectTransform:
   - {fileID: 4977657233206816104}
   - {fileID: 4977657231702160871}
   m_Father: {fileID: 1358083074854956899}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -669,6 +689,8 @@ MonoBehaviour:
   healthChangeTimer: 0
   healthbarImage: {fileID: 4977657231702160870}
   currentHealthPercent: 0
+  rotationBase: {fileID: 1358083074854956899}
+  parentHealth: {fileID: 8158760952194589658}
 --- !u!1 &4977657233206816105
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,11 +943,11 @@ Transform:
   m_GameObject: {fileID: 8048823425579243706}
   m_LocalRotation: {x: -0.53210664, y: 0.46568474, z: 0.46568495, w: 0.5321069}
   m_LocalPosition: {x: 0, y: 4.01, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 100.00003, y: 100, z: 100}
   m_Children:
   - {fileID: 6145323122480132508}
   m_Father: {fileID: 1358083074854956899}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -89.99999, y: 0, z: 82.382996}
 --- !u!1 &8634927238982485268
 GameObject:
