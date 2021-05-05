@@ -10,38 +10,63 @@ public class Combat : NetworkBehaviour
     private NpcController npcController;
 
     [SyncVar]
+    public float attackspeed;
+
+    [SyncVar]
     public GameObject target;
 
+    public float initialBaseAttackTimeAndBackSwing;
+
     [SerializeField]
+    public float baseAttackTimeAndBackSwing;
+
+    
     public float baseAttackTime;
+
+    
+    public float attackBackswing;
 
     [SerializeField]
     private float damage;
-    [SyncVar]
-    public float distanceFromTarget;
-    [SyncVar]
-    public bool walking;
 
-    [SyncVar]
-    public bool isAttacking;
-    private bool hasAnimator;
-    [SyncVar]
-    public bool attackIsCanceled;
-    private bool isPlayer;
-    private int coroutineCount = 0;
-    public Animator animator;
-
-    
-    public float attackTimer;
-
-    IEnumerator AttackCoroutine;
     [SerializeField]
     public float attackRange;
     [SerializeField]
     public float baseAttackRange;
 
     [SyncVar]
+    public float momentumAttackSpeedValue;
+
+    [SyncVar]
+    public float distanceFromTarget;
+
+    [SyncVar]
+    public bool walking;
+
+    [SyncVar]
+    public bool isAttacking;
+
+    [SyncVar]
+    public bool attackFinished;
+    private bool incrementAttackTimer;
+    private bool hasAnimator;
+
+    [SyncVar]
+    public bool attackIsCanceled;
+    private bool isPlayer;
+    private int coroutineCount = 0;
+    public Animator animator;
+
+    [SyncVar]
+    public float attackTimer;
+
+    IEnumerator AttackCoroutine;
+    
+    [SyncVar]
     public bool shouldAnimateAttack;
+
+    
+    public float timeSinceLastSuccessfulAttack;
 
 
 
@@ -64,14 +89,14 @@ public class Combat : NetworkBehaviour
             hasAnimator = true;
             animator = GetComponent<Animator>();
         }
+        
+        attackFinished = true;
+        attackspeed = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (!isLocalPlayer)
-        //    return;
-        
         if (isPlayer)
         {
             distanceFromTarget = player.distanceFromTarget;
@@ -79,38 +104,46 @@ public class Combat : NetworkBehaviour
             target = player.target;
         }
         
-        if (!isPlayer)
+        if (!isPlayer && isServer)
         {
             distanceFromTarget = npcController.distanceFromTarget;
             walking = npcController.walking;
-        }
-        if (!isPlayer)
-        {
-            if (isAttacking)
+            
+            //attackTimer += Time.deltaTime;
+            
+            if(incrementAttackTimer)
             {
                 attackTimer += Time.deltaTime;
-                
-            }
-            else
-            {
-                attackTimer = 0f;
             }
         }
+        if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
+        {
+            StopAttack();
+            StopAttackServer();
+            StopAnimateAttack();
+            StopAnimateAttackServer();
+        }
+        if (isLocalPlayer && Input.GetKey(KeyCode.Q))
+        {
+            ModifyAttackSpeed(momentumAttackSpeedValue);
+
+        }
+
+        CalculateAttackSpeed();
+        
+        timeSinceLastSuccessfulAttack += Time.deltaTime;
+        
         if (CheckValidTarget(target))
         {
             StartAttack();
         }
-        if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
-        {
-            StopAnimateAttack();
-            CancelAttack();
-            
-        }
+        
         if (shouldAnimateAttack)
         {
             if (hasAnimator)
             {
                 animator.SetBool("IsAttacking", true);
+                
             }
         }
         else
@@ -120,109 +153,213 @@ public class Combat : NetworkBehaviour
                 animator.SetBool("IsAttacking", false);
             }
         }
-        
+    }
 
+    private void CalculateAttackSpeed()
+    {
+        baseAttackTimeAndBackSwing = (1/(1/initialBaseAttackTimeAndBackSwing * attackspeed));
+        baseAttackTime = .8f * baseAttackTimeAndBackSwing;
+        attackBackswing = .2f * baseAttackTimeAndBackSwing;
+        
+        if (hasAnimator)
+            animator.SetFloat("speedMultiplier", attackspeed);
+    }
+
+    [Command]
+    public void ModifyAttackSpeed(float attackspeedChange)
+    {
+        attackspeed += attackspeedChange;
     }
 
     private void StartAttack()
     {
         
         if(AttackCoroutine != null)
+        {
             StopCoroutine(AttackCoroutine);
+            //if (isPlayer && isLocalPlayer)
+            //    Debug.Log("Stopping current attackCoroutine before initiating new one");
 
-        
+        }
         AttackCoroutine = Attack();
         StartCoroutine(AttackCoroutine);
-        
-
     }
-
-    public void CancelAttack()
-    {
-        attackIsCanceled = true;
-        isAttacking = false;
-    }
+    
     private bool CheckValidTarget(GameObject currentTarget)
     {
         bool TargetValid;
+
         if (currentTarget != null && distanceFromTarget < baseAttackRange && !isAttacking)
         {
-            AnimateAttack();
             TargetValid = true;
-
-
+            //Debug.Log(gameObject.name + " Success: Starting Attack - Code 1 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+        }
+        else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking && timeSinceLastSuccessfulAttack > attackBackswing && attackFinished)
+        {
+            if (isPlayer && isLocalPlayer)
+            {
+                Debug.Log("StopAttack called, but animation continue");
+                StopAttack();
+                StopAttackServer();
+                //Debug.Log(gameObject.name + " Finished attack - Code 2 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            }
+            else
+                NPCStopAttack();
+            TargetValid = false;
+            
         }
         else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking)
         {
             TargetValid = false;
+            //if(isPlayer && isLocalPlayer)
+            //    Debug.Log("Error: already attacking - Code 3 - Network ID: " + GetComponent<NetworkIdentity>().netId);
         }
-        else if(currentTarget != null && distanceFromTarget > attackRange)
+        
+        else if (currentTarget != null && distanceFromTarget > attackRange)
         {
-            StopAnimateAttack();
-            isAttacking = false;
-            attackIsCanceled = true;
-            TargetValid = false;
-        }
-        else if(target == null)
-        {
-            StopAnimateAttack();
-            attackIsCanceled = true;
+            if (isPlayer && isLocalPlayer)
+            {
+                Debug.Log("StopAttack called");
+                StopAttack();
+                StopAttackServer();
+                StopAnimateAttack();
+                StopAnimateAttackServer();
+                //Debug.Log(gameObject.name + " Error: Target too far - Code 4 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            }
+            else
+                NPCStopAttack();
+
+
 
             TargetValid = false;
+            
+        }
+        else if (target == null)
+        {
+            if (isPlayer && isLocalPlayer)
+            {
+                Debug.Log("StopAttack called");
+                StopAttack();
+                StopAttackServer();
+                StopAnimateAttack();
+                StopAnimateAttackServer();
+                //Debug.Log(gameObject.name + " Error: No target - Code 5 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            }
+            else
+                NPCStopAttack();
+
+
+            TargetValid = false;
+            
         }
         else
         {
             TargetValid = false;
+            //if (isPlayer && isLocalPlayer)
+            //    Debug.Log(gameObject.name + " Error: Other - Code 6 - Network ID: " + GetComponent<NetworkIdentity>().netId);
         }
         if (walking)
         {
-            StopAnimateAttack();
-            attackIsCanceled = true;
-            
+            if (isPlayer && isLocalPlayer)
+            {
+                Debug.Log("StopAttack called");
+                StopAttack();
+                StopAttackServer();
+                StopAnimateAttack();
+                StopAnimateAttackServer();
+                //Debug.Log(gameObject.name + " Error: Walking - Code 7 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            }
+                
+            else
+                NPCStopAttack();
+
+
             TargetValid = false;
             
+
         }
+        //if (timeSinceLastSuccessfulAttack > attackBackswing)
+        //{
+        //    StopAnimateAttack();
+        //}
+        //else
+        //    TargetValid = false;
         return TargetValid;
     }
 
-    [Command]
+    private void NPCStopAttack()
+    {
+        isAttacking = false;
+        timeSinceLastSuccessfulAttack = attackBackswing;
+        attackFinished = true;
+        incrementAttackTimer = false;
+        attackTimer = 0f;
+    }
+    
     public void AnimateAttack()
     {
+        attackFinished = false;
         shouldAnimateAttack = true;
+        isAttacking = true;
+        attackIsCanceled = false;
     }
     [Command]
+    public void AnimateAttackServer()
+    {
+        attackFinished = false;
+        shouldAnimateAttack = true;
+        isAttacking = true;
+        attackIsCanceled = false;
+    }
+    
     public void StopAnimateAttack()
     {
         shouldAnimateAttack = false;
     }
     [Command]
+    public void StopAnimateAttackServer()
+    {
+        shouldAnimateAttack = false;
+    }
+    public void StopAttack()
+    {
+
+
+        attackIsCanceled = true;
+        isAttacking = false;
+        //timeSinceLastSuccessfulAttack = attackBackswing;
+        attackFinished = true;
+    }
+    [Command]
+    public void StopAttackServer()
+    {
+
+        
+        attackIsCanceled = true;
+        isAttacking = false;
+        //timeSinceLastSuccessfulAttack = attackBackswing;
+        attackFinished = true;
+    }
+    [Command]
     public void CmdModifyHealth(GameObject currentTarget, float healthChange)
     {
-        //if (!isServer)
-        //    return;
-
-        
         currentTarget.GetComponent<Health>().currentHealth += healthChange;
-
-        //float newHealthPercent = currentTarget.GetComponent<Health>().currentHealth / currentTarget.GetComponent<Health>().maxHealth;
-        
-        //currentTarget.GetComponentInChildren<Healthbar>().currentHealthPercent = newHealthPercent;
-        
-        //Remove(currentTarget);
     }
     
     private IEnumerator Attack()
     {
-        isAttacking = true;
-        attackIsCanceled = false;
-        coroutineCount++;
-        AnimateAttack();
-        
-
+        //Debug.Log($"Is player: {isPlayer}, Is Local Player: {isLocalPlayer}");
+        if (isPlayer && isLocalPlayer)
+        {
+            Debug.Log("AnimateAttack called");
+            AnimateAttack();
+            AnimateAttackServer();
+        }
+            
+        else
+            NPCStartAttack();
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
-
-
 
         if (distanceFromTarget < attackRange && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
         {
@@ -230,38 +367,24 @@ public class Combat : NetworkBehaviour
             if (isPlayer)
             {
                 CmdModifyHealth(currentTarget, damage);
-
-
-
             }
             if (!isPlayer && isServer)
             {
                 currentTarget.GetComponent<Health>().currentHealth += damage;
             }
-
         }
-
-        isAttacking = false;
-
+        Debug.Log("Time since last attack: " + timeSinceLastSuccessfulAttack);
+        timeSinceLastSuccessfulAttack = 0f;
+        
+        attackFinished = true;
     }
-    
-    //public void Remove(GameObject currentTarget)
-    //{
 
-    //    if (currentTarget.GetComponent<Health>().currentHealth <= 0f)
-    //    {
-    //        Player[] playerList = GetComponents<Player>();
-    //        foreach (Player p in playerList)
-    //        {
-    //            if (p.target == gameObject)
-    //            {
-    //                p.target = null;
-    //            }
-    //        }
-    //        Destroy(currentTarget);
-    //    }
-    //}
-
+    private void NPCStartAttack()
+    {
+        isAttacking = true;
+        attackFinished = false;
+        incrementAttackTimer = true;
+    }
 }
 
     

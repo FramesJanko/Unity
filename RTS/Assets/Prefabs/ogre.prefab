@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -3143624292309029553}
   - component: {fileID: -6731085112324381870}
   - component: {fileID: 5925152412305544516}
+  - component: {fileID: -6311543081450090697}
   m_Layer: 0
   m_Name: ogre
   m_TagString: Enemy
@@ -122,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  maxHealth: 30
+  maxHealth: 100
   currentHealth: 0
   playersList: []
   playersInExpRange: 0
@@ -182,17 +183,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  attackspeed: 1
   target: {fileID: 0}
+  initialBaseAttackTimeAndBackSwing: 10
+  baseAttackTimeAndBackSwing: 10
   baseAttackTime: 2.3
+  attackBackswing: 0
   damage: -10
+  attackRange: 15
+  baseAttackRange: 7.5
+  momentumAttackSpeedValue: 0
   distanceFromTarget: 0
   walking: 0
   isAttacking: 0
+  attackFinished: 0
   attackIsCanceled: 0
   animator: {fileID: 0}
   attackTimer: 0
-  attackRange: 15
-  baseAttackRange: 7.5
+  shouldAnimateAttack: 0
+  timeSinceLastSuccessfulAttack: 0
 --- !u!65 &1328677830659602901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -275,6 +284,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackBar: {fileID: 3782163121555356858}
+--- !u!114 &-6311543081450090697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082169404777929421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5cd8a2fa623034cb5ac8199d2f987a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2205589777282156004
 GameObject:
   m_ObjectHideFlags: 0

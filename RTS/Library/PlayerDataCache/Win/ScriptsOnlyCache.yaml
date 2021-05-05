@@ -8,6 +8,7 @@ ScriptsOnlyBuild:
     - Healthbar
     - Loot
     - LootCollector
+    - LootTable
     - MonitorAttack
     - MyNetworkManager
     - NpcController
@@ -99,37 +100,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11666}
     - Class: 114
-      Script: {instanceID: 11854}
+      Script: {instanceID: 11832}
     - Class: 114
-      Script: {instanceID: 11972}
+      Script: {instanceID: 11856}
     - Class: 114
-      Script: {instanceID: 12276}
+      Script: {instanceID: 11974}
     - Class: 114
-      Script: {instanceID: 12440}
+      Script: {instanceID: 12278}
     - Class: 114
-      Script: {instanceID: 12456}
+      Script: {instanceID: 12442}
     - Class: 114
-      Script: {instanceID: 12654}
+      Script: {instanceID: 12458}
     - Class: 114
-      Script: {instanceID: 13234}
+      Script: {instanceID: 12656}
     - Class: 114
-      Script: {instanceID: 13458}
+      Script: {instanceID: 13236}
     - Class: 114
-      Script: {instanceID: 13588}
+      Script: {instanceID: 13460}
     - Class: 114
-      Script: {instanceID: 13654}
+      Script: {instanceID: 13590}
     - Class: 114
-      Script: {instanceID: 13748}
+      Script: {instanceID: 13656}
     - Class: 114
-      Script: {instanceID: 13836}
+      Script: {instanceID: 13750}
     - Class: 114
-      Script: {instanceID: 13976}
+      Script: {instanceID: 13838}
     - Class: 114
-      Script: {instanceID: 14122}
+      Script: {instanceID: 13978}
     - Class: 114
-      Script: {instanceID: 14276}
+      Script: {instanceID: 14124}
     - Class: 114
-      Script: {instanceID: 14394}
+      Script: {instanceID: 14278}
+    - Class: 114
+      Script: {instanceID: 14396}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -261,7 +264,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: 3ac112b09efdea2ead7ff4b93fe41501
+      Hash: 6a569c83f63c27e21b6443be7bf31bc4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -397,6 +400,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LootTable
   - hash:
       serializedVersion: 2
       Hash: 1cb3ae0a2d707e19133c67f4ce57102f

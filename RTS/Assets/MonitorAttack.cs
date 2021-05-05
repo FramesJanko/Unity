@@ -18,6 +18,6 @@ public class MonitorAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        attackBar.fillAmount = _combat.attackTimer / _combat.baseAttackTime;
+        attackBar.fillAmount = _combat.attackTimer / _combat.baseAttackTimeAndBackSwing;
     }
 }
