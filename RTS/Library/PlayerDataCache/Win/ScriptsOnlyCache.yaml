@@ -15,6 +15,7 @@ ScriptsOnlyBuild:
     - Player
     - ShowPlayer
     - Spawner
+    - StatAttributes
     - TextScript
     Mirror.Components.dll:
     - Mirror.NetworkTransform
@@ -133,6 +134,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 14278}
     - Class: 114
       Script: {instanceID: 14396}
+    - Class: 114
+      Script: {instanceID: 15866}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1252,6 +1255,12 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
+  - hash:
+      serializedVersion: 2
+      Hash: 6d0cea419be5cee446d16f7ff6501d26
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: StatAttributes
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

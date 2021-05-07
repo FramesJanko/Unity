@@ -27,7 +27,7 @@ public class Combat : NetworkBehaviour
     public float attackBackswing;
 
     [SerializeField]
-    private float damage;
+    public float damage;
 
     [SerializeField]
     public float attackRange;
@@ -341,9 +341,10 @@ public class Combat : NetworkBehaviour
         attackFinished = true;
     }
     [Command]
-    public void CmdModifyHealth(GameObject currentTarget, float healthChange)
+    public void CmdModifyHealth(GameObject currentTarget, float damage, float healing)
     {
-        currentTarget.GetComponent<Health>().currentHealth += healthChange;
+        currentTarget.GetComponent<Health>().currentHealth -= damage;
+        currentTarget.GetComponent<Health>().currentHealth += healing;
     }
     
     private IEnumerator Attack()
@@ -366,7 +367,7 @@ public class Combat : NetworkBehaviour
             
             if (isPlayer)
             {
-                CmdModifyHealth(currentTarget, damage);
+                CmdModifyHealth(currentTarget, damage, 0f);
             }
             if (!isPlayer && isServer)
             {

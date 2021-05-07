@@ -678,6 +678,7 @@
     <Compile Include="Assets\Scripts\ShowPlayer.cs" />
     <Compile Include="Assets\Scripts\TextScript.cs" />
     <Compile Include="Assets\Spawner.cs" />
+    <Compile Include="Assets\StatAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Mirror\Notice.txt" />

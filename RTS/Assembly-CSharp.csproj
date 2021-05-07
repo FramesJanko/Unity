@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\ShowPlayer.cs" />
     <Compile Include="Assets\Scripts\TextScript.cs" />
     <Compile Include="Assets\Spawner.cs" />
+    <Compile Include="Assets\StatAttributes.cs" />
     <None Include="Assets\Mirror\Version.txt" />
     <None Include="Assets\Mirror\Readme.txt" />
     <None Include="Assets\ParrelSync\VERSION.txt" />

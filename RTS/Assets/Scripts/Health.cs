@@ -26,15 +26,21 @@ public class Health : NetworkBehaviour
     private Healthbar childHealthbar;
     public int experiencePool;
     bool isPlayer;
+    StatAttributes _sa;
     private void OnEnable()
     {
         currentHealth = maxHealth;
         if (GetComponent<Player>())
         {
             isPlayer = true;
+            _sa = GetComponent<StatAttributes>();
         }
     }
-    
+    private void Awake()
+    {
+        
+    }
+
     public void CmdModifyHealth(float healthChange)
     {
         if (!isServer)
@@ -80,9 +86,11 @@ public class Health : NetworkBehaviour
     {
         playersList = FindObjectsOfType<Player>();
         
+        
         if (playersList.Length > 0)
         {
             
+
             foreach (Player p in playersList)
             {
                 
@@ -118,7 +126,7 @@ public class Health : NetworkBehaviour
         
         if (playersInExpRange > 1)
             p.totalExperience += ((experiencePool / playersInExpRange) + 5);
-        
-        
+
+        p.GetComponent<StatAttributes>().CheckLevelUp();
     }
 }
