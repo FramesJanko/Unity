@@ -371,6 +371,12 @@ MonoBehaviour:
   Agility: 0
   Intelligence: 0
   _combat: {fileID: 0}
+  _player: {fileID: 0}
+  Level: 0
+  experienceThresholds: 
+  statGainStr: 2
+  statGainAgi: 1
+  statGainInt: 1
 --- !u!1 &1643408074197745119
 GameObject:
   m_ObjectHideFlags: 0

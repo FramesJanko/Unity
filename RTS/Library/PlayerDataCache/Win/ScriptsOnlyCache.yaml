@@ -87,55 +87,55 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11296}
     - Class: 114
-      Script: {instanceID: 11318}
+      Script: {instanceID: 11320}
     - Class: 114
-      Script: {instanceID: 11346}
+      Script: {instanceID: 11348}
     - Class: 114
-      Script: {instanceID: 11420}
+      Script: {instanceID: 11422}
     - Class: 114
-      Script: {instanceID: 11522}
+      Script: {instanceID: 11524}
     - Class: 114
-      Script: {instanceID: 11594}
+      Script: {instanceID: 11596}
     - Class: 114
-      Script: {instanceID: 11632}
+      Script: {instanceID: 11634}
     - Class: 114
-      Script: {instanceID: 11666}
+      Script: {instanceID: 11668}
     - Class: 114
-      Script: {instanceID: 11832}
+      Script: {instanceID: 11834}
     - Class: 114
-      Script: {instanceID: 11856}
+      Script: {instanceID: 11858}
     - Class: 114
-      Script: {instanceID: 11974}
+      Script: {instanceID: 11976}
     - Class: 114
-      Script: {instanceID: 12278}
+      Script: {instanceID: 12280}
     - Class: 114
-      Script: {instanceID: 12442}
+      Script: {instanceID: 12444}
     - Class: 114
-      Script: {instanceID: 12458}
+      Script: {instanceID: 12460}
     - Class: 114
-      Script: {instanceID: 12656}
+      Script: {instanceID: 12658}
     - Class: 114
-      Script: {instanceID: 13236}
+      Script: {instanceID: 13146}
     - Class: 114
-      Script: {instanceID: 13460}
+      Script: {instanceID: 13240}
     - Class: 114
-      Script: {instanceID: 13590}
+      Script: {instanceID: 13464}
     - Class: 114
-      Script: {instanceID: 13656}
+      Script: {instanceID: 13594}
     - Class: 114
-      Script: {instanceID: 13750}
+      Script: {instanceID: 13660}
     - Class: 114
-      Script: {instanceID: 13838}
+      Script: {instanceID: 13754}
     - Class: 114
-      Script: {instanceID: 13978}
+      Script: {instanceID: 13842}
     - Class: 114
-      Script: {instanceID: 14124}
+      Script: {instanceID: 13982}
     - Class: 114
-      Script: {instanceID: 14278}
+      Script: {instanceID: 14128}
     - Class: 114
-      Script: {instanceID: 14396}
+      Script: {instanceID: 14282}
     - Class: 114
-      Script: {instanceID: 15866}
+      Script: {instanceID: 14400}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -825,6 +825,12 @@ ScriptsOnlyBuild:
     className: ColorPalette
   - hash:
       serializedVersion: 2
+      Hash: 6d0cea419be5cee446d16f7ff6501d26
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: StatAttributes
+  - hash:
+      serializedVersion: 2
       Hash: f3a8ccc18ad656ac8993b34a1b30984f
     assemblyName: Mirror.Components.dll
     namespaceName: Mirror
@@ -1255,12 +1261,6 @@ ScriptsOnlyBuild:
     assemblyName: Mirror.dll
     namespaceName: kcp2k
     className: KcpTransport
-  - hash:
-      serializedVersion: 2
-      Hash: 6d0cea419be5cee446d16f7ff6501d26
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: StatAttributes
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

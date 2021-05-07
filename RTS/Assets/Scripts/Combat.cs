@@ -26,7 +26,7 @@ public class Combat : NetworkBehaviour
     
     public float attackBackswing;
 
-    [SerializeField]
+    [SyncVar]
     public float damage;
 
     [SerializeField]

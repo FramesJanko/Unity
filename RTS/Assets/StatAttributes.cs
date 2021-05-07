@@ -28,26 +28,31 @@ public class StatAttributes : NetworkBehaviour
 
     void Awake()
     {
-        _combat = GetComponent<Combat>();
-        _player = GetComponent<Player>();
-        Strength = 5f;
-        Agility = 5f;
-        Intelligence = 5f;
-        experienceThresholds.Add(0);
-        experienceThresholds.Add(40);
-        experienceThresholds.Add(80);
-        experienceThresholds.Add(130);
-        experienceThresholds.Add(180);
-        experienceThresholds.Add(200);
-        experienceThresholds.Add(300);
-        experienceThresholds.Add(380);
-        experienceThresholds.Add(480);
-        experienceThresholds.Add(590);
-        experienceThresholds.Add(800);
+        
+        
     }
     // Start is called before the first frame update
     void Start()
     {
+        if (isServer)
+        {
+            _combat = GetComponent<Combat>();
+            _player = GetComponent<Player>();
+            Strength = 5f;
+            Agility = 5f;
+            Intelligence = 5f;
+            experienceThresholds.Add(0);
+            experienceThresholds.Add(40);
+            experienceThresholds.Add(80);
+            experienceThresholds.Add(130);
+            experienceThresholds.Add(180);
+            experienceThresholds.Add(200);
+            experienceThresholds.Add(300);
+            experienceThresholds.Add(380);
+            experienceThresholds.Add(480);
+            experienceThresholds.Add(590);
+            experienceThresholds.Add(800);
+        }
         SetStats();
     }
     [Server]
