@@ -53,7 +53,7 @@ public class Combat : NetworkBehaviour
 
     [SyncVar]
     public bool attackIsCanceled;
-    private bool isPlayer;
+    public bool isPlayer;
     private int coroutineCount = 0;
     public Animator animator;
 
@@ -92,11 +92,16 @@ public class Combat : NetworkBehaviour
         
         attackFinished = true;
         attackspeed = 1f;
+        CalculateAttackSpeed();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isServer)
+        {
+
+        }
         if (isPlayer)
         {
             distanceFromTarget = player.distanceFromTarget;
@@ -126,21 +131,24 @@ public class Combat : NetworkBehaviour
         if (isLocalPlayer && Input.GetKey(KeyCode.Q))
         {
             ModifyAttackSpeed(momentumAttackSpeedValue);
+            CalculateAttackSpeed();
+            CmdCalculateAttackSpeed();
 
         }
 
-        CalculateAttackSpeed();
+        //CalculateAttackSpeed();
         
         timeSinceLastSuccessfulAttack += Time.deltaTime;
-        
+
         if (CheckValidTarget(target))
         {
+            Debug.Log(CheckValidTarget(target));
             StartAttack();
         }
-        
+
         if (shouldAnimateAttack)
         {
-            if (hasAnimator)
+            if (hasAnimator && !animator.GetBool("IsAttacking"))
             {
                 animator.SetBool("IsAttacking", true);
                 
@@ -148,13 +156,22 @@ public class Combat : NetworkBehaviour
         }
         else
         {
-            if (hasAnimator)
+            if (hasAnimator && animator.GetBool("IsAttacking"))
             {
                 animator.SetBool("IsAttacking", false);
             }
         }
     }
+    [Command]
+    public void CmdCalculateAttackSpeed()
+    {
+        baseAttackTimeAndBackSwing = (1 / (1 / initialBaseAttackTimeAndBackSwing * attackspeed));
+        baseAttackTime = .8f * baseAttackTimeAndBackSwing;
+        attackBackswing = .2f * baseAttackTimeAndBackSwing;
 
+        if (hasAnimator)
+            animator.SetFloat("speedMultiplier", attackspeed);
+    }
     private void CalculateAttackSpeed()
     {
         baseAttackTimeAndBackSwing = (1/(1/initialBaseAttackTimeAndBackSwing * attackspeed));
@@ -177,8 +194,8 @@ public class Combat : NetworkBehaviour
         if(AttackCoroutine != null)
         {
             StopCoroutine(AttackCoroutine);
-            //if (isPlayer && isLocalPlayer)
-            //    Debug.Log("Stopping current attackCoroutine before initiating new one");
+            if (isPlayer && isLocalPlayer)
+                Debug.Log("Stopping current attackCoroutine before initiating new one");
 
         }
         AttackCoroutine = Attack();
@@ -198,13 +215,17 @@ public class Combat : NetworkBehaviour
         {
             if (isPlayer && isLocalPlayer)
             {
-                Debug.Log("StopAttack called, but animation continue");
-                StopAttack();
+
+                //StopAttack();
                 StopAttackServer();
-                //Debug.Log(gameObject.name + " Finished attack - Code 2 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+                Debug.Log(gameObject.name + " Finished attack - Code 2 - Network ID: " + GetComponent<NetworkIdentity>().netId);
             }
             else
+            {
+                Debug.Log("Line 221");
                 NPCStopAttack();
+            }
+                
             TargetValid = false;
             
         }
@@ -217,36 +238,44 @@ public class Combat : NetworkBehaviour
         
         else if (currentTarget != null && distanceFromTarget > attackRange)
         {
-            if (isPlayer && isLocalPlayer)
+            if (isPlayer && isLocalPlayer && isAttacking)
             {
-                Debug.Log("StopAttack called");
-                StopAttack();
+                
+                //StopAttack();
                 StopAttackServer();
                 StopAnimateAttack();
                 StopAnimateAttackServer();
-                //Debug.Log(gameObject.name + " Error: Target too far - Code 4 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+                Debug.Log(gameObject.name + " Error: Target too far - Code 4 - Network ID: " + GetComponent<NetworkIdentity>().netId);
             }
-            else
+            else if(!isPlayer && isAttacking)
+            {
                 NPCStopAttack();
+                Debug.Log("Line 249");
+            }
+                
 
 
 
             TargetValid = false;
             
         }
-        else if (target == null)
+        else if ((target == null && isAttacking) || (target == null && shouldAnimateAttack))
         {
             if (isPlayer && isLocalPlayer)
             {
-                Debug.Log("StopAttack called");
-                StopAttack();
+                
+                //StopAttack();
                 StopAttackServer();
                 StopAnimateAttack();
                 StopAnimateAttackServer();
-                //Debug.Log(gameObject.name + " Error: No target - Code 5 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+                Debug.Log(gameObject.name + " Error: No target - Code 5 - Network ID: " + GetComponent<NetworkIdentity>().netId);
             }
             else
+            {
+                Debug.Log("Line 271");
                 NPCStopAttack();
+            }
+                
 
 
             TargetValid = false;
@@ -258,12 +287,12 @@ public class Combat : NetworkBehaviour
             //if (isPlayer && isLocalPlayer)
             //    Debug.Log(gameObject.name + " Error: Other - Code 6 - Network ID: " + GetComponent<NetworkIdentity>().netId);
         }
-        if (walking)
+        if (walking && isAttacking)
         {
             if (isPlayer && isLocalPlayer)
             {
-                Debug.Log("StopAttack called");
-                StopAttack();
+                //Debug.Log("StopAttack called");
+                //StopAttack();
                 StopAttackServer();
                 StopAnimateAttack();
                 StopAnimateAttackServer();
@@ -271,7 +300,11 @@ public class Combat : NetworkBehaviour
             }
                 
             else
+            {
+                Debug.Log("Line 300");
                 NPCStopAttack();
+            }
+                
 
 
             TargetValid = false;
@@ -289,6 +322,7 @@ public class Combat : NetworkBehaviour
 
     private void NPCStopAttack()
     {
+        Debug.Log(name + " NPCStopAttack");
         isAttacking = false;
         timeSinceLastSuccessfulAttack = attackBackswing;
         attackFinished = true;
@@ -314,17 +348,19 @@ public class Combat : NetworkBehaviour
     
     public void StopAnimateAttack()
     {
+        Debug.Log("StopAnimateAttack called");
         shouldAnimateAttack = false;
     }
     [Command]
     public void StopAnimateAttackServer()
     {
+        Debug.Log("StopAnimateAttack called");
         shouldAnimateAttack = false;
     }
     public void StopAttack()
     {
 
-
+        Debug.Log("StopAttack called");
         attackIsCanceled = true;
         isAttacking = false;
         //timeSinceLastSuccessfulAttack = attackBackswing;
@@ -334,7 +370,7 @@ public class Combat : NetworkBehaviour
     public void StopAttackServer()
     {
 
-        
+        Debug.Log("StopAttackServer called");
         attackIsCanceled = true;
         isAttacking = false;
         //timeSinceLastSuccessfulAttack = attackBackswing;
@@ -349,15 +385,14 @@ public class Combat : NetworkBehaviour
     
     private IEnumerator Attack()
     {
-        //Debug.Log($"Is player: {isPlayer}, Is Local Player: {isLocalPlayer}");
+        Debug.Log($" {name} Is player: {isPlayer}, Is Local Player: {isLocalPlayer}");
         if (isPlayer && isLocalPlayer)
         {
             Debug.Log("AnimateAttack called");
             AnimateAttack();
             AnimateAttackServer();
         }
-            
-        else
+        else if(!isPlayer)
             NPCStartAttack();
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
@@ -382,6 +417,7 @@ public class Combat : NetworkBehaviour
 
     private void NPCStartAttack()
     {
+        Debug.Log(name + " NPCStartAttack");
         isAttacking = true;
         attackFinished = false;
         incrementAttackTimer = true;

@@ -1,32 +1,30 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LootTable : MonoBehaviour
+public class LootTable : NetworkBehaviour
 {
     int[] dropChances = new[] { 10, 20, 30, 40 };
-    private Text rarityName;
-    private int dropChance;
     string[] dropChanceNames = new[] { "legendary", "epic", "rare", "common" };
 
-    // Start is called before the first frame update
-    void Start()
-    {
-         foreach(int chance in dropChances)
-        {
+    [SerializeField]
+    private GameObject lootPrefab;
 
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
         
     }
 
     public void DropLoot()
     {
-
+        float lootRoll = Random.Range(0f, 1f);
+        if (lootRoll > .5f)
+        {
+            GameObject loot = Instantiate(lootPrefab, transform.position, lootPrefab.transform.rotation);
+            NetworkServer.Spawn(loot);
+        }
+            
     }
 }

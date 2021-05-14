@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class Player : NetworkBehaviour
 {
-    public GameObject player;
+    
     public Loot desiredLoot;
 
     Vector3 movementLocation;

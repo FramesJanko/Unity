@@ -267,7 +267,7 @@ ScriptsOnlyBuild:
     className: NetworkTransform
   - hash:
       serializedVersion: 2
-      Hash: 6a569c83f63c27e21b6443be7bf31bc4
+      Hash: 504878b0794cb99a2f873e4e97251713
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Combat
@@ -405,7 +405,7 @@ ScriptsOnlyBuild:
     className: SignalAsset
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 34447187b0918b3d15b9f5feae5f0b8b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LootTable
@@ -633,7 +633,7 @@ ScriptsOnlyBuild:
     className: Spawner
   - hash:
       serializedVersion: 2
-      Hash: e0c9f1bdce7095fe5323652f12c2a274
+      Hash: 66af53b2718beeb7bc5d6540678c12df
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player

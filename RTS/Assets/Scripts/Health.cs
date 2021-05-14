@@ -27,6 +27,8 @@ public class Health : NetworkBehaviour
     public int experiencePool;
     bool isPlayer;
     StatAttributes _sa;
+    private LootTable _lootTable;
+
     private void OnEnable()
     {
         currentHealth = maxHealth;
@@ -35,6 +37,8 @@ public class Health : NetworkBehaviour
             isPlayer = true;
             _sa = GetComponent<StatAttributes>();
         }
+        if (GetComponent<LootTable>())
+            _lootTable = GetComponent<LootTable>();
     }
     private void Awake()
     {
@@ -77,9 +81,12 @@ public class Health : NetworkBehaviour
                 p.target = null;
             }
         }
+        if (isServer)
+            _lootTable.DropLoot();
         GetListofPlayersInRange();
         //AwardExperience();
         gameObject.SetActive(false);
+        
     }
     [Server]
     public void GetListofPlayersInRange()

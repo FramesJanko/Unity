@@ -296,6 +296,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5cd8a2fa623034cb5ac8199d2f987a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  lootPrefab: {fileID: 1239223780699394303, guid: 072534c81550b924aa0af758c032ac4e,
+    type: 3}
 --- !u!1 &2205589777282156004
 GameObject:
   m_ObjectHideFlags: 0
