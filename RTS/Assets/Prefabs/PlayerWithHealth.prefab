@@ -214,9 +214,15 @@ MonoBehaviour:
   attackBackswing: 0
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   damage: -10
   attackRange: 150
   baseAttackRange: 7.5
+=======
+  damage: 10
+  maxAttackRange: 10
+  baseAttackRange: 3
+>>>>>>> Stashed changes
 =======
   damage: 10
   maxAttackRange: 10
