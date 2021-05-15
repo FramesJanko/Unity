@@ -10,7 +10,8 @@ public class Player : NetworkBehaviour
     public GameObject player;
     public Loot desiredLoot;
 
-    Vector3 movementLocation;
+    [SyncVar]
+    public Vector3 movementLocation;
     Vector3 detourLocation;
 
     [SyncVar]
@@ -24,6 +25,7 @@ public class Player : NetworkBehaviour
     [SyncVar]
     public GameObject target;
 
+    [SyncVar]
     public bool walking;
 
     float destinationDistanceFromTarget;
@@ -52,6 +54,8 @@ public class Player : NetworkBehaviour
     private Combat _combat;
     private bool hasAnimator;
 
+    Vector3 tempMovementLocation;
+    GameObject tempTarget;
     private void Awake()
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -70,6 +74,7 @@ public class Player : NetworkBehaviour
     void Start()
     {
         movementLocation = transform.position;
+        tempMovementLocation = movementLocation;
         walking = false;
         cam = Camera.main;
 
@@ -78,17 +83,21 @@ public class Player : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+        CheckIfWalking();
         if (isLocalPlayer)
         {
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 StartTimer();
             }
-            CheckIfWalking();
+            
 
             HandleMovement();
+            tempMovementLocation = movementLocation;
+            tempTarget = target;
 
+            
             
 
             ShowBehindWalls();
@@ -101,9 +110,26 @@ public class Player : NetworkBehaviour
             }
             
         }
+        target = tempTarget;
+        movementLocation = tempMovementLocation;
+        if (target != null)
+            distanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
         
         
     }
+
+    private void SyncTarget(GameObject currentTarget)
+    {
+        target = currentTarget;
+    }
+
+    [Command]
+    private void SyncMovement(Vector3 currentMovementLocation)
+    {
+        movementLocation = currentMovementLocation;
+        
+    }
+
     private void LateUpdate()
     {
         transform.position = _navMeshAgent.gameObject.transform.position;
@@ -193,10 +219,8 @@ public class Player : NetworkBehaviour
 
             if (target != null)
             {
-                float destinationDistanceFromTargetX = Math.Abs(movementLocation.x - target.transform.position.x);
-                float destinationDistanceFromTargetZ = Math.Abs(movementLocation.z - target.transform.position.z);
-                destinationDistanceFromTarget = destinationDistanceFromTargetX * destinationDistanceFromTargetX;
-                destinationDistanceFromTarget += (destinationDistanceFromTargetZ * destinationDistanceFromTargetZ);
+                
+                destinationDistanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
             }
         }
         else if (Input.GetKeyDown(KeyCode.S))
@@ -208,10 +232,8 @@ public class Player : NetworkBehaviour
         }
         if (target != null)
         {
-            float distanceFromTargetX = System.Math.Abs(transform.position.x - target.transform.position.x);
-            float distanceFromTargetZ = System.Math.Abs(transform.position.z - target.transform.position.z);
-            distanceFromTarget = distanceFromTargetX * distanceFromTargetX;
-            distanceFromTarget += (distanceFromTargetZ * distanceFromTargetZ);
+            
+            distanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
 
 
             if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 1.5)

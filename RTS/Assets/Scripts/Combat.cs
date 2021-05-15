@@ -10,6 +10,9 @@ public class Combat : NetworkBehaviour
     private NpcController npcController;
 
     [SyncVar]
+    public bool shouldAttack;
+
+    [SyncVar]
     public float attackspeed;
 
     [SyncVar]
@@ -30,7 +33,7 @@ public class Combat : NetworkBehaviour
     private float damage;
 
     [SerializeField]
-    public float attackRange;
+    public float maxAttackRange;
     [SerializeField]
     public float baseAttackRange;
 
@@ -97,34 +100,83 @@ public class Combat : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< Updated upstream
         if (isPlayer)
         {
             distanceFromTarget = player.distanceFromTarget;
             walking = player.walking;
             target = player.target;
         }
-        
-        if (!isPlayer && isServer)
+=======
+        if (isServer)
         {
-            distanceFromTarget = npcController.distanceFromTarget;
-            walking = npcController.walking;
-            
-            //attackTimer += Time.deltaTime;
-            
-            if(incrementAttackTimer)
+            if (isPlayer)
             {
-                attackTimer += Time.deltaTime;
+                walking = player.walking;
+                target = player.target;
+                distanceFromTarget = player.distanceFromTarget;
             }
+            else if (!isPlayer)
+            {
+                distanceFromTarget = npcController.distanceFromTarget;
+                walking = npcController.walking;
+
+                if (incrementAttackTimer)
+                {
+                    attackTimer += Time.deltaTime;
+                }
+            }
+            CalculateAttackSpeed();
         }
+        if (hasAnimator)
+            animator.SetFloat("speedMultiplier", attackspeed);
+>>>>>>> Stashed changes
+        
+        if (isServer)
+        { 
+            timeSinceLastSuccessfulAttack += Time.deltaTime;
+            if (target != null)
+            {
+                shouldAttack = CheckValidTarget(target);
+                if (shouldAttack)
+                {
+                    Debug.Log(shouldAttack);
+                    //StartAttack();
+                }
+            }
+            else
+                shouldAttack = false;
+        }
+        
+        //if (isPlayer)
+        //{
+        //    distanceFromTarget = player.distanceFromTarget;
+        //    walking = player.walking;
+        //    target = player.target;
+        //}
+
+        //if (!isPlayer && isServer)
+        //{
+        //    distanceFromTarget = npcController.distanceFromTarget;
+        //    walking = npcController.walking;
+
+        //    //attackTimer += Time.deltaTime;
+
+        //    if(incrementAttackTimer)
+        //    {
+        //        attackTimer += Time.deltaTime;
+        //    }
+        //}
         if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
         {
-            StopAttack();
-            StopAttackServer();
-            StopAnimateAttack();
-            StopAnimateAttackServer();
+            //StopAttack();
+            //StopAttackServer();
+            //StopAnimateAttack();
+            //StopAnimateAttackServer();
         }
         if (isLocalPlayer && Input.GetKey(KeyCode.Q))
         {
+<<<<<<< Updated upstream
             ModifyAttackSpeed(momentumAttackSpeedValue);
 
         }
@@ -153,6 +205,39 @@ public class Combat : NetworkBehaviour
                 animator.SetBool("IsAttacking", false);
             }
         }
+=======
+            //ModifyAttackSpeed(momentumAttackSpeedValue);
+            //CalculateAttackSpeed();
+            //CmdCalculateAttackSpeed();
+
+        }
+
+        
+
+        
+
+        //if (CheckValidTarget(target))
+        //{
+        //    Debug.Log(CheckValidTarget(target));
+        //    StartAttack();
+        //}
+
+        //if (shouldAnimateAttack)
+        //{
+        //    if (hasAnimator && !animator.GetBool("IsAttacking"))
+        //    {
+        //        animator.SetBool("IsAttacking", true);
+
+        //    }
+        //}
+        //else
+        //{
+        //    if (hasAnimator && animator.GetBool("IsAttacking"))
+        //    {
+        //        animator.SetBool("IsAttacking", false);
+        //    }
+        //}
+>>>>>>> Stashed changes
     }
 
     private void CalculateAttackSpeed()
@@ -161,8 +246,7 @@ public class Combat : NetworkBehaviour
         baseAttackTime = .8f * baseAttackTimeAndBackSwing;
         attackBackswing = .2f * baseAttackTimeAndBackSwing;
         
-        if (hasAnimator)
-            animator.SetFloat("speedMultiplier", attackspeed);
+        
     }
 
     [Command]
@@ -189,11 +273,12 @@ public class Combat : NetworkBehaviour
     {
         bool TargetValid;
 
-        if (currentTarget != null && distanceFromTarget < baseAttackRange && !isAttacking)
+        if (distanceFromTarget < baseAttackRange && !isAttacking)
         {
             TargetValid = true;
             //Debug.Log(gameObject.name + " Success: Starting Attack - Code 1 - Network ID: " + GetComponent<NetworkIdentity>().netId);
         }
+<<<<<<< Updated upstream
         else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking && timeSinceLastSuccessfulAttack > attackBackswing && attackFinished)
         {
             if (isPlayer && isLocalPlayer)
@@ -206,17 +291,36 @@ public class Combat : NetworkBehaviour
             else
                 NPCStopAttack();
             TargetValid = false;
+=======
+        //else if (distanceFromTarget < maxAttackRange && isAttacking && timeSinceLastSuccessfulAttack > attackBackswing && attackFinished)
+        //{
+        //    //if (isPlayer && isLocalPlayer)
+        //    //{
+
+        //    //    //StopAttack();
+        //    //    StopAttackServer();
+        //    //    Debug.Log(gameObject.name + " Finished attack - Code 2 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+        //    //}
+        //    //else
+        //    //{
+        //    //    Debug.Log("Line 221");
+        //    //    NPCStopAttack();
+        //    //}
+                
+        //    TargetValid = false;
+>>>>>>> Stashed changes
             
-        }
-        else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking)
+        //}
+        else if (distanceFromTarget < maxAttackRange && isAttacking)
         {
             TargetValid = false;
             //if(isPlayer && isLocalPlayer)
             //    Debug.Log("Error: already attacking - Code 3 - Network ID: " + GetComponent<NetworkIdentity>().netId);
         }
         
-        else if (currentTarget != null && distanceFromTarget > attackRange)
+        else if (distanceFromTarget > maxAttackRange)
         {
+<<<<<<< Updated upstream
             if (isPlayer && isLocalPlayer)
             {
                 Debug.Log("StopAttack called");
@@ -228,12 +332,30 @@ public class Combat : NetworkBehaviour
             }
             else
                 NPCStopAttack();
+=======
+            //if (isPlayer && isLocalPlayer && isAttacking)
+            //{
+                
+            //    //StopAttack();
+            //    StopAttackServer();
+            //    StopAnimateAttack();
+            //    StopAnimateAttackServer();
+            //    Debug.Log(gameObject.name + " Error: Target too far - Code 4 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            //}
+            //else if(!isPlayer && isAttacking)
+            //{
+            //    NPCStopAttack();
+            //    Debug.Log("Line 249");
+            //}
+                
+>>>>>>> Stashed changes
 
 
 
             TargetValid = false;
             
         }
+<<<<<<< Updated upstream
         else if (target == null)
         {
             if (isPlayer && isLocalPlayer)
@@ -247,11 +369,30 @@ public class Combat : NetworkBehaviour
             }
             else
                 NPCStopAttack();
+=======
+        //else if ((target == null && isAttacking) || (target == null && shouldAnimateAttack))
+        //{
+        //    if (isPlayer && isLocalPlayer)
+        //    {
+                
+        //        //StopAttack();
+        //        StopAttackServer();
+        //        StopAnimateAttack();
+        //        StopAnimateAttackServer();
+        //        Debug.Log(gameObject.name + " Error: No target - Code 5 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Line 271");
+        //        NPCStopAttack();
+        //    }
+                
+>>>>>>> Stashed changes
 
 
-            TargetValid = false;
+        //    TargetValid = false;
             
-        }
+        //}
         else
         {
             TargetValid = false;
@@ -260,6 +401,7 @@ public class Combat : NetworkBehaviour
         }
         if (walking)
         {
+<<<<<<< Updated upstream
             if (isPlayer && isLocalPlayer)
             {
                 Debug.Log("StopAttack called");
@@ -272,6 +414,24 @@ public class Combat : NetworkBehaviour
                 
             else
                 NPCStopAttack();
+=======
+            //if (isPlayer && isLocalPlayer)
+            //{
+            //    //Debug.Log("StopAttack called");
+            //    //StopAttack();
+            //    StopAttackServer();
+            //    StopAnimateAttack();
+            //    StopAnimateAttackServer();
+            //    //Debug.Log(gameObject.name + " Error: Walking - Code 7 - Network ID: " + GetComponent<NetworkIdentity>().netId);
+            //}
+                
+            //else
+            //{
+            //    Debug.Log("Line 300");
+            //    NPCStopAttack();
+            //}
+                
+>>>>>>> Stashed changes
 
 
             TargetValid = false;
@@ -361,7 +521,7 @@ public class Combat : NetworkBehaviour
         GameObject currentTarget = target;
         yield return new WaitForSeconds(baseAttackTime);
 
-        if (distanceFromTarget < attackRange && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
+        if (distanceFromTarget < maxAttackRange && !walking && currentTarget == target && target.activeSelf && gameObject.activeSelf && !attackIsCanceled)
         {
             
             if (isPlayer)

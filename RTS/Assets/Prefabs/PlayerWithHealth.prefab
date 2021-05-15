@@ -205,21 +205,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  shouldAttack: 0
   attackspeed: 1
   target: {fileID: 0}
   initialBaseAttackTimeAndBackSwing: 1.3
   baseAttackTimeAndBackSwing: 1.3
   baseAttackTime: 1.3
   attackBackswing: 0
+<<<<<<< Updated upstream
   damage: -10
   attackRange: 150
   baseAttackRange: 7.5
+=======
+  damage: 10
+  maxAttackRange: 10
+  baseAttackRange: 3
+>>>>>>> Stashed changes
   momentumAttackSpeedValue: 0.05
   distanceFromTarget: 0
   walking: 0
   isAttacking: 0
   attackFinished: 0
   attackIsCanceled: 0
+  isPlayer: 0
   animator: {fileID: 0}
   attackTimer: 0
   shouldAnimateAttack: 0
