@@ -624,6 +624,18 @@
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+<<<<<<< Updated upstream
+=======
+    <Reference Include="Unity.ProBuilder">
+      <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.ProBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.Editor">
+      <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.ProBuilder.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ProBuilder.AssetIdRemapUtility">
+      <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.ProBuilder.AssetIdRemapUtility.dll</HintPath>
+    </Reference>
+>>>>>>> Stashed changes
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -639,6 +651,12 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+<<<<<<< Updated upstream
+=======
+    <Reference Include="Unity.ProBuilder.AddOns.Editor">
+      <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.ProBuilder.AddOns.Editor.dll</HintPath>
+    </Reference>
+>>>>>>> Stashed changes
     <Reference Include="Unity.TextMeshPro">
       <HintPath>C:/Users/rheck/OneDrive/Documents/GitHub/Stonks/Stonks/Unity/RTS/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
