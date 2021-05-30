@@ -12,6 +12,12 @@ public class Player : NetworkBehaviour
     [SyncVar]
     public Vector3 movementLocation;
 
+<<<<<<< Updated upstream
+=======
+    [SyncVar]
+    public Vector3 movementLocation;
+
+>>>>>>> Stashed changes
     Vector3 detourLocation;
 
     [SyncVar]
@@ -151,7 +157,10 @@ public class Player : NetworkBehaviour
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     [Command]
     public void SetMoveCommand(Vector3 rightClickHitPoint)
     {
@@ -226,6 +235,7 @@ public class Player : NetworkBehaviour
         if (moveCommandIssued)
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
             Vector3 direction = worldMousePosition - cam.transform.position;
 
@@ -247,6 +257,11 @@ public class Player : NetworkBehaviour
             {
                 CheckForTarget();
 >>>>>>> Stashed changes
+=======
+            if(Physics.Raycast(startPosition, direction, out hit, 200f, walkableTerrain))
+            {
+                CheckForTarget();
+>>>>>>> Stashed changes
             }
             moveCommandIssued = false;
         }
@@ -254,6 +269,7 @@ public class Player : NetworkBehaviour
 
         //destinationDistanceFromTarget = 0f;
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if (target != null)
             {
@@ -283,6 +299,8 @@ public class Player : NetworkBehaviour
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         if (target != null)
         {
             //destinationDistanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
@@ -303,9 +321,12 @@ public class Player : NetworkBehaviour
             }
         }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
 =======
+=======
+>>>>>>> Stashed changes
         
         if (hit.collider != null && hit.collider.tag == "Loot" && Vector3.Distance(transform.position, hit.transform.position) < 2f)
         {
@@ -326,6 +347,18 @@ public class Player : NetworkBehaviour
 
     [Command]
     public void SetStopCommand()
+<<<<<<< Updated upstream
+=======
+    {
+        movementLocation = transform.position;
+        //Don't need Deselect, as this is already getting called as a Command.
+        //Deselect();
+        target = null;
+    }
+
+
+    private void CheckForTarget()
+>>>>>>> Stashed changes
     {
         movementLocation = transform.position;
         //Don't need Deselect, as this is already getting called as a Command.
@@ -340,6 +373,7 @@ public class Player : NetworkBehaviour
         {
             target = hit.collider.gameObject;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             CmdSetTarget();
             Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
             
@@ -352,6 +386,11 @@ public class Player : NetworkBehaviour
         }
         else
         {
+=======
+        }
+        else
+        {
+>>>>>>> Stashed changes
             Debug.Log("Deselecting");
             //Deselect();
             target = null;
