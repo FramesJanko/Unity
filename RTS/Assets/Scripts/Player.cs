@@ -9,11 +9,19 @@ public class Player : NetworkBehaviour
 {
     public GameObject player;
 
-    Vector3 movementLocation;
+    [SyncVar]
+    public Vector3 movementLocation;
+
     Vector3 detourLocation;
 
     [SyncVar]
     public int totalExperience;
+
+    [SyncVar]
+    public Vector3 playerRightClickLocation;
+
+    [SyncVar]
+    public bool moveCommandIssued;
 
     RaycastHit hit;
 
@@ -22,10 +30,12 @@ public class Player : NetworkBehaviour
     
     public GameObject target;
 
+    [SyncVar]
     public bool walking;
 
     float destinationDistanceFromTarget;
 
+    [SyncVar]
     public float distanceFromTarget;
 
     public Collider destinationCollider;
@@ -48,6 +58,8 @@ public class Player : NetworkBehaviour
 
     private Combat _combat;
     private bool hasAnimator;
+    private Vector3 direction;
+    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -78,16 +90,40 @@ public class Player : NetworkBehaviour
 
         if (isLocalPlayer)
         {
+            //Press Y to start in-game timer;
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 StartTimer();
             }
-            CheckIfWalking();
 
-            HandleMovement();
+            //Look for Right Click locally to determine if server should move the player
+            if (Input.GetMouseButtonDown(1))
+            {
+                Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+                direction = worldMousePosition - cam.transform.position;
+                startPosition = cam.transform.position;
+                SetDirectionandStartPositionOnServer(direction, startPosition);
+                RaycastHit rightClickHit;
 
+                if (Physics.Raycast(startPosition, direction, out rightClickHit, 200f, walkableTerrain))
+                {
+                    Debug.DrawLine(startPosition, rightClickHit.point, Color.green, 0.5f);
+                    SetMoveCommand(rightClickHit.point);
+
+                }
+                else
+                {
+                    Debug.DrawLine(startPosition, worldMousePosition, Color.red, 0.5f);
+                }
+            }
+
+            //Press S to stop movement.
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                SetStopCommand();
+                target = null;
+            }
             
-
             ShowBehindWalls();
 
             if (walking)
@@ -98,10 +134,36 @@ public class Player : NetworkBehaviour
             }
             
         }
-        
-        
+        if (isServer)
+        {
+            CheckIfWalking();
+            HandleMovement();
+        }
+
+
     }
 
+    [Command]
+    private void SetDirectionandStartPositionOnServer(Vector3 ClientDirection, Vector3 ClientCamPosition)
+    {
+        direction = ClientDirection;
+        startPosition = ClientCamPosition;
+    }
+
+<<<<<<< Updated upstream
+=======
+    [Command]
+    public void SetMoveCommand(Vector3 rightClickHitPoint)
+    {
+        playerRightClickLocation = rightClickHitPoint;
+        moveCommandIssued = true;
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = _navMeshAgent.gameObject.transform.position;
+    }
+>>>>>>> Stashed changes
     private void ShowBehindWalls()
     {
         
@@ -161,9 +223,9 @@ public class Player : NetworkBehaviour
 
     private void HandleMovement()
     {
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(1))
+        if (moveCommandIssued)
         {
+<<<<<<< Updated upstream
             Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
             Vector3 direction = worldMousePosition - cam.transform.position;
 
@@ -180,10 +242,19 @@ public class Player : NetworkBehaviour
             else
             {
                 Debug.DrawLine(cam.transform.position, worldMousePosition, Color.red, 0.5f);
+=======
+            if(Physics.Raycast(startPosition, direction, out hit, 200f, walkableTerrain))
+            {
+                CheckForTarget();
+>>>>>>> Stashed changes
             }
+            moveCommandIssued = false;
+        }
+        
 
-            destinationDistanceFromTarget = 0f;
+        //destinationDistanceFromTarget = 0f;
 
+<<<<<<< Updated upstream
             if (target != null)
             {
                 float destinationDistanceFromTargetX = Math.Abs(movementLocation.x - target.transform.position.x);
@@ -210,15 +281,14 @@ public class Player : NetworkBehaviour
 
 
 
+=======
+>>>>>>> Stashed changes
         if (target != null)
         {
-            float distanceFromTargetX = System.Math.Abs(transform.position.x - target.transform.position.x);
-            float distanceFromTargetZ = System.Math.Abs(transform.position.z - target.transform.position.z);
-            distanceFromTarget = distanceFromTargetX * distanceFromTargetX;
-            distanceFromTarget += (distanceFromTargetZ * distanceFromTargetZ);
+            //destinationDistanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
+            distanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
 
-
-            if (destinationDistanceFromTarget < 1.5 && distanceFromTarget < 1.5)
+            if (/*destinationDistanceFromTarget < 1.5 && */distanceFromTarget < 1.5)
             {
                 //if (System.Math.Abs(movementLocation.x - target.transform.position.x) > 1.5 && System.Math.Abs(movementLocation.z - target.transform.position.z) > 1.5)
                 //{
@@ -232,8 +302,16 @@ public class Player : NetworkBehaviour
                 movementLocation = transform.position;
             }
         }
+<<<<<<< Updated upstream
 
 
+=======
+        
+        if (hit.collider != null && hit.collider.tag == "Loot" && Vector3.Distance(transform.position, hit.transform.position) < 2f)
+        {
+            movementLocation = transform.position;
+        }
+>>>>>>> Stashed changes
         if (target != null && distanceFromTarget > _combat.baseAttackRange && !_combat.isAttacking)
         {
             movementLocation = target.transform.position;
@@ -246,13 +324,22 @@ public class Player : NetworkBehaviour
         //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
     }
 
-    
-    
+    [Command]
+    public void SetStopCommand()
+    {
+        movementLocation = transform.position;
+        //Don't need Deselect, as this is already getting called as a Command.
+        //Deselect();
+        target = null;
+    }
+
+
     private void CheckForTarget()
     {
         if (hit.collider.tag == "Enemy")
         {
             target = hit.collider.gameObject;
+<<<<<<< Updated upstream
             CmdSetTarget();
             Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
             
@@ -261,6 +348,14 @@ public class Player : NetworkBehaviour
         else
         {
             Deselect();
+=======
+        }
+        else
+        {
+            Debug.Log("Deselecting");
+            //Deselect();
+            target = null;
+>>>>>>> Stashed changes
             movementLocation = hit.point;
 
         }

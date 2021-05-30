@@ -15,6 +15,22 @@ public class Combat : NetworkBehaviour
     [SerializeField]
     private float baseAttackTime;
 
+<<<<<<< Updated upstream
+=======
+    
+    public float baseAttackTime;
+
+    [SyncVar]
+    public float AttackAnimatorNormalizedTime;
+    
+    public float attackBackswing;
+
+    [SyncVar]
+    public float damage;
+
+    [SerializeField]
+    public float attackRange;
+>>>>>>> Stashed changes
     [SerializeField]
     private float damage;
     [SyncVar]
@@ -56,14 +72,18 @@ public class Combat : NetworkBehaviour
         {
             hasAnimator = true;
             animator = GetComponent<Animator>();
+            
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+<<<<<<< Updated upstream
         //if (!isLocalPlayer)
         //    return;
+=======
+>>>>>>> Stashed changes
         
         if (isPlayer)
         {
@@ -71,17 +91,90 @@ public class Combat : NetworkBehaviour
             walking = player.walking;
             target = player.target;
         }
+<<<<<<< Updated upstream
         
+=======
+
+>>>>>>> Stashed changes
         if (!isPlayer)
         {
             distanceFromTarget = npcController.distanceFromTarget;
             walking = npcController.walking;
+<<<<<<< Updated upstream
         }
         if (CheckValidTarget(target))
         {
             StartAttack();
         }
         if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
+=======
+
+            //attackTimer += Time.deltaTime;
+
+            if (incrementAttackTimer)
+            {
+                attackTimer += Time.deltaTime;
+            }
+        }
+        timeSinceLastSuccessfulAttack += Time.deltaTime;
+         
+        
+
+        if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
+        {
+            //StopAttack();
+            StopAttackServer();
+            //StopAnimateAttack();
+            StopAnimateAttackServer();
+        }
+        if (isLocalPlayer && Input.GetKey(KeyCode.Q))
+        {
+            ModifyAttackSpeed(momentumAttackSpeedValue);
+            CmdCalculateAttackSpeed();
+            CalculateAttackSpeed();
+            
+
+        }
+        if (hasAnimator)
+        {
+            animator.SetFloat("speedMultiplier", attackspeed);
+        }
+        
+        if (hasAnimator)
+        {
+            AttackAnimatorNormalizedTime = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        }
+        if (CheckValidTarget(target))
+        {
+            BeginAnimatedAttack();
+            //StartAttack();
+        }
+        if (AttackAnimatorNormalizedTime == baseAttackTime)
+        {
+            CmdModifyHealth(target, damage, 0f);
+        }
+        if(AttackAnimatorNormalizedTime == baseAttackTimeAndBackSwing)
+        {
+            StopAttack();
+        }
+        
+
+        //CalculateAttackSpeed();
+
+        
+
+        
+
+        if (shouldAnimateAttack)
+        {
+            if (hasAnimator && !animator.GetBool("IsAttacking"))
+            {
+                animator.SetBool("IsAttacking", true);
+                
+            }
+        }
+        else
+>>>>>>> Stashed changes
         {
             if (hasAnimator)
             {
@@ -90,6 +183,43 @@ public class Combat : NetworkBehaviour
             CancelAttack();
             
         }
+<<<<<<< Updated upstream
+=======
+    }
+    public void ResolveAttackHit()
+    {
+        Debug.Log("Attack Hit!");
+    }
+    private void BeginAnimatedAttack()
+    {
+        shouldAnimateAttack = true;
+        if (isPlayer)
+        {
+            attackFinished = false;
+            shouldAnimateAttack = true;
+            isAttacking = true;
+            attackIsCanceled = false;
+        }
+        else if (!isPlayer)
+            NPCStartAttack();
+    }
+
+    [Command]
+    public void CmdCalculateAttackSpeed()
+    {
+        baseAttackTimeAndBackSwing = (1 / (1 / initialBaseAttackTimeAndBackSwing * attackspeed));
+        baseAttackTime = .8f * baseAttackTimeAndBackSwing;
+        attackBackswing = .2f * baseAttackTimeAndBackSwing;
+
+        //if (hasAnimator)
+        //    animator.SetFloat("speedMultiplier", attackspeed);
+    }
+    private void CalculateAttackSpeed()
+    {
+        baseAttackTimeAndBackSwing = (1/(1/initialBaseAttackTimeAndBackSwing * attackspeed));
+        baseAttackTime = .5f * baseAttackTimeAndBackSwing;
+        attackBackswing = .5f * baseAttackTimeAndBackSwing;
+>>>>>>> Stashed changes
         
     }
 
@@ -116,17 +246,34 @@ public class Combat : NetworkBehaviour
         bool TargetValid;
         if (currentTarget != null && distanceFromTarget < baseAttackRange && !isAttacking)
         {
+<<<<<<< Updated upstream
 
 
             
             TargetValid = true;
             
 
+=======
+            TargetValid = true;
+        }
+        else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking && timeSinceLastSuccessfulAttack > attackBackswing && attackFinished)
+        {
+            if (isPlayer)
+            {
+                StopAttack();
+            }
+            else
+            {
+                NPCStopAttack();
+            }
+            TargetValid = false;
+>>>>>>> Stashed changes
         }
         else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking)
         {
             TargetValid = false;
         }
+<<<<<<< Updated upstream
         else if(currentTarget != null && distanceFromTarget > attackRange)
         {
             if (hasAnimator)
@@ -136,16 +283,39 @@ public class Combat : NetworkBehaviour
             
             isAttacking = false;
             attackIsCanceled = true;
+=======
+        else if (currentTarget != null && distanceFromTarget > attackRange)
+        {
+            if (isPlayer && isAttacking)
+            {
+                StopAttack();
+            }
+            else if(!isPlayer && isAttacking)
+            {
+                NPCStopAttack();
+            }
+>>>>>>> Stashed changes
             TargetValid = false;
         }
         else if(target == null)
         {
+<<<<<<< Updated upstream
             if (hasAnimator)
             {
                 animator.SetBool("IsAttacking", false);
             }
             attackIsCanceled = true;
 
+=======
+            if (isPlayer)
+            {
+                StopAttack();
+            }
+            else
+            {
+                NPCStopAttack();
+            }
+>>>>>>> Stashed changes
             TargetValid = false;
         }
         else
@@ -154,6 +324,7 @@ public class Combat : NetworkBehaviour
         }
         if (walking)
         {
+<<<<<<< Updated upstream
             if (hasAnimator)
             {
                 animator.SetBool("IsAttacking", false);
@@ -167,12 +338,77 @@ public class Combat : NetworkBehaviour
     }
     [Command]
     public void CmdModifyHealth(GameObject currentTarget, float healthChange)
+=======
+            if (isPlayer)
+            {
+                StopAttack();
+            }
+            else
+            {
+                NPCStopAttack();
+            }
+            TargetValid = false;
+        }
+        return TargetValid;
+    }
+
+    private void NPCStopAttack()
+    {
+        //Debug.Log(name + " NPCStopAttack");
+        isAttacking = false;
+        timeSinceLastSuccessfulAttack = attackBackswing;
+        attackFinished = true;
+        incrementAttackTimer = false;
+        attackTimer = 0f;
+    }
+    
+    //public void AnimateAttack()
+    //{
+    //    attackFinished = false;
+    //    shouldAnimateAttack = true;
+    //    isAttacking = true;
+    //    attackIsCanceled = false;
+    //}
+    [Command]
+    public void AnimateAttackServer()
+    {
+        attackFinished = false;
+        shouldAnimateAttack = true;
+        isAttacking = true;
+        attackIsCanceled = false;
+    }
+
+    public void StopAnimateAttack()
+    {
+        //Debug.Log("StopAnimateAttack called");
+        shouldAnimateAttack = false;
+    }
+    [Command]
+    public void StopAnimateAttackServer()
+    {
+        //Debug.Log("StopAnimateAttack called");
+        shouldAnimateAttack = false;
+    }
+    public void StopAttack()
+>>>>>>> Stashed changes
     {
         //if (!isServer)
         //    return;
 
+<<<<<<< Updated upstream
         
         currentTarget.GetComponent<Health>().currentHealth += healthChange;
+=======
+        Debug.Log("StopAttack called");
+        attackIsCanceled = true;
+        isAttacking = false;
+        shouldAnimateAttack = false;
+        attackFinished = true;
+    }
+    [Command]
+    public void StopAttackServer()
+    {
+>>>>>>> Stashed changes
 
         //float newHealthPercent = currentTarget.GetComponent<Health>().currentHealth / currentTarget.GetComponent<Health>().maxHealth;
         
@@ -188,7 +424,13 @@ public class Combat : NetworkBehaviour
         coroutineCount++;
         if (hasAnimator)
         {
+<<<<<<< Updated upstream
             animator.SetBool("IsAttacking", true);
+=======
+            Debug.Log("AnimateAttack called");
+            //AnimateAttack();
+            AnimateAttackServer();
+>>>>>>> Stashed changes
         }
         Debug.Log("Attack Coroutine Started: " + coroutineCount);
 
@@ -202,9 +444,14 @@ public class Combat : NetworkBehaviour
             Debug.Log(name + " attacked successfully");
             if (isPlayer)
             {
+<<<<<<< Updated upstream
                 CmdModifyHealth(currentTarget, damage);
 
 
+=======
+                CmdModifyHealth(currentTarget, damage, 0f);
+                Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+>>>>>>> Stashed changes
             }
             if (!isPlayer && isServer)
             {
@@ -213,8 +460,17 @@ public class Combat : NetworkBehaviour
 
         }
 
+<<<<<<< Updated upstream
         isAttacking = false;
 
+=======
+    private void NPCStartAttack()
+    {
+        //Debug.Log(name + " NPCStartAttack");
+        isAttacking = true;
+        attackFinished = false;
+        incrementAttackTimer = true;
+>>>>>>> Stashed changes
     }
     
     //public void Remove(GameObject currentTarget)
