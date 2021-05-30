@@ -13,6 +13,12 @@ public class Player : NetworkBehaviour
     public Vector3 movementLocation;
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    [SyncVar]
+    public Vector3 movementLocation;
+
+>>>>>>> Stashed changes
 =======
     [SyncVar]
     public Vector3 movementLocation;
@@ -147,6 +153,7 @@ public class Player : NetworkBehaviour
         }
 
 
+<<<<<<< Updated upstream
     }
 
     [Command]
@@ -162,6 +169,18 @@ public class Player : NetworkBehaviour
 =======
 >>>>>>> Stashed changes
     [Command]
+=======
+    }
+
+    [Command]
+    private void SetDirectionandStartPositionOnServer(Vector3 ClientDirection, Vector3 ClientCamPosition)
+    {
+        direction = ClientDirection;
+        startPosition = ClientCamPosition;
+    }
+
+    [Command]
+>>>>>>> Stashed changes
     public void SetMoveCommand(Vector3 rightClickHitPoint)
     {
         playerRightClickLocation = rightClickHitPoint;
@@ -236,6 +255,7 @@ public class Player : NetworkBehaviour
         {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
             Vector3 direction = worldMousePosition - cam.transform.position;
 
@@ -262,6 +282,11 @@ public class Player : NetworkBehaviour
             {
                 CheckForTarget();
 >>>>>>> Stashed changes
+=======
+            if(Physics.Raycast(startPosition, direction, out hit, 200f, walkableTerrain))
+            {
+                CheckForTarget();
+>>>>>>> Stashed changes
             }
             moveCommandIssued = false;
         }
@@ -269,6 +294,7 @@ public class Player : NetworkBehaviour
 
         //destinationDistanceFromTarget = 0f;
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if (target != null)
@@ -301,6 +327,8 @@ public class Player : NetworkBehaviour
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         if (target != null)
         {
             //destinationDistanceFromTarget = Vector3.Distance(transform.position, target.transform.position);
@@ -322,9 +350,12 @@ public class Player : NetworkBehaviour
         }
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
 
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         
@@ -348,7 +379,10 @@ public class Player : NetworkBehaviour
     [Command]
     public void SetStopCommand()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     {
         movementLocation = transform.position;
         //Don't need Deselect, as this is already getting called as a Command.
@@ -374,6 +408,7 @@ public class Player : NetworkBehaviour
             target = hit.collider.gameObject;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             CmdSetTarget();
             Debug.Log($"Targeting {target.name}. Network ID is {target.GetComponent<NetworkIdentity>().netId}");
             
@@ -386,6 +421,11 @@ public class Player : NetworkBehaviour
         }
         else
         {
+=======
+        }
+        else
+        {
+>>>>>>> Stashed changes
 =======
         }
         else

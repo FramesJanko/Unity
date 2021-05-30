@@ -81,8 +81,11 @@ public class Combat : NetworkBehaviour
     {
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         //if (!isLocalPlayer)
         //    return;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======
@@ -96,7 +99,11 @@ public class Combat : NetworkBehaviour
         }
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -109,6 +116,7 @@ public class Combat : NetworkBehaviour
             walking = npcController.walking;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         }
         if (CheckValidTarget(target))
         {
@@ -116,6 +124,8 @@ public class Combat : NetworkBehaviour
         }
         if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 
@@ -158,6 +168,7 @@ public class Combat : NetworkBehaviour
         {
             BeginAnimatedAttack();
             //StartAttack();
+<<<<<<< Updated upstream
         }
         if (AttackAnimatorNormalizedTime == baseAttackTime)
         {
@@ -167,6 +178,17 @@ public class Combat : NetworkBehaviour
         {
             StopAttack();
         }
+=======
+        }
+        if (AttackAnimatorNormalizedTime == baseAttackTime)
+        {
+            CmdModifyHealth(target, damage, 0f);
+        }
+        if(AttackAnimatorNormalizedTime == baseAttackTimeAndBackSwing)
+        {
+            StopAttack();
+        }
+>>>>>>> Stashed changes
         
 
         //CalculateAttackSpeed();
@@ -214,6 +236,7 @@ public class Combat : NetworkBehaviour
             NPCStartAttack();
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
     public void ResolveAttackHit()
     {
@@ -233,6 +256,8 @@ public class Combat : NetworkBehaviour
             NPCStartAttack();
     }
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
     [Command]
     public void CmdCalculateAttackSpeed()
@@ -250,6 +275,9 @@ public class Combat : NetworkBehaviour
         baseAttackTime = .5f * baseAttackTimeAndBackSwing;
         attackBackswing = .5f * baseAttackTimeAndBackSwing;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -301,6 +329,9 @@ public class Combat : NetworkBehaviour
             }
             TargetValid = false;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -309,6 +340,7 @@ public class Combat : NetworkBehaviour
         {
             TargetValid = false;
         }
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
         else if(currentTarget != null && distanceFromTarget > attackRange)
@@ -323,6 +355,8 @@ public class Combat : NetworkBehaviour
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         else if (currentTarget != null && distanceFromTarget > attackRange)
         {
             if (isPlayer && isAttacking)
@@ -334,6 +368,9 @@ public class Combat : NetworkBehaviour
                 NPCStopAttack();
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -341,6 +378,7 @@ public class Combat : NetworkBehaviour
         }
         else if(target == null)
         {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if (hasAnimator)
@@ -356,6 +394,10 @@ public class Combat : NetworkBehaviour
             if (isPlayer)
             {
 >>>>>>> Stashed changes
+=======
+            if (isPlayer)
+            {
+>>>>>>> Stashed changes
                 StopAttack();
             }
             else
@@ -363,6 +405,9 @@ public class Combat : NetworkBehaviour
                 NPCStopAttack();
             }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -374,6 +419,7 @@ public class Combat : NetworkBehaviour
         }
         if (walking)
         {
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
             if (hasAnimator)
@@ -392,6 +438,10 @@ public class Combat : NetworkBehaviour
 =======
             if (isPlayer)
             {
+=======
+            if (isPlayer)
+            {
+>>>>>>> Stashed changes
 =======
             if (isPlayer)
             {
@@ -507,6 +557,9 @@ public class Combat : NetworkBehaviour
                 CmdModifyHealth(currentTarget, damage, 0f);
                 Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
