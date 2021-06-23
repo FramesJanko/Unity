@@ -633,6 +633,10 @@
       <Project>{7434A75E-3EAC-1BFE-C508-CC72C4CB79ED}</Project>
       <Name>Unity.Timeline.Editor</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.TerrainTools.csproj">
+      <Project>{3222F2A5-466A-532F-563B-9941D72E89DA}</Project>
+      <Name>Unity.TerrainTools</Name>
+    </ProjectReference>
     <ProjectReference Include="Mirror.Weaver.csproj">
       <Project>{BE7B4399-0094-60E1-8142-EF7FA049DCB0}</Project>
       <Name>Mirror.Weaver</Name>
@@ -733,17 +737,13 @@
       <Project>{D42C3431-D2FF-FB86-5E93-65197E52F21A}</Project>
       <Name>Unity.TextMeshPro</Name>
     </ProjectReference>
-    <ProjectReference Include="UnityEditor.UI.csproj">
-      <Project>{6416A919-A435-8169-5F0F-48098ED9ADD9}</Project>
-      <Name>UnityEditor.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="Unity.TerrainTools.csproj">
-      <Project>{3222F2A5-466A-532F-563B-9941D72E89DA}</Project>
-      <Name>Unity.TerrainTools</Name>
-    </ProjectReference>
     <ProjectReference Include="Unity.TerrainTools.Editor.csproj">
       <Project>{E3D9DCE5-D06E-918D-44C1-D12C4CD1E8C8}</Project>
       <Name>Unity.TerrainTools.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="UnityEditor.UI.csproj">
+      <Project>{6416A919-A435-8169-5F0F-48098ED9ADD9}</Project>
+      <Name>UnityEditor.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
