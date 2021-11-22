@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using System;
 
 public class Combat : NetworkBehaviour
@@ -9,10 +8,8 @@ public class Combat : NetworkBehaviour
     private Player player;
     private NpcController npcController;
 
-    [SyncVar]
     public float attackspeed;
 
-    [SyncVar]
     public GameObject target;
 
     public float initialBaseAttackTimeAndBackSwing;
@@ -26,7 +23,6 @@ public class Combat : NetworkBehaviour
     
     public float attackBackswing;
 
-    [SyncVar]
     public float damage;
 
     [SerializeField]
@@ -34,35 +30,27 @@ public class Combat : NetworkBehaviour
     [SerializeField]
     public float baseAttackRange;
 
-    [SyncVar]
     public float momentumAttackSpeedValue;
 
-    [SyncVar]
     public float distanceFromTarget;
 
-    [SyncVar]
     public bool walking;
 
-    [SyncVar]
     public bool isAttacking;
 
-    [SyncVar]
     public bool attackFinished;
     private bool incrementAttackTimer;
     private bool hasAnimator;
 
-    [SyncVar]
     public bool attackIsCanceled;
     public bool isPlayer;
     private int coroutineCount = 0;
     public Animator animator;
 
-    [SyncVar]
     public float attackTimer;
 
     IEnumerator AttackCoroutine;
     
-    [SyncVar]
     public bool shouldAnimateAttack;
 
     
@@ -98,10 +86,7 @@ public class Combat : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isServer)
-        {
-
-        }
+        
         if (isPlayer)
         {
             distanceFromTarget = player.distanceFromTarget;
@@ -109,7 +94,7 @@ public class Combat : NetworkBehaviour
             target = player.target;
         }
         
-        if (!isPlayer && isServer)
+        if (!isPlayer)
         {
             distanceFromTarget = npcController.distanceFromTarget;
             walking = npcController.walking;
@@ -121,14 +106,14 @@ public class Combat : NetworkBehaviour
                 attackTimer += Time.deltaTime;
             }
         }
-        if (isLocalPlayer && Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             StopAttack();
             StopAttackServer();
             StopAnimateAttack();
             StopAnimateAttackServer();
         }
-        if (isLocalPlayer && Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Q))
         {
             ModifyAttackSpeed(momentumAttackSpeedValue);
             CalculateAttackSpeed();
@@ -162,7 +147,6 @@ public class Combat : NetworkBehaviour
             }
         }
     }
-    [Command]
     public void CmdCalculateAttackSpeed()
     {
         baseAttackTimeAndBackSwing = (1 / (1 / initialBaseAttackTimeAndBackSwing * attackspeed));
@@ -182,7 +166,6 @@ public class Combat : NetworkBehaviour
             animator.SetFloat("speedMultiplier", attackspeed);
     }
 
-    [Command]
     public void ModifyAttackSpeed(float attackspeedChange)
     {
         attackspeed += attackspeedChange;
@@ -213,7 +196,7 @@ public class Combat : NetworkBehaviour
         }
         else if (currentTarget != null && distanceFromTarget < attackRange && isAttacking && timeSinceLastSuccessfulAttack > attackBackswing && attackFinished)
         {
-            if (isPlayer && isLocalPlayer)
+            if (isPlayer)
             {
 
                 //StopAttack();
@@ -238,7 +221,7 @@ public class Combat : NetworkBehaviour
         
         else if (currentTarget != null && distanceFromTarget > attackRange)
         {
-            if (isPlayer && isLocalPlayer && isAttacking)
+            if (isPlayer && isAttacking)
             {
                 
                 //StopAttack();
@@ -337,7 +320,6 @@ public class Combat : NetworkBehaviour
         isAttacking = true;
         attackIsCanceled = false;
     }
-    [Command]
     public void AnimateAttackServer()
     {
         attackFinished = false;
@@ -351,7 +333,6 @@ public class Combat : NetworkBehaviour
         Debug.Log("StopAnimateAttack called");
         shouldAnimateAttack = false;
     }
-    [Command]
     public void StopAnimateAttackServer()
     {
         Debug.Log("StopAnimateAttack called");
@@ -366,7 +347,6 @@ public class Combat : NetworkBehaviour
         //timeSinceLastSuccessfulAttack = attackBackswing;
         attackFinished = true;
     }
-    [Command]
     public void StopAttackServer()
     {
 
@@ -376,7 +356,6 @@ public class Combat : NetworkBehaviour
         //timeSinceLastSuccessfulAttack = attackBackswing;
         attackFinished = true;
     }
-    [Command]
     public void CmdModifyHealth(GameObject currentTarget, float damage, float healing)
     {
         currentTarget.GetComponent<Health>().currentHealth -= damage;
@@ -385,7 +364,7 @@ public class Combat : NetworkBehaviour
     
     private IEnumerator Attack()
     {
-        Debug.Log($" {name} Is player: {isPlayer}, Is Local Player: {isLocalPlayer}");
+        Debug.Log($" {name} Is player: {isPlayer}");
         if (isPlayer && isLocalPlayer)
         {
             Debug.Log("AnimateAttack called");
@@ -404,7 +383,7 @@ public class Combat : NetworkBehaviour
             {
                 CmdModifyHealth(currentTarget, damage, 0f);
             }
-            if (!isPlayer && isServer)
+            if (!isPlayer)
             {
                 currentTarget.GetComponent<Health>().currentHealth += damage;
             }

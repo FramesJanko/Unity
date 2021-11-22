@@ -12,7 +12,6 @@ public class Healthbar : NetworkBehaviour
     [SerializeField]
     private Image healthbarImage;
 
-    [SyncVar]
     public float currentHealthPercent;
 
     [SerializeField]

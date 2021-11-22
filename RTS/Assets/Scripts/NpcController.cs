@@ -8,14 +8,12 @@ using UnityEngine.AI;
 
 public class NpcController : NetworkBehaviour
 {
-    [SyncVar]
     public GameObject target;
 
     public List<Player> players;
     public List<float> playerDistances;
     public List<Player> playerList;
 
-    [SyncVar]
     public float distanceFromTarget;
 
     float previousDistanceFromPlayer = 0f;
@@ -28,13 +26,10 @@ public class NpcController : NetworkBehaviour
 
     
 
-    [SyncVar]
     public bool walking;
 
-    [SyncVar]
     public bool returningToOrigin;
 
-    [SyncVar]
     public float distanceFromOrigin;
 
     private void OnEnable()
@@ -44,19 +39,17 @@ public class NpcController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isServer)
+        
+        CheckIfWalking();
+        FindTarget();
+        if (target != null)
         {
-            CheckIfWalking();
-            FindTarget();
-            if (target != null)
-            {
-                distanceFromTarget = CalculateDistanceFromTarget();
-            }
-            HandleMovement();
+            distanceFromTarget = CalculateDistanceFromTarget();
         }
+        HandleMovement();
+        
     }
 
-    [ClientRpc]
     private void CheckIfWalking()
     {
         if (movementLocation != transform.position)
@@ -130,14 +123,12 @@ public class NpcController : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
     public void RpcSetTarget(GameObject tempTarget)
     {
         target = tempTarget;
         GetComponent<Combat>().target = target;
     }
 
-    [ClientRpc]
     public void RpcClearTarget()
     {
         target = null;

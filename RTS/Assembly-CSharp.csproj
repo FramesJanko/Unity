@@ -71,6 +71,13 @@
     <Compile Include="Assets\Scripts\Combat.cs" />
     <Compile Include="Assets\OpenLoot.cs" />
     <Compile Include="Assets\Scripts\ShowPlayer.cs" />
+    <Compile Include="Assets\StatAttributes1.cs" />
+    <Compile Include="Assets\OpenLoot1.cs" />
+    <Compile Include="Assets\Spawner1.cs" />
+    <Compile Include="Assets\MonitorAttack1.cs" />
+    <Compile Include="Assets\LootTable1.cs" />
+    <Compile Include="Assets\LootCollector1.cs" />
+    <Compile Include="Assets\Loot1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Mirror\Plugins\Mono.Cecil\Mono.CecilX.dll" />
