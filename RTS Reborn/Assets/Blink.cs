@@ -37,7 +37,7 @@ public class Blink : MonoBehaviour
         
         if (quickCast)
         {
-            if (Input.GetKeyDown(KeyCode.B) && cooldownReady)
+            if (Input.GetKeyDown(KeyCode.B)/* && cooldownReady*/)
             {
                 Vector3 worldMousePosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
                 Vector3 direction = worldMousePosition - cam.transform.position;
@@ -69,7 +69,7 @@ public class Blink : MonoBehaviour
                 blinkTarget = new Vector3(hitInfo.point.x, transform.position.y, hitInfo.point.z);
                 blinkTargetSet = true;
             }
-            if (blinkTargetSet && cooldownReady)
+            if (blinkTargetSet/* && cooldownReady*/)
             {
                 CastBlink();
             }
@@ -89,9 +89,11 @@ public class Blink : MonoBehaviour
 
     public void PrepareBlink()
     {
+        blinkPrepared = true;
+
         if (cooldownReady || currentCooldown <= .9f)
         {
-            blinkPrepared = true;
+
         }    
     }
 }
