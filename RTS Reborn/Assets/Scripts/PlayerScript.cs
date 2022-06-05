@@ -13,27 +13,17 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     private float movespeed;
     public bool walking;
-
     public GameObject target;
-
     float destinationDistanceFromTarget;
-
     public float distanceFromTarget;
-
     public Collider destinationCollider;
-
     [SerializeField]
     LayerMask walkableTerrain;
-
     MeshRenderer lastHitMeshRenderer;
-
     NavMeshAgent _navMeshAgent;
-
     public int totalExperience;
-
     Camera cam;
     private CapsuleCollider _collider;
-
     [SerializeField]
     Combat _combat;
 
@@ -152,8 +142,8 @@ public class PlayerScript : MonoBehaviour
         {
             movementLocation = transform.position;
         }
-        _navMeshAgent.SetDestination(movementLocation);
-        //transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
+        //_navMeshAgent.SetDestination(movementLocation);
+        transform.position = Vector3.MoveTowards(transform.position, movementLocation, movespeed * Time.deltaTime);
     }
     private void CheckForTarget()
     {
