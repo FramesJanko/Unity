@@ -10,6 +10,8 @@ public class March : MonoBehaviour
     public float speed;
     int currentWaypointIndex = 0;
     bool mapSet;
+    float currentSpeed;
+    public float distanceTraveled;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -20,6 +22,8 @@ public class March : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        currentSpeed = speed * Time.deltaTime;
+        distanceTraveled += currentSpeed;
         if (!mapSet)
         {
             path = map.GetComponent<PathWaypoints>();
@@ -32,7 +36,7 @@ public class March : MonoBehaviour
         }
 
         Vector3 currentWaypoint = waypoints[currentWaypointIndex];
-        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, currentSpeed);
         if (Vector3.Distance(transform.position, currentWaypoint) < .001 && currentWaypointIndex < waypoints.Length - 1)
         {
             currentWaypointIndex++;
@@ -46,5 +50,11 @@ public class March : MonoBehaviour
     public void SetMap(GameObject _map)
     {
         map = _map;
+    }
+    public float getPosition()
+    {
+        float percentComplete = waypoints.Length + 1;
+        percentComplete = percentComplete / (1 * waypoints.Length);
+        return percentComplete;
     }
 }
