@@ -14,6 +14,8 @@ public class SphereCreator : MonoBehaviour
     March[] sphereTypes;
     [SerializeField]
     Vector3 spawnPoint;
+    [SerializeField]
+    Transform targetPos;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +31,7 @@ public class SphereCreator : MonoBehaviour
         //{
         if (!invoked)
         {
-            InvokeRepeating("SpawnBall", 2f, .1f);
+            InvokeRepeating("SpawnBall", 2f, spawnTime);
             invoked = true;
         }
         else if(spawnsRemaining <= 0)
@@ -60,17 +62,19 @@ public class SphereCreator : MonoBehaviour
     {
         GameObject _newSphere = Instantiate(prefab, transform);
         _newSphere.transform.position = spawnPoint;
-        _newSphere.GetComponent<March>().SetMap(gameObject);
-
+        //_newSphere.GetComponent<March>().SetMap(gameObject);
+        _newSphere.GetComponent<Unit>().target = targetPos;
+        _newSphere.GetComponent<Unit>().BeginPath();
         spawnsRemaining--;
     }
 
-    public void Initialize(float _spawnTime, int _spawnsRemaining, March[] _sphereTypes, GameObject basicElemental, Vector3 _spawnPoint)
+    public void Initialize(float _spawnTime, int _spawnsRemaining, /*March[] _sphereTypes, */GameObject basicElemental, Vector3 _spawnPoint, Transform _targetPos)
     {
         spawnTime = _spawnTime;
         spawnsRemaining = _spawnsRemaining;
-        sphereTypes = _sphereTypes;
+        //sphereTypes = _sphereTypes;
         prefab = basicElemental;
         spawnPoint = _spawnPoint;
+        targetPos = _targetPos;
     }
 }
