@@ -1230,9 +1230,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basicElemental: {fileID: 3916233772134717503, guid: 6c24ca38c76f70246bc08fa25debf294, type: 3}
   spawnPoint: {fileID: 1644044906}
-  waveSize: 20
+  waveSize: 3
   spawnInterval: 1
   targetPos: {fileID: 526014029}
+  spawnedUnits: []
 --- !u!1 &1110618730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6c06accb6a67bed43ab394bd9d0e28af, type: 3}

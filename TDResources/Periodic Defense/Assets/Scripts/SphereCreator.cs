@@ -16,11 +16,12 @@ public class SphereCreator : MonoBehaviour
     Vector3 spawnPoint;
     [SerializeField]
     Transform targetPos;
+    GameplayManager _gameplayerManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        _gameplayerManager = GetComponent<GameplayManager>();
     }
 
     // Update is called once per frame
@@ -65,6 +66,7 @@ public class SphereCreator : MonoBehaviour
         //_newSphere.GetComponent<March>().SetMap(gameObject);
         _newSphere.GetComponent<Unit>().target = targetPos;
         _newSphere.GetComponent<Unit>().BeginPath();
+        _gameplayerManager.spawnedUnits.Add(_newSphere);
         spawnsRemaining--;
     }
 

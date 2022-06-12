@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
         if (pathSuccessful)
         {
             path = newPath;
+            targetIndex = 0;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
         }

@@ -14,7 +14,7 @@ public class GameplayManager : MonoBehaviour
     float spawnInterval;
     [SerializeField]
     Transform targetPos;
-
+    public List<GameObject> spawnedUnits;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +31,13 @@ public class GameplayManager : MonoBehaviour
             //March[] _array = new March[] { _march };
             SphereCreator _sc = gameObject.AddComponent<SphereCreator>();
             _sc.Initialize(spawnInterval, waveSize, /*_array, */basicElemental, spawnPoint.position, targetPos);
-
-
-            Debug.Log("Spawned");
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            for (int i = 0; i < spawnedUnits.Count; i++)
+            {
+                spawnedUnits[i].GetComponent<Unit>().BeginPath();
+            }
         }
     }
 }
