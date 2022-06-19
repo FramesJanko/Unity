@@ -3,7 +3,32 @@ guid: f1c8f9a397c150b45b04b316f7c5f893
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Electron
+    second: {fileID: 2100000, guid: 01b371e59ce71a64a92fce9fcce41b3a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Orbital.001
+    second: {fileID: 2100000, guid: d7ab622a440faeb4388d9dcbabdd5b4e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Proton
+    second: {fileID: 2100000, guid: 0178394f17fc5cc429344da5de2eac5b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tower
+    second: {fileID: 2100000, guid: ae996e73f325cff458591377be0bdf1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TowerBase
+    second: {fileID: 2100000, guid: 57795fc58914b4d4fb3aaebd17198f9e, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

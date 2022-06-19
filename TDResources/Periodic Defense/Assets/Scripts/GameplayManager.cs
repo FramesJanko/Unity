@@ -15,6 +15,10 @@ public class GameplayManager : MonoBehaviour
     [SerializeField]
     Transform targetPos;
     public List<GameObject> spawnedUnits;
+    public GameObject[] towersAvailable;
+    public bool preparingTowerPlacement;
+    RaycastHit hit;
+    public GameObject preparedTower;
 
     // Start is called before the first frame update
     void Start()
@@ -34,8 +38,24 @@ public class GameplayManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
+            if (!preparingTowerPlacement)
+            {
+                //preparingTowerPlacement = true;
+                Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+                Vector3 direction = worldMousePosition - Camera.main.transform.position;
+
+                Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f);
+                preparedTower = Instantiate(towersAvailable[0], hit.point, Quaternion.identity, transform);
+
+            }
+
+            //if (preparingTowerPlacement)
+            //{
+                
+            //}
             for (int i = 0; i < spawnedUnits.Count; i++)
             {
+                
                 spawnedUnits[i].GetComponent<Unit>().BeginPath();
             }
         }
