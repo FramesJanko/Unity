@@ -951,7 +951,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
-  m_LocalPosition: {x: 0, y: 75, z: -50}
+  m_LocalPosition: {x: 0, y: 35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -970,6 +970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraSpeed: 0.2
+  wasdModifier: 500
 --- !u!1 &985389682
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,7 +1087,7 @@ MonoBehaviour:
   targetPos: {fileID: 526014029}
   spawnedUnits: []
   towersAvailable:
-  - {fileID: 919132149155446097, guid: f1c8f9a397c150b45b04b316f7c5f893, type: 3}
+  - {fileID: 6801657639236435137, guid: 06cd7a62bc4a81949a052e88b2025358, type: 3}
   preparingTowerPlacement: 0
   preparedTower: {fileID: 0}
 --- !u!1 &1215557533
