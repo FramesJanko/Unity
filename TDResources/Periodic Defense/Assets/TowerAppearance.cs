@@ -12,8 +12,7 @@ public class TowerAppearance : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Prebuild()
     {
         Debug.Log(transform.childCount);
         for (int i = 0; i < transform.childCount; i++)
@@ -23,6 +22,17 @@ public class TowerAppearance : MonoBehaviour
             transform.GetChild(i).GetComponent<Renderer>().material.color = materialColor;
         }
         
+    }
+    public void Build()
+    {
+        Debug.Log(transform.childCount);
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Color materialColor = transform.GetChild(i).GetComponent<Renderer>().material.color;
+            materialColor = new Color(materialColor.r, materialColor.g, materialColor.b, 1f);
+            transform.GetChild(i).GetComponent<Renderer>().material.color = materialColor;
+        }
+
     }
 
     // Update is called once per frame

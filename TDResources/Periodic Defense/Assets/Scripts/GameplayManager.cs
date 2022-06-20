@@ -40,23 +40,33 @@ public class GameplayManager : MonoBehaviour
         {
             if (!preparingTowerPlacement)
             {
-                //preparingTowerPlacement = true;
+                preparingTowerPlacement = true;
                 Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
                 Vector3 direction = worldMousePosition - Camera.main.transform.position;
 
                 Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f);
                 preparedTower = Instantiate(towersAvailable[0], hit.point, Quaternion.identity, transform);
+                preparedTower.GetComponent<TowerAppearance>().Prebuild();
+                preparedTower.GetComponent<TowerBuilding>().prebuilt = true;
+                
 
             }
 
-            //if (preparingTowerPlacement)
-            //{
-                
-            //}
+            
             for (int i = 0; i < spawnedUnits.Count; i++)
             {
                 
                 spawnedUnits[i].GetComponent<Unit>().BeginPath();
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (preparingTowerPlacement)
+            {
+                preparingTowerPlacement = false;
+                preparedTower.GetComponent<TowerAppearance>().Build();
+                preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
+
             }
         }
     }
