@@ -70,7 +70,26 @@ public class Grid : MonoBehaviour {
 		int y = Mathf.RoundToInt((gridSizeY-1) * percentY);
 		return grid[x,y];
 	}
+	public void UpdateWalkable(Vector3 position, float radius)
+    {
+		float xLeftBound = position.x - radius + gridSizeX/2*nodeDiameter;
+		float xRightBound = xLeftBound + radius * 2;
+		float yLowerBound = position.z - radius + gridSizeY / 2 * nodeDiameter;
+		float yUpperBound = yLowerBound + radius * 2;
+		int fromX = Mathf.CeilToInt(xLeftBound / nodeDiameter);
+		int toX = Mathf.CeilToInt(xRightBound / nodeDiameter);
+		int fromY = Mathf.CeilToInt(yLowerBound / nodeDiameter);
+		int toY = Mathf.CeilToInt(yUpperBound / nodeDiameter);
+		for (int x = fromX; x < toX + 1; x++)
+        {
+			for (int y = fromY; y < toY + 1; y++)
+            {
+				if(x >= 0 && x < gridSizeX && y >= 0 && y < gridSizeY) 
+					grid[x, y].walkable = false;
+            }
 
+		}
+    }
 	void OnDrawGizmos() {
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,1,gridWorldSize.y));
 

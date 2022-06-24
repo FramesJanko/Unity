@@ -19,11 +19,12 @@ public class GameplayManager : MonoBehaviour
     public bool preparingTowerPlacement;
     RaycastHit hit;
     public GameObject preparedTower;
+    Grid grid;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        grid = GetComponentInChildren<Grid>();
     }
 
     // Update is called once per frame
@@ -53,11 +54,7 @@ public class GameplayManager : MonoBehaviour
             }
 
             
-            for (int i = 0; i < spawnedUnits.Count; i++)
-            {
-                
-                spawnedUnits[i].GetComponent<Unit>().BeginPath();
-            }
+            
         }
         if (Input.GetMouseButtonDown(0))
         {
@@ -67,6 +64,12 @@ public class GameplayManager : MonoBehaviour
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
 
+            }
+            grid.UpdateWalkable(preparedTower.transform.position, 2.25f);
+            for (int i = 0; i < spawnedUnits.Count; i++)
+            {
+
+                spawnedUnits[i].GetComponent<Unit>().BeginPath();
             }
         }
     }
