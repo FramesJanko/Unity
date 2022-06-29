@@ -359,6 +359,7 @@ MonoBehaviour:
     m_Bits: 512
   gridWorldSize: {x: 100, y: 100}
   nodeRadius: 0.5
+  nodeDiameter: 0
 --- !u!114 &182433725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1090,6 +1091,7 @@ MonoBehaviour:
   - {fileID: 6801657639236435137, guid: 06cd7a62bc4a81949a052e88b2025358, type: 3}
   preparingTowerPlacement: 0
   preparedTower: {fileID: 0}
+  towerSize: 1
 --- !u!1 &1215557533
 GameObject:
   m_ObjectHideFlags: 0

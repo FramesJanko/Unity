@@ -10,7 +10,7 @@ public class Grid : MonoBehaviour {
 	public float nodeRadius;
 	Node[,] grid;
 
-	float nodeDiameter;
+	public float nodeDiameter;
 	int gridSizeX, gridSizeY;
 
 	void Awake() {
@@ -76,10 +76,10 @@ public class Grid : MonoBehaviour {
 		float xRightBound = xLeftBound + radius * 2;
 		float yLowerBound = position.z - radius + gridSizeY / 2 * nodeDiameter;
 		float yUpperBound = yLowerBound + radius * 2;
-		int fromX = Mathf.CeilToInt(xLeftBound / nodeDiameter);
-		int toX = Mathf.CeilToInt(xRightBound / nodeDiameter);
-		int fromY = Mathf.CeilToInt(yLowerBound / nodeDiameter);
-		int toY = Mathf.CeilToInt(yUpperBound / nodeDiameter);
+		int fromX = Mathf.FloorToInt(xLeftBound / nodeDiameter);
+		int toX = Mathf.FloorToInt(xRightBound / nodeDiameter);
+		int fromY = Mathf.FloorToInt(yLowerBound / nodeDiameter);
+		int toY = Mathf.FloorToInt(yUpperBound / nodeDiameter);
 		for (int x = fromX; x < toX + 1; x++)
         {
 			for (int y = fromY; y < toY + 1; y++)

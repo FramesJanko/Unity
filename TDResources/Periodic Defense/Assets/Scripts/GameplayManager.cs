@@ -20,6 +20,7 @@ public class GameplayManager : MonoBehaviour
     RaycastHit hit;
     public GameObject preparedTower;
     Grid grid;
+    public int towerSize;
 
     // Start is called before the first frame update
     void Start()
@@ -63,14 +64,14 @@ public class GameplayManager : MonoBehaviour
                 preparingTowerPlacement = false;
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
+                grid.UpdateWalkable(preparedTower.transform.position, towerSize*grid.nodeRadius*.95f);
+                for (int i = 0; i < spawnedUnits.Count; i++)
+                {
 
+                    spawnedUnits[i].GetComponent<Unit>().BeginPath();
+                }
             }
-            grid.UpdateWalkable(preparedTower.transform.position, 2.25f);
-            for (int i = 0; i < spawnedUnits.Count; i++)
-            {
-
-                spawnedUnits[i].GetComponent<Unit>().BeginPath();
-            }
+            
         }
     }
 }
