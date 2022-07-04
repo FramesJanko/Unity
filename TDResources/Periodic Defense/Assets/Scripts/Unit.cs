@@ -41,4 +41,10 @@ public class Unit : MonoBehaviour
             yield return null;
         }
     }
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("Unit Script: Trigger Enter");
+
+    //}
 }

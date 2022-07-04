@@ -64,6 +64,7 @@ public class GameplayManager : MonoBehaviour
                 preparingTowerPlacement = false;
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
+                preparedTower.GetComponent<Electronegativity>().needToUpdateTowerRange = true;
                 grid.UpdateWalkable(preparedTower.transform.position, towerSize*grid.nodeRadius*.95f);
                 for (int i = 0; i < spawnedUnits.Count; i++)
                 {
@@ -72,6 +73,14 @@ public class GameplayManager : MonoBehaviour
                 }
             }
             
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            towerSize += 2;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            towerSize -= 2;
         }
     }
 }

@@ -6,6 +6,7 @@ public class TowerAppearance : MonoBehaviour
 {
     public List<Material> materials;
     public Vector3 scale;
+    public bool prebuilt;
 
     private void Awake()
     {
@@ -21,7 +22,8 @@ public class TowerAppearance : MonoBehaviour
             Color materialColor = transform.GetChild(i).GetComponent<Renderer>().material.color;
             materialColor = new Color(materialColor.r, materialColor.g, materialColor.b, .5f);
             transform.GetChild(i).GetComponent<Renderer>().material.color = materialColor;
-            transform.localScale = scale*transform.parent.GetComponent<GameplayManager>().towerSize;
+            prebuilt = true;
+            
         }
         
     }
@@ -34,12 +36,14 @@ public class TowerAppearance : MonoBehaviour
             materialColor = new Color(materialColor.r, materialColor.g, materialColor.b, 1f);
             transform.GetChild(i).GetComponent<Renderer>().material.color = materialColor;
         }
+        prebuilt = false;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(prebuilt)
+            transform.localScale = scale * transform.parent.GetComponent<GameplayManager>().towerSize;
     }
 }
