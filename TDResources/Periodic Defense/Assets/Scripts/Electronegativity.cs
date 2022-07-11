@@ -25,6 +25,6 @@ public class Electronegativity : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Electronegativity Script: Trigger Enter");
+        //Debug.Log("Electronegativity Script: Trigger Enter");
     }
 }

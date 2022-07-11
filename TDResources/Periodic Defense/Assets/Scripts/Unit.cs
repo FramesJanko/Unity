@@ -8,13 +8,17 @@ public class Unit : MonoBehaviour
     public float speed = 5;
     Vector3[] path;
     int targetIndex;
+    public float electronDropChance;
+    public int electronDropNumber;
+    public GameObject electronPrefab;
+    public float dropRange;
     public void BeginPath()
     {
         PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
-        if (pathSuccessful)
+        if (pathSuccessful && gameObject.activeSelf)
         {
             path = newPath;
             targetIndex = 0;
@@ -33,6 +37,7 @@ public class Unit : MonoBehaviour
                 targetIndex++;
                 if(targetIndex >= path.Length)
                 {
+                    gameObject.SetActive(false);
                     yield break;
                 }
                 currentWaypoint = path[targetIndex];
@@ -41,10 +46,20 @@ public class Unit : MonoBehaviour
             yield return null;
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Debug.Log("Unit Script: Trigger Enter");
-
-    //}
+    public void Death()
+    {
+        for (int i = 0; i < electronDropNumber; i++)
+        {
+            float roll = Random.value * 100;
+            if (roll < electronDropChance)
+                Drops();
+        }
+            
+            
+        gameObject.SetActive(false);
+    }
+    void Drops()
+    {
+        Instantiate(electronPrefab, transform.position + new Vector3(Random.value, 0, Random.value) * dropRange, Quaternion.identity, transform.parent);
+    }
 }

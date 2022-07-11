@@ -41,8 +41,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca804256b069ed4e92a98ce24369bec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerRange: 5
+  towerRange: 20
   needToUpdateTowerRange: 0
+--- !u!114 &4870946572672487621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801657639236435137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d52b2207d0f8a7448be7781756bcbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerSize: 3
+  scale: {x: 0, y: 0, z: 0}
+  attackDamage: 0
+  attackProjectile: {fileID: 0}
+  attackTarget: {fileID: 0}
+  attackRange: 20
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!114 &6566746552171912157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,6 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials: []
   scale: {x: 0, y: 0, z: 0}
+  prebuilt: 0
 --- !u!114 &9211090482452100776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,6 +92,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prebuilt: 1
+  buildLayer:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1001 &5955234560866206096
 PrefabInstance:
   m_ObjectHideFlags: 0

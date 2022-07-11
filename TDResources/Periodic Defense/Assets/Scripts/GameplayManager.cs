@@ -20,7 +20,8 @@ public class GameplayManager : MonoBehaviour
     RaycastHit hit;
     public GameObject preparedTower;
     Grid grid;
-    public int towerSize;
+    
+    public LayerMask buildLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +47,8 @@ public class GameplayManager : MonoBehaviour
                 Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
                 Vector3 direction = worldMousePosition - Camera.main.transform.position;
 
-                Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f);
+                Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f, buildLayer);
+                Debug.Log(hit.point);
                 preparedTower = Instantiate(towersAvailable[0], hit.point, Quaternion.identity, transform);
                 preparedTower.GetComponent<TowerAppearance>().Prebuild();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = true;
@@ -65,7 +67,7 @@ public class GameplayManager : MonoBehaviour
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
                 preparedTower.GetComponent<Electronegativity>().needToUpdateTowerRange = true;
-                grid.UpdateWalkable(preparedTower.transform.position, towerSize*grid.nodeRadius*.95f);
+                grid.UpdateWalkable(preparedTower.transform.position, preparedTower.GetComponent<BasicTower>().towerSize*grid.nodeRadius*.95f, false);
                 for (int i = 0; i < spawnedUnits.Count; i++)
                 {
 
@@ -74,13 +76,13 @@ public class GameplayManager : MonoBehaviour
             }
             
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            towerSize += 2;
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            towerSize -= 2;
-        }
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
+        //{
+        //    towerSize += 2;
+        //}
+        //if (Input.GetKeyDown(KeyCode.DownArrow))
+        //{
+        //    towerSize -= 2;
+        //}
     }
 }

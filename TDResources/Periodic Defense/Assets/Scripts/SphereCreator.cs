@@ -27,36 +27,15 @@ public class SphereCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //float timeSinceSpawn = Time.time % spawnTime;
-        //if (!recentlySpawned)
-        //{
         if (!invoked)
         {
-            InvokeRepeating("SpawnBall", 2f, spawnTime);
+            InvokeRepeating("SpawnBall", .5f, spawnTime);
             invoked = true;
         }
         else if(spawnsRemaining <= 0)
         {
             CancelInvoke("SpawnBall");
         }
-
-
-        if (/*timeSinceSpawn > spawnTime*.95 && */spawnsRemaining <= 0)
-        {
-
-            //recentlySpawned = true;
-            //Debug.Log(timeSinceSpawn);
-        }
-
-        //}
-
-        //if (recentlySpawned)
-        //{
-        //    if (timeSinceSpawn < .1)
-        //    {
-        //        recentlySpawned = false;
-        //    }
-        //}
     }
 
     private void SpawnBall()
@@ -70,12 +49,11 @@ public class SphereCreator : MonoBehaviour
         spawnsRemaining--;
     }
 
-    public void Initialize(float _spawnTime, int _spawnsRemaining, /*March[] _sphereTypes, */GameObject basicElemental, Vector3 _spawnPoint, Transform _targetPos)
+    public void Initialize(float _spawnTime, int _spawnsRemaining, GameObject _prefab, Vector3 _spawnPoint, Transform _targetPos)
     {
         spawnTime = _spawnTime;
         spawnsRemaining = _spawnsRemaining;
-        //sphereTypes = _sphereTypes;
-        prefab = basicElemental;
+        prefab = _prefab;
         spawnPoint = _spawnPoint;
         targetPos = _targetPos;
     }

@@ -19,6 +19,7 @@ public class TowerAppearance : MonoBehaviour
         Debug.Log(transform.childCount);
         for (int i = 0; i < transform.childCount; i++)
         {
+            GetComponent<BasicTower>().SetTowerSize();
             Color materialColor = transform.GetChild(i).GetComponent<Renderer>().material.color;
             materialColor = new Color(materialColor.r, materialColor.g, materialColor.b, .5f);
             transform.GetChild(i).GetComponent<Renderer>().material.color = materialColor;
@@ -40,10 +41,5 @@ public class TowerAppearance : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(prebuilt)
-            transform.localScale = scale * transform.parent.GetComponent<GameplayManager>().towerSize;
-    }
+    
 }

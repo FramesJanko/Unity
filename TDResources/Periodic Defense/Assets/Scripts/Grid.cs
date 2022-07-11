@@ -70,7 +70,7 @@ public class Grid : MonoBehaviour {
 		int y = Mathf.RoundToInt((gridSizeY-1) * percentY);
 		return grid[x,y];
 	}
-	public void UpdateWalkable(Vector3 position, float radius)
+	public void UpdateWalkable(Vector3 position, float radius, bool _walkable)
     {
 		float xLeftBound = position.x - radius + gridSizeX/2*nodeDiameter;
 		float xRightBound = xLeftBound + radius * 2;
@@ -85,7 +85,7 @@ public class Grid : MonoBehaviour {
 			for (int y = fromY; y < toY + 1; y++)
             {
 				if(x >= 0 && x < gridSizeX && y >= 0 && y < gridSizeY) 
-					grid[x, y].walkable = false;
+					grid[x, y].walkable = _walkable;
             }
 
 		}
