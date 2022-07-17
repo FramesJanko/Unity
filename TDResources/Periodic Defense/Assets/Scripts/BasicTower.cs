@@ -12,69 +12,111 @@ public class BasicTower : MonoBehaviour
     public GameObject attackProjectile;
     public Transform attackTarget;
     Collider[] hits;
-    float[] potentialTargets;
+    //float[] potentialTargets;
     GameObject currentAttack;
     public float attackRange;
     public LayerMask targetMask;
+    bool shouldAttack;
+    public float attackTime;
+    bool invoked;
+    bool attackCanceled;
+    float timeSinceAttack;
 
     // Start is called before the first frame update
     void Awake()
     {
         scale = transform.localScale;
+        shouldAttack = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.H))
-            CheckForTarget();
+        if (shouldAttack)
+        {
+            if (attackTarget != null && !invoked && timeSinceAttack >= attackTime)
+            {
+                InvokeRepeating("Attack", 0f, attackTime);
+                invoked = true;
+            }
+        }
+        if (!shouldAttack && attackTarget != null && !attackCanceled)
+        {
+            CancelAttack();
+        }
+            
+        if ((attackTarget == null || !attackTarget.gameObject.activeSelf) && !attackCanceled)
+        {
+            CancelAttack();
+        }
+        timeSinceAttack += Time.deltaTime;
 
-        //Attack(attackTarget);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void CancelAttack()
     {
-        Debug.Log(collision.gameObject.name);
+        attackTarget = null;
+        CancelInvoke("Attack");
+        invoked = false;
+        attackCanceled = true;
+        CheckForTarget();
     }
+
+    
     public void SetTowerSize()
     {
         transform.localScale = scale * towerSize;
     }
-    void CheckForTarget()
+    public void CheckForTarget()
     {
-        Debug.Log("Checking for targets");
+        
         hits = Physics.OverlapSphere(transform.position, attackRange, targetMask);
-        potentialTargets = new float[hits.Length];
+        //potentialTargets = new float[hits.Length];
         if(hits.Length > 0)
         {
-            if (potentialTargets.Length == 1)
+            if (hits.Length == 1)
             {
                 attackTarget = hits[0].transform;
             }
             else
             {
-                for (int i = 0; i < potentialTargets.Length; i++)
+                float lowestDistance = attackRange * attackRange * 1.01f;
+                int indexOfTarget = 0;
+                for (int i = 0; i < hits.Length; i++)
                 {
                     
                     float x = Mathf.Abs(hits[i].transform.position.x - transform.position.x);
                     float z = Mathf.Abs(hits[i].transform.position.z - transform.position.z);
                     float distance = x * x + z * z;
-                    potentialTargets[i] = distance;
+                    if(distance < lowestDistance)
+                    {
+                        lowestDistance = distance;
+                        indexOfTarget = i;
+                    }
                 }
-                Array.Sort(potentialTargets);
-                Debug.Log($"{potentialTargets[0]}");
+                //Array.Sort(potentialTargets);
+                attackTarget = hits[indexOfTarget].transform;
             }
+            attackCanceled = false;
         }
 
 
     }
-    public void Attack(Transform target)
+    public void Attack()
     {
-        if (attackTarget != null)
+        float distanceToTarget = Vector3.Distance(attackTarget.transform.position, transform.position);
+        if(attackTarget != null && distanceToTarget <= attackRange)
         {
-            currentAttack = Instantiate(attackProjectile, transform.position, Quaternion.identity, transform.parent);
-            currentAttack.GetComponent<AttackProjectile>().SetTarget(target);
+            currentAttack = Instantiate(attackProjectile, transform.position + Vector3.up*4.15f, Quaternion.identity, transform.parent);
+            AttackProjectile projectile = currentAttack.GetComponent<AttackProjectile>();
+            projectile.SetTarget(attackTarget, gameObject);
+            projectile.AssignDamage(attackDamage);
+            projectile.origin = gameObject;
         }
-        
+        if (distanceToTarget > attackRange)
+        {
+            attackTarget = null;
+        }
+        timeSinceAttack = 0f;
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Electronegativity : MonoBehaviour
 {
-    public int towerRange;
-    public bool needToUpdateTowerRange;
+    public float electronegativity;
 
     // Start is called before the first frame update
     void Start()
@@ -16,11 +15,7 @@ public class Electronegativity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (needToUpdateTowerRange)
-        {
-            GetComponent<SphereCollider>().radius = (transform.localScale.x*2) + towerRange;
-            needToUpdateTowerRange = false;
-        }
+        
     }
 
     private void OnTriggerEnter(Collider other)

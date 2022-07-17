@@ -1083,14 +1083,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   basicElemental: {fileID: 433157831145372460, guid: 263969d9eb604bf4d8c1b0176bc07e8c, type: 3}
   spawnPoint: {fileID: 1644044906}
-  waveSize: 3
-  spawnInterval: 1
+  waveSize: 100
+  spawnInterval: 0.5
   targetPos: {fileID: 526014029}
   spawnedUnits: []
   towersAvailable:
   - {fileID: 6801657639236435137, guid: 06cd7a62bc4a81949a052e88b2025358, type: 3}
   preparingTowerPlacement: 0
   preparedTower: {fileID: 0}
+  selectionIndicatorPrefab: {fileID: 2109340293566315272, guid: 3d76cc732728669428bf5ced9cb225dc, type: 3}
+  selectionIndicator: {fileID: 0}
+  selectedObject: {fileID: 0}
+  unitLayer:
+    serializedVersion: 2
+    m_Bits: 1280
   buildLayer:
     serializedVersion: 2
     m_Bits: 2048

@@ -42,6 +42,7 @@ public class Unit : MonoBehaviour
                 }
                 currentWaypoint = path[targetIndex];
             }
+            currentWaypoint.y = transform.position.y;
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed*Time.deltaTime);
             yield return null;
         }
@@ -52,7 +53,10 @@ public class Unit : MonoBehaviour
         {
             float roll = Random.value * 100;
             if (roll < electronDropChance)
-                Drops();
+            {
+                //Drops();
+            }
+
         }
             
             
@@ -60,6 +64,11 @@ public class Unit : MonoBehaviour
     }
     void Drops()
     {
-        Instantiate(electronPrefab, transform.position + new Vector3(Random.value, 0, Random.value) * dropRange, Quaternion.identity, transform.parent);
+        GameObject electron = Instantiate(electronPrefab, transform.position + new Vector3(Random.value, 0, Random.value) * dropRange, Quaternion.identity, transform.parent);
+        electron.GetComponent<Electron>().SetTarget(GetComponent<Health>().attacker.transform);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger: Unit");
     }
 }

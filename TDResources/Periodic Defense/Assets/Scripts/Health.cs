@@ -7,7 +7,8 @@ public class Health : MonoBehaviour
 {
     public int maxHp;
     public int currentHp;
-
+    public int damage;
+    public GameObject attacker;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,11 +18,7 @@ public class Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            currentHp--;
-            UpdateHp();
-        }
+        
             
     }
 
@@ -30,8 +27,10 @@ public class Health : MonoBehaviour
         return (float)currentHp / (float)maxHp;
     }
 
-    public void UpdateHp()
+    public void UpdateHp(int change, GameObject _attacker)
     {
+        attacker = _attacker;
+        currentHp += change;
         float hpPercent = CalculatePercentHp();
         transform.GetChild(0).transform.GetChild(2).GetComponent<Image>().fillAmount = hpPercent;
         if(hpPercent <= 0)

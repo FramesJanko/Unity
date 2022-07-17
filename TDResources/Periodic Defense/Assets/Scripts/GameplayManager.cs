@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,6 +21,11 @@ public class GameplayManager : MonoBehaviour
     RaycastHit hit;
     public GameObject preparedTower;
     Grid grid;
+    public GameObject selectionIndicatorPrefab;
+    public GameObject selectionIndicator;
+    public GameObject selectedObject;
+    bool unitSelected;
+    public LayerMask unitLayer;
     
     public LayerMask buildLayer;
 
@@ -66,7 +72,6 @@ public class GameplayManager : MonoBehaviour
                 preparingTowerPlacement = false;
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
-                preparedTower.GetComponent<Electronegativity>().needToUpdateTowerRange = true;
                 grid.UpdateWalkable(preparedTower.transform.position, preparedTower.GetComponent<BasicTower>().towerSize*grid.nodeRadius*.95f, false);
                 for (int i = 0; i < spawnedUnits.Count; i++)
                 {
@@ -74,8 +79,16 @@ public class GameplayManager : MonoBehaviour
                     spawnedUnits[i].GetComponent<Unit>().BeginPath();
                 }
             }
+            else 
+            {
+                
+                
+
+                ClickSelect();
+            }
             
         }
+        
         //if (Input.GetKeyDown(KeyCode.UpArrow))
         //{
         //    towerSize += 2;
@@ -84,5 +97,34 @@ public class GameplayManager : MonoBehaviour
         //{
         //    towerSize -= 2;
         //}
+    }
+
+    private void ClickSelect()
+    {
+        Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
+        Vector3 direction = worldMousePosition - Camera.main.transform.position;
+        
+        if (Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f, unitLayer))
+        {
+            selectedObject = hit.collider.gameObject;
+            Debug.Log(selectedObject.name);
+            if (!unitSelected)
+            {
+                selectionIndicator = Instantiate(selectionIndicatorPrefab, selectedObject.transform);
+                unitSelected = true;
+            }
+            else
+            {
+                
+                selectionIndicator.transform.parent = selectedObject.transform;
+                selectionIndicator.transform.localPosition = Vector3.zero;
+            }
+        }
+        else
+        {
+            unitSelected = false;
+            Destroy(selectionIndicator);
+        }
+
     }
 }
