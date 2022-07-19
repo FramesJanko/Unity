@@ -43,7 +43,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2476217761490520853
 MonoBehaviour:
@@ -116,7 +116,7 @@ MonoBehaviour:
   attackDamage: -1
   attackProjectile: {fileID: 2158617348173521927, guid: f65933891abdffd49868ed845d25a117, type: 3}
   attackTarget: {fileID: 0}
-  attackRange: 20
+  attackRange: 10
   targetMask:
     serializedVersion: 2
     m_Bits: 256

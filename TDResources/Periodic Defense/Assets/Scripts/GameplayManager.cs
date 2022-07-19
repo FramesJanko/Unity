@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -26,8 +27,9 @@ public class GameplayManager : MonoBehaviour
     public GameObject selectedObject;
     bool unitSelected;
     public LayerMask unitLayer;
+    public GameObject buildCanvas;
     
-    public LayerMask buildLayer;
+    //public LayerMask buildLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -49,26 +51,25 @@ public class GameplayManager : MonoBehaviour
         {
             if (!preparingTowerPlacement)
             {
-                preparingTowerPlacement = true;
-                Vector3 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 200f));
-                Vector3 direction = worldMousePosition - Camera.main.transform.position;
-
-                Physics.Raycast(Camera.main.transform.position, direction, out hit, 200f, buildLayer);
-                Debug.Log(hit.point);
-                preparedTower = Instantiate(towersAvailable[0], hit.point, Quaternion.identity, transform);
-                preparedTower.GetComponent<TowerAppearance>().Prebuild();
-                preparedTower.GetComponent<TowerBuilding>().prebuilt = true;
+                
+                buildCanvas.SetActive(true);
+                
                 
 
             }
 
-            
+            else
+            {
+                
+                buildCanvas.SetActive(false);
+            }
             
         }
         if (Input.GetMouseButtonDown(0))
         {
             if (preparingTowerPlacement)
             {
+                
                 preparingTowerPlacement = false;
                 preparedTower.GetComponent<TowerAppearance>().Build();
                 preparedTower.GetComponent<TowerBuilding>().prebuilt = false;
@@ -126,5 +127,15 @@ public class GameplayManager : MonoBehaviour
             Destroy(selectionIndicator);
         }
 
+    }
+    public void TowerButton(int i)
+    {
+        preparingTowerPlacement = true;
+        preparedTower = towersAvailable[i];
+        hit = preparedTower.GetComponent<TowerBuilding>().PrepareTower();
+        preparedTower = Instantiate(preparedTower, hit.point, Quaternion.identity, transform);
+        preparedTower.GetComponent<TowerAppearance>().Prebuild();
+        preparedTower.GetComponent<TowerBuilding>().prebuilt = true;
+        buildCanvas.SetActive(false);
     }
 }

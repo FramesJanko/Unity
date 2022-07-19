@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  speed: 10
+  speed: 20
   electronDropChance: 50
   electronDropNumber: 2
   electronPrefab: {fileID: 3916233772134717503, guid: 6c24ca38c76f70246bc08fa25debf294, type: 3}
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab0ce194bca98e04087e6db97499e00b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 3
+  maxHp: 50
   currentHp: 0
   damage: -1
   attacker: {fileID: 0}

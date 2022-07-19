@@ -20,7 +20,7 @@ public class BasicTower : MonoBehaviour
     public float attackTime;
     bool invoked;
     bool attackCanceled;
-    float timeSinceAttack;
+    public float timeSinceAttack;
 
     // Start is called before the first frame update
     void Awake()
@@ -69,7 +69,8 @@ public class BasicTower : MonoBehaviour
     }
     public void CheckForTarget()
     {
-        
+
+        Debug.Log("Checking for target.");
         hits = Physics.OverlapSphere(transform.position, attackRange, targetMask);
         //potentialTargets = new float[hits.Length];
         if(hits.Length > 0)
@@ -104,6 +105,7 @@ public class BasicTower : MonoBehaviour
     }
     public void Attack()
     {
+        Debug.Log("Attacking");
         float distanceToTarget = Vector3.Distance(attackTarget.transform.position, transform.position);
         if(attackTarget != null && distanceToTarget <= attackRange)
         {
@@ -112,11 +114,12 @@ public class BasicTower : MonoBehaviour
             projectile.SetTarget(attackTarget, gameObject);
             projectile.AssignDamage(attackDamage);
             projectile.origin = gameObject;
+            timeSinceAttack = 0f;
         }
         if (distanceToTarget > attackRange)
         {
             attackTarget = null;
         }
-        timeSinceAttack = 0f;
+        
     }
 }
