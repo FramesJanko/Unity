@@ -121,6 +121,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   attackTime: 1
+  timeSinceAttack: 0
 --- !u!114 &6566746552171912157
 MonoBehaviour:
   m_ObjectHideFlags: 0

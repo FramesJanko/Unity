@@ -50,7 +50,7 @@ public class BasicTower : MonoBehaviour
             CancelAttack();
         }
         timeSinceAttack += Time.deltaTime;
-
+        Debug.DrawLine(transform.position + new Vector3(0, 5, 0), transform.position + new Vector3(attackRange, 5, 0));
     }
 
     private void CancelAttack()
@@ -71,7 +71,7 @@ public class BasicTower : MonoBehaviour
     {
 
         Debug.Log("Checking for target.");
-        hits = Physics.OverlapSphere(transform.position, attackRange, targetMask);
+        hits = Physics.OverlapSphere(transform.position, attackRange*attackRange, targetMask);
         //potentialTargets = new float[hits.Length];
         if(hits.Length > 0)
         {
