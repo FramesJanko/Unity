@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +9,12 @@ public class AttackProjectile : MonoBehaviour
     public float speed;
     int damage;
     public GameObject origin;
+    public bool splash;
+    public float splashRange;
     // Start is called before the first frame update
     void Start()
     {
-        
+          
     }
 
     // Update is called once per frame
@@ -23,10 +26,26 @@ public class AttackProjectile : MonoBehaviour
         float distance = x * x + z * z;
         if(distance < 0.1f)
         {
-            target.GetComponent<Health>().UpdateHp(damage, origin);
-            gameObject.SetActive(false);
+            AttackHit();
         }
     }
+
+    public void AttackHit()
+    {
+        if(!splash)
+            target.GetComponent<Health>().UpdateHp(damage, origin);
+        else 
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, splashRange, origin.GetComponent<BasicTower>().targetMask);
+            for(int i = 0; i < hits.Length; i++)
+            {
+                hits[i].transform.GetComponent<Health>().UpdateHp(damage, origin);
+            }
+        }
+        gameObject.SetActive(false);
+
+    }
+
     public void SetTarget(Transform _target, GameObject _origin)
     {
         target = _target;

@@ -663,7 +663,7 @@ GameObject:
   - component: {fileID: 3456190256072488754}
   - component: {fileID: -6639859727902481048}
   - component: {fileID: -573009698921871815}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CarbonTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,9 +764,9 @@ MonoBehaviour:
   towerSize: 5
   scale: {x: 0, y: 0, z: 0}
   attackDamage: -6
-  attackProjectile: {fileID: 2158617348173521927, guid: f65933891abdffd49868ed845d25a117, type: 3}
+  attackProjectile: {fileID: 2158617348173521927, guid: 34fa2d86a059ef148a3c05b2459759e3, type: 3}
   attackTarget: {fileID: 0}
-  attackRange: 17
+  attackRange: 20
   targetMask:
     serializedVersion: 2
     m_Bits: 256

@@ -27,6 +27,7 @@ public class BasicTower : MonoBehaviour
     {
         scale = transform.localScale;
         shouldAttack = true;
+        
     }
 
     // Update is called once per frame
@@ -66,12 +67,14 @@ public class BasicTower : MonoBehaviour
     public void SetTowerSize()
     {
         transform.localScale = scale * towerSize;
+        GetComponentInChildren<SphereCollider>().radius = attackRange / transform.localScale.x;
     }
     public void CheckForTarget()
     {
 
         Debug.Log("Checking for target.");
-        hits = Physics.OverlapSphere(transform.position, attackRange*attackRange, targetMask);
+        hits = Physics.OverlapSphere(transform.position, attackRange, targetMask);
+        
         //potentialTargets = new float[hits.Length];
         if(hits.Length > 0)
         {
@@ -106,7 +109,10 @@ public class BasicTower : MonoBehaviour
     public void Attack()
     {
         Debug.Log("Attacking");
-        float distanceToTarget = Vector3.Distance(attackTarget.transform.position, transform.position);
+        RaycastHit hitInfo;
+        Physics.Raycast(transform.position, (attackTarget.position - transform.position).normalized, out hitInfo, 200f, targetMask);
+        float distanceToTarget = hitInfo.distance;
+        Debug.Log(distanceToTarget);
         if(attackTarget != null && distanceToTarget <= attackRange)
         {
             currentAttack = Instantiate(attackProjectile, transform.position + Vector3.up*4.15f, Quaternion.identity, transform.parent);
@@ -121,5 +127,10 @@ public class BasicTower : MonoBehaviour
             attackTarget = null;
         }
         
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

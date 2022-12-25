@@ -107,7 +107,7 @@
     <Compile Include="Assets\Scripts\GameplayManager.cs" />
     <Compile Include="Assets\Scripts\RotateScript.cs" />
     <Compile Include="Assets\Scripts\Unit.cs" />
-    <Compile Include="Assets\Scripts\Carbon.cs" />
+    <Compile Include="Assets\Scripts\ElementProperties.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
